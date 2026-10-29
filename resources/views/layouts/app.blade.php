@@ -2,12 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-50">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? ($clinic->name ?? 'ONEW Clinic') . ' - Sistem Rekam Medis & Kunjungan Pasien' }}</title>
+    <title>{{ $title ?? ($clinic->name ?? 'ONEW Clinic') . ' — Rekam Medis & Alur Pelayanan' }}</title>
 
-    <!-- Dynamic White-Label CSS Custom Properties -->
+    <!-- Dynamic White-Label Accent Palette -->
     <style>
         :root {
             --color-primary: {{ $clinic->primary_color ?? '#0284C7' }};
@@ -27,148 +27,153 @@
             --tw-ring-color: var(--color-primary) !important;
         }
         .hover\:bg-clinic-primary-dark:hover {
-            filter: brightness(0.9);
+            filter: brightness(0.92);
         }
     </style>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="h-full font-sans antialiased text-slate-800 bg-slate-50 flex flex-col min-h-screen">
-    <!-- White-Label Navigation Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+<body class="h-full font-sans antialiased text-slate-900 bg-[#f8fafc] flex flex-col min-h-screen selection:bg-slate-200 selection:text-slate-900">
+    <!-- Apple-style Translucent Navigation Bar -->
+    <header class="sticky top-0 z-40 glass-surface border-b border-slate-200/70 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <!-- Brand & Logo -->
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
+                <div class="flex items-center gap-3.5">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group transition-transform active:scale-[0.98]">
                         @if(!empty($clinic->logo_path))
-                            <img src="{{ Storage::url($clinic->logo_path) }}" alt="{{ $clinic->name }}" class="h-10 w-auto rounded-lg object-contain">
+                            <img src="{{ Storage::url($clinic->logo_path) }}" alt="{{ $clinic->name }}" class="h-9 w-auto rounded-xl object-contain shadow-apple">
                         @else
-                            <div class="w-10 h-10 rounded-xl bg-clinic-primary text-white flex items-center justify-center font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
-                                {{ substr($clinic->clinic_code ?? 'ON', 0, 2) }}
+                            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-semibold text-xs tracking-wider shadow-apple">
+                                {{ strtoupper(substr($clinic->clinic_code ?? 'ON', 0, 2)) }}
                             </div>
                         @endif
-                        <div>
+                        <div class="flex flex-col">
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-lg text-slate-900 tracking-tight">{{ $clinic->name ?? 'ONEW Clinic' }}</span>
-                                <span class="text-xs px-2 py-0.5 rounded-full font-mono font-semibold bg-sky-50 text-sky-700 border border-sky-200">
+                                <span class="font-semibold text-base text-slate-900 tracking-tight">{{ $clinic->name ?? 'ONEW Clinic' }}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
                                     {{ $clinic->clinic_code ?? 'ONEW' }}
                                 </span>
                             </div>
-                            <p class="text-xs text-slate-500 hidden sm:block">Aesthetic Medical Record & Flow System</p>
+                            <span class="text-[11px] text-slate-400 font-normal hidden sm:block">Sistem Alur & Rekam Medis Pasien</span>
                         </div>
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <!-- Navigation Pill Segments (Optimized for Touch & Tablet) -->
+                <nav class="hidden md:flex items-center p-1 rounded-full bg-slate-100/80 border border-slate-200/50 text-xs font-medium">
                     <a href="{{ route('dashboard') }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
                         Dashboard
                     </a>
                     <a href="{{ route('patients.register') }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('patients.register') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        1. Registrasi Pasien
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('patients.register') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        Registrasi
                     </a>
                     <a href="{{ route('nurse.examination') }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('nurse.examination') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        2. Pemeriksaan Perawat
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('nurse.examination') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        Pemeriksaan Perawat
                     </a>
                     <a href="{{ route('doctor.treatment') }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('doctor.treatment') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        3. Tindakan Dokter
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('doctor.treatment') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        Tindakan Dokter
                     </a>
                     <a href="{{ route('clinic.settings') }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('clinic.settings') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Pengaturan White-Label
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('clinic.settings') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        Pengaturan
                     </a>
                 </nav>
 
-                <!-- Right Gateway Status Indicator & Help -->
+                <!-- Right System Status -->
                 <div class="flex items-center gap-3">
-                    <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="font-medium">Trustmedis Mock: Online</span>
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-[11px] bg-slate-100/90 text-slate-600 border border-slate-200/60">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="font-medium tracking-tight">Trustmedis Gateway Aktif</span>
                     </div>
 
-                    <!-- Role Badge / Simulator dropdown -->
+                    <!-- User Role Switcher Pill -->
                     <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" type="button" class="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs text-slate-600 font-medium">
-                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs">
+                        <button @click="open = !open" type="button" class="flex items-center gap-2 p-1.5 pr-2.5 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 text-xs text-slate-700 font-medium shadow-2xs transition-all active:scale-[0.97]">
+                            <span class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center font-medium text-xs">
                                 DR
                             </span>
-                            <span class="hidden md:inline">dr. Alana Wijaya</span>
-                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <span class="hidden lg:inline text-xs font-medium text-slate-800">dr. Alana Wijaya</span>
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-slate-100 py-2 z-50 text-sm">
-                            <div class="px-4 py-2 border-b border-slate-100">
-                                <p class="text-xs text-slate-400">Login Aktif (Simulasi)</p>
-                                <p class="font-medium text-slate-800">dr. Alana Wijaya, Sp.D.V.E</p>
-                                <p class="text-xs text-slate-500 capitalize">Role: Doctor</p>
+                        <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-60 rounded-2xl bg-white shadow-apple-elevated border border-slate-200/80 p-1.5 z-50 text-xs">
+                            <div class="px-3.5 py-2.5 border-b border-slate-100">
+                                <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Pengguna Aktif</span>
+                                <p class="font-semibold text-slate-900 text-sm mt-0.5">dr. Alana Wijaya, Sp.D.V.E</p>
+                                <p class="text-slate-500">Dokter Penanggung Jawab</p>
                             </div>
-                            <a href="{{ route('patients.register') }}" class="block px-4 py-2 hover:bg-slate-50 text-slate-700">Mode Resepsionis</a>
-                            <a href="{{ route('nurse.examination') }}" class="block px-4 py-2 hover:bg-slate-50 text-slate-700">Mode Perawat</a>
-                            <a href="{{ route('doctor.treatment') }}" class="block px-4 py-2 hover:bg-slate-50 text-slate-700">Mode Dokter</a>
-                            <div class="border-t border-slate-100 my-1"></div>
-                            <a href="{{ route('clinic.settings') }}" class="block px-4 py-2 hover:bg-slate-50 text-slate-700">Kelola White-Label Klinik</a>
+                            <div class="py-1">
+                                <a href="{{ route('patients.register') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Resepsionis</a>
+                                <a href="{{ route('nurse.examination') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Perawat</a>
+                                <a href="{{ route('doctor.treatment') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Dokter</a>
+                            </div>
+                            <div class="border-t border-slate-100 pt-1">
+                                <a href="{{ route('clinic.settings') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Konfigurasi Klinik</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Nav Menu Bar -->
-        <div class="md:hidden border-t border-slate-200 bg-slate-50 px-4 py-2 flex items-center justify-between overflow-x-auto text-xs gap-2">
-            <a href="{{ route('dashboard') }}" class="whitespace-nowrap px-2 py-1 rounded {{ request()->routeIs('dashboard') ? 'font-bold text-sky-700' : 'text-slate-600' }}">Dashboard</a>
-            <a href="{{ route('patients.register') }}" class="whitespace-nowrap px-2 py-1 rounded {{ request()->routeIs('patients.register') ? 'font-bold text-sky-700' : 'text-slate-600' }}">1. Registrasi</a>
-            <a href="{{ route('nurse.examination') }}" class="whitespace-nowrap px-2 py-1 rounded {{ request()->routeIs('nurse.examination') ? 'font-bold text-sky-700' : 'text-slate-600' }}">2. Perawat</a>
-            <a href="{{ route('doctor.treatment') }}" class="whitespace-nowrap px-2 py-1 rounded {{ request()->routeIs('doctor.treatment') ? 'font-bold text-sky-700' : 'text-slate-600' }}">3. Dokter</a>
-            <a href="{{ route('clinic.settings') }}" class="whitespace-nowrap px-2 py-1 rounded {{ request()->routeIs('clinic.settings') ? 'font-bold text-sky-700' : 'text-slate-600' }}">White-Label</a>
+        <!-- Mobile / Tablet Portrait Secondary Navigation Bar -->
+        <div class="md:hidden border-t border-slate-200/60 bg-white/70 px-4 py-2 flex items-center justify-start overflow-x-auto gap-1 text-xs">
+            <a href="{{ route('dashboard') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Dashboard</a>
+            <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Registrasi</a>
+            <a href="{{ route('nurse.examination') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('nurse.examination') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Perawat</a>
+            <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Dokter</a>
+            <a href="{{ route('clinic.settings') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('clinic.settings') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Pengaturan</a>
         </div>
     </header>
 
-    <!-- Main Content Slot -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Main Content Container with Relaxed Apple Breathing Room -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         @if (session()->has('success'))
-            <div class="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800 text-sm flex items-center justify-between" x-data="{ show: true }" x-show="show">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('success') }}</span>
+            <div class="mb-6 rounded-2xl bg-white border border-emerald-200/80 p-4 text-emerald-950 text-xs shadow-apple flex items-center justify-between" x-data="{ show: true }" x-show="show">
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="font-medium">{{ session('success') }}</span>
                 </div>
-                <button @click="show = false" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+                <button @click="show = false" class="text-slate-400 hover:text-slate-700 p-1">&times;</button>
             </div>
         @endif
 
         @if (session()->has('error'))
-            <div class="mb-6 rounded-xl bg-rose-50 border border-rose-200 p-4 text-rose-800 text-sm flex items-center justify-between" x-data="{ show: true }" x-show="show">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-rose-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('error') }}</span>
+            <div class="mb-6 rounded-2xl bg-white border border-rose-200/80 p-4 text-rose-950 text-xs shadow-apple flex items-center justify-between" x-data="{ show: true }" x-show="show">
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </div>
+                    <span class="font-medium">{{ session('error') }}</span>
                 </div>
-                <button @click="show = false" class="text-rose-500 hover:text-rose-700">&times;</button>
+                <button @click="show = false" class="text-slate-400 hover:text-slate-700 p-1">&times;</button>
             </div>
         @endif
 
         {{ $slot ?? $content ?? '' }}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-            <div>
-                <span class="font-semibold text-slate-700">{{ $clinic->name ?? 'ONEW Clinic' }}</span> &bull; {{ $clinic->address ?? 'Klinik Rekam Medis Estetika' }}
+    <!-- Refined Minimalist Apple Footer -->
+    <footer class="border-t border-slate-200/60 bg-white py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold text-slate-800">{{ $clinic->name ?? 'ONEW Clinic' }}</span>
+                <span>&bull;</span>
+                <span>{{ $clinic->address ?? 'Klinik Rekam Medis Estetika' }}</span>
                 @if(!empty($clinic->phone))
-                    &bull; Telp: {{ $clinic->phone }}
+                    <span>&bull;</span>
+                    <span>{{ $clinic->phone }}</span>
                 @endif
             </div>
-            <div class="flex items-center gap-3">
-                <span class="text-slate-400">Laravel 12 &bull; Livewire 3 &bull; Alpine.js &bull; Tailwind CSS</span>
-                <span class="px-2 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-600">MVP v1.0</span>
+            <div class="text-slate-400">
+                Sistem Rekam Medis Terintegrasi
             </div>
         </div>
     </footer>

@@ -2,8 +2,37 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Apple Design System Tokens */
+:root {
+    --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shadow-apple {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 8px 24px -4px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-apple-hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 16px 36px -6px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-apple-elevated {
+    box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.glass-surface {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-kiosk {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(30px) saturate(190%);
+    -webkit-backdrop-filter: blur(30px) saturate(190%);
 }
