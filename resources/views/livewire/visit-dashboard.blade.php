@@ -2,9 +2,14 @@
     <!-- Apple Bento Header & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-8 border-b border-slate-200/60 gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Alur Rekam Medis & Kunjungan</h1>
+            <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-1.5">
+                <span>Alur Pelayanan</span>
+                <span>/</span>
+                <span class="text-slate-900">1. Kunjungan Hari Ini</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Kunjungan & Rekam Medis Pasien</h1>
             <p class="text-sm text-slate-500 mt-1">
-                Pemantauan alur pasien dari registrasi, persetujuan tablet, pemeriksaan perawat, hingga tindakan klinis dokter.
+                Alur pelayanan klinik: Registrasi & Consent, Pemeriksaan Medis, dan Rekap Rekam Medis Selesai.
             </p>
         </div>
         <div class="flex items-center gap-3">
@@ -16,59 +21,41 @@
         </div>
     </div>
 
-    <!-- Apple-Style Bento Grid Metric Tiles -->
-    <div class="grid grid-cols-2 lg:grid-cols-6 gap-3.5 sm:gap-4 my-8">
-        <!-- Tile 1: Hari Ini -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Kunjungan Hari Ini</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['total_today'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">Hari ini</span>
+    <!-- Apple-Style Bento Grid Metric Tiles (Clean 3-Card Architecture) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+        <!-- Tile 1: Total Kunjungan Hari Ini -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-apple flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Kunjungan Hari Ini</span>
+                <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">Hari ini</span>
+            </div>
+            <div class="mt-4">
+                <span class="text-4xl font-bold text-slate-900 tracking-tight">{{ $counts['total_today'] }}</span>
+                <p class="text-xs text-slate-400 mt-1">Total kunjungan terdaftar hari ini</p>
             </div>
         </div>
 
-        <!-- Tile 2: Perlu Consent -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-amber-600/90 tracking-wider">Menunggu Tanda Tangan</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['registered'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-medium border border-amber-200/60">Tablet</span>
+        <!-- Tile 2: Menunggu Pemeriksaan Dokter -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-apple flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Menunggu Pemeriksaan</span>
+                <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">Antrian</span>
+            </div>
+            <div class="mt-4">
+                <span class="text-4xl font-bold text-slate-900 tracking-tight">{{ $counts['waiting'] }}</span>
+                <p class="text-xs text-slate-400 mt-1">Pasien siap di ruang pemeriksaan</p>
             </div>
         </div>
 
-        <!-- Tile 3: Siap Perawat -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-blue-600/90 tracking-wider">Pemeriksaan Perawat</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['consent_signed'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium border border-blue-200/60">Foto Awal</span>
+        <!-- Tile 3: Kunjungan Selesai -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-apple flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Kunjungan Selesai</span>
+                <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">Selesai</span>
             </div>
-        </div>
-
-        <!-- Tile 4: Ruang Dokter -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-indigo-600/90 tracking-wider">Ruang Dokter</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['waiting_doctor'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-medium border border-indigo-200/60">Tindakan</span>
-            </div>
-        </div>
-
-        <!-- Tile 5: Selesai -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-emerald-600/90 tracking-wider">Kunjungan Selesai</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['completed'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium border border-emerald-200/60">Selesai</span>
-            </div>
-        </div>
-
-        <!-- Tile 6: Trustmedis -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/70 shadow-apple flex flex-col justify-between">
-            <span class="text-[11px] font-semibold uppercase text-sky-600/90 tracking-wider">Sinkronisasi EHR</span>
-            <div class="mt-4 flex items-baseline justify-between">
-                <span class="text-3xl font-bold text-slate-900 tracking-tight">{{ $counts['synced'] }}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-medium border border-sky-200/60">Tersinkron</span>
+            <div class="mt-4">
+                <span class="text-4xl font-bold text-slate-900 tracking-tight">{{ $counts['completed'] }}</span>
+                <p class="text-xs text-slate-400 mt-1">Tindakan selesai & rekap rekam medis siap</p>
             </div>
         </div>
     </div>
@@ -79,24 +66,16 @@
             <!-- Segmented Control Pills -->
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs font-medium">
                 <button wire:click="$set('statusFilter', 'all')"
-                        class="px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'all' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+                        class="px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'all' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                     Semua Kunjungan ({{ $visits->total() }})
                 </button>
-                <button wire:click="$set('statusFilter', 'registered')"
-                        class="px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'registered' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
-                    Menunggu Tanda Tangan
-                </button>
-                <button wire:click="$set('statusFilter', 'consent_signed')"
-                        class="px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'consent_signed' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
-                    Pemeriksaan Awal
-                </button>
-                <button wire:click="$set('statusFilter', 'waiting_doctor')"
-                        class="px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'waiting_doctor' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
-                    Ruang Tindakan Dokter
+                <button wire:click="$set('statusFilter', 'waiting')"
+                        class="px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'waiting' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+                    Menunggu Pemeriksaan ({{ $counts['waiting'] }})
                 </button>
                 <button wire:click="$set('statusFilter', 'completed')"
-                        class="px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'completed' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
-                    Selesai
+                        class="px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-200 {{ $statusFilter === 'completed' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+                    Selesai ({{ $counts['completed'] }})
                 </button>
             </div>
 
@@ -107,13 +86,13 @@
                 </div>
                 <input wire:model.live.debounce.300ms="search"
                        type="text"
-                       placeholder="Cari pasien, kode RM, atau no telepon..."
+                       placeholder="Cari pasien, kode RM, NIK, atau telp..."
                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-full text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all">
             </div>
         </div>
     </div>
 
-    <!-- Apple-Style Clean Data Table (Tablet Touch Friendly) -->
+    <!-- Apple-Style Clean Data Table (No EHR clutter) -->
     <div class="bg-white rounded-3xl border border-slate-200/70 shadow-apple overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-600">
@@ -122,9 +101,8 @@
                         <th class="py-4 px-6">Identitas Pasien</th>
                         <th class="py-4 px-5">Waktu Kunjungan</th>
                         <th class="py-4 px-5">Status Alur</th>
-                        <th class="py-4 px-5">Tenaga Medis</th>
+                        <th class="py-4 px-5">Dokter & Perawat</th>
                         <th class="py-4 px-5">Dokumentasi Foto</th>
-                        <th class="py-4 px-5">Sinkronisasi EHR</th>
                         <th class="py-4 px-6 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -139,6 +117,9 @@
                                         {{ $visit->patient?->patient_code }}
                                     </span>
                                     <span class="text-xs text-slate-400">{{ $visit->patient?->phone_number }}</span>
+                                    @if($visit->patient?->nik)
+                                        <span class="text-[11px] text-slate-400 font-mono hidden lg:inline">&bull; NIK: {{ $visit->patient->nik }}</span>
+                                    @endif
                                 </div>
                             </td>
 
@@ -150,38 +131,28 @@
 
                             <!-- Status Alur Pelayanan -->
                             <td class="py-4 px-5 whitespace-nowrap">
-                                @if($visit->status === 'registered')
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200/60">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                        Menunggu Tanda Tangan
-                                    </span>
-                                @elseif($visit->status === 'consent_signed')
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-200/60">
+                                @if(in_array($visit->status, ['registered', 'consent_signed', 'waiting_doctor']))
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
                                         <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                        Pemeriksaan Perawat
-                                    </span>
-                                @elseif($visit->status === 'waiting_doctor')
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-800 border border-indigo-200/60">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                                        Ruang Tindakan Dokter
+                                        Menunggu Pemeriksaan Dokter
                                     </span>
                                 @elseif($visit->status === 'in_treatment')
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-800 border border-purple-200/60">
                                         <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
-                                        Sedang Ditangani Dokter
+                                        Sedang Dalam Pemeriksaan
                                     </span>
                                 @elseif($visit->status === 'completed')
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/60">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        Selesai
+                                        Kunjungan Selesai
                                     </span>
                                 @endif
                             </td>
 
-                            <!-- Tenaga Medis -->
+                            <!-- Dokter & Tim Medis -->
                             <td class="py-4 px-5">
                                 <div class="text-xs">
-                                    <div class="font-medium text-slate-800">{{ $visit->doctor?->name ?? 'Belum Ditentukan' }}</div>
+                                    <div class="font-medium text-slate-800">{{ $visit->doctor?->name ?? 'dr. Alana Wijaya' }}</div>
                                     @if($visit->assistant_name)
                                         <div class="text-slate-400 mt-0.5">Asisten: {{ $visit->assistant_name }}</div>
                                     @endif
@@ -200,48 +171,16 @@
                                 </div>
                             </td>
 
-                            <!-- Trustmedis Sync Status -->
-                            <td class="py-4 px-5 whitespace-nowrap">
-                                @if($visit->trustmedis_sync_status === 'synced')
-                                    <div class="flex items-center gap-1.5 text-xs text-emerald-800 font-medium">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span>Tersinkronisasi</span>
-                                    </div>
-                                    <div class="text-[10px] text-slate-400 mt-0.5">{{ $visit->trustmedis_synced_at?->format('H:i d/m/y') }}</div>
-                                @elseif($visit->trustmedis_sync_status === 'failed')
-                                    <div class="flex items-center gap-1.5 text-xs text-rose-800 font-medium">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                                        <span>Gagal</span>
-                                    </div>
-                                    <button wire:click="triggerSync({{ $visit->id }})" class="text-[11px] text-slate-600 hover:text-slate-900 underline mt-0.5">Sync Ulang</button>
-                                @else
-                                    <span class="text-xs px-2.5 py-1 rounded-md bg-slate-50 text-slate-400 font-medium">Pending</span>
-                                @endif
-                            </td>
-
-                            <!-- Tablet-Friendly Action Button (Min 40px Tap Target) -->
+                            <!-- Action Button -->
                             <td class="py-4 px-6 text-right whitespace-nowrap">
                                 <div class="inline-flex items-center gap-2">
-                                    @if($visit->status === 'registered')
-                                        <a href="{{ route('kiosk.show', $visit) }}"
-                                           target="_blank"
-                                           class="h-9 px-4 rounded-full text-xs font-semibold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
-                                            <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                            <span>Mode Tablet Pasien</span>
-                                        </a>
-                                    @elseif($visit->status === 'consent_signed')
-                                        <a href="{{ route('nurse.examination', ['visit_id' => $visit->id]) }}"
-                                           class="h-9 px-4 rounded-full text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
-                                            <span>Pemeriksaan Perawat</span>
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                        </a>
-                                    @elseif(in_array($visit->status, ['waiting_doctor', 'in_treatment']))
+                                    @if($visit->status !== 'completed')
                                         <a href="{{ route('doctor.treatment', ['visit_id' => $visit->id]) }}"
                                            class="h-9 px-4 rounded-full text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
-                                            <span>Ruang Tindakan</span>
+                                            <span>Masuk Ruang Pemeriksaan</span>
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                         </a>
-                                    @elseif($visit->status === 'completed')
+                                    @else
                                         <a href="{{ route('reports.visit.pdf', $visit) }}"
                                            target="_blank"
                                            class="h-9 px-4 rounded-full text-xs font-semibold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
@@ -254,7 +193,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-16 text-center text-slate-400">
+                            <td colspan="6" class="py-16 text-center text-slate-400">
                                 <div class="max-w-sm mx-auto">
                                     <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>

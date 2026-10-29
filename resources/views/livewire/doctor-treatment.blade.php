@@ -5,10 +5,10 @@
             <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-1.5">
                 <span>Alur Pelayanan</span>
                 <span>/</span>
-                <span class="text-slate-900">Ruang Tindakan Medis</span>
+                <span class="text-slate-900">Langkah 3: Pemeriksaan Medis</span>
             </div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Tindakan Klinis & Integrasi EHR</h1>
-            <p class="text-sm text-slate-500 mt-1">Pilih tindakan estetika, dokumentasikan foto akhir, dan selesaikan kunjungan untuk sinkronisasi Trustmedis.</p>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Pemeriksaan & Tindakan Medis</h1>
+            <p class="text-sm text-slate-500 mt-1">Pilih tindakan estetika, dokumentasikan foto akhir, dan selesaikan kunjungan pasien.</p>
         </div>
         <a href="{{ route('dashboard') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900 px-4 py-2 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 shadow-2xs self-start transition-all active:scale-[0.98]">
             Kembali ke Dashboard
@@ -190,7 +190,7 @@
                     <!-- Action Submit Bar (Apple Pill Button) -->
                     <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p class="text-xs text-slate-400">
-                            Menyelesaikan kunjungan akan mengompilasi rekam medis dan mengirimkan sinkronisasi ke Trustmedis EHR.
+                            Menyelesaikan pemeriksaan akan memperbarui rekam medis dan memindahkan pasien ke status Kunjungan Selesai.
                         </p>
 
                         <button type="button"
@@ -198,11 +198,11 @@
                                 wire:loading.attr="disabled"
                                 class="w-full sm:w-auto h-12 px-7 rounded-full font-semibold text-white bg-slate-900 hover:bg-black shadow-apple text-xs tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
                             <span wire:loading.remove wire:target="completeVisitAndSync">
-                                Selesaikan Kunjungan & Sync Trustmedis
+                                Selesaikan Kunjungan
                             </span>
                             <span wire:loading wire:target="completeVisitAndSync" class="flex items-center gap-2">
                                 <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                <span>Menyinkronkan...</span>
+                                <span>Menyimpan...</span>
                             </span>
                         </button>
                     </div>
@@ -226,13 +226,13 @@
 
                 <h3 class="text-xl font-bold text-slate-900 tracking-tight">Kunjungan Berhasil Diselesaikan</h3>
                 <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                    Rekam medis kunjungan #{{ $completedVisitId }} telah dicatat dan disinkronisasi ke server gateway Trustmedis.
+                    Rekam medis kunjungan #{{ $completedVisitId }} telah dicatat dan kunjungan dinyatakan selesai.
                 </p>
 
                 <div class="my-6 p-4 rounded-2xl bg-slate-50 border border-slate-200/70 text-left text-xs space-y-2 text-slate-600">
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Status Integrasi:</span>
-                        <span class="font-semibold text-slate-900">Tersinkronisasi ke Trustmedis</span>
+                        <span class="text-slate-400">Status Kunjungan:</span>
+                        <span class="font-semibold text-emerald-700">Selesai (Completed)</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-slate-400">Waktu Selesai:</span>

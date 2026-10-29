@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto">
+<div class="w-full">
     <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
         <div>

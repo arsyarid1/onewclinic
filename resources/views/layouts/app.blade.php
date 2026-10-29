@@ -42,36 +42,23 @@
                 <!-- Brand & Logo -->
                 <div class="flex items-center gap-3.5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group transition-transform active:scale-[0.98]">
-                        <img src="{{ asset('onew_navbar_logo.webp') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-10 w-auto object-contain">
-                        <div class="flex flex-col">
-                            <div class="flex items-center gap-2">
-                                <span class="font-semibold text-base text-slate-900 tracking-tight">{{ $clinic->name ?? 'ONEW Clinic' }}</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
-                                    {{ $clinic->clinic_code ?? 'ONEW' }}
-                                </span>
-                            </div>
-                            <span class="text-[11px] text-slate-400 font-normal hidden sm:block">Sistem Alur & Rekam Medis Pasien</span>
-                        </div>
+                        <img src="{{ asset('onew_navbar_logo.webp') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-20 w-auto object-contain">
                     </a>
                 </div>
 
-                <!-- Navigation Pill Segments (Optimized for Touch & Tablet) -->
+                <!-- Navigation Pill Segments (Clean 4-Step Architecture) -->
                 <nav class="hidden md:flex items-center p-1 rounded-full bg-slate-100/80 border border-slate-200/50 text-xs font-medium">
                     <a href="{{ route('dashboard') }}"
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        Dashboard
+                        1. Kunjungan Hari Ini
                     </a>
                     <a href="{{ route('patients.register') }}"
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('patients.register') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        Registrasi
-                    </a>
-                    <a href="{{ route('nurse.examination') }}"
-                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('nurse.examination') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        Pemeriksaan Perawat
+                        2. Registrasi & Consent
                     </a>
                     <a href="{{ route('doctor.treatment') }}"
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('doctor.treatment') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        Tindakan Dokter
+                        3. Pemeriksaan Medis
                     </a>
                     <a href="{{ route('clinic.settings') }}"
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('clinic.settings') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
@@ -112,10 +99,9 @@
 
         <!-- Mobile / Tablet Portrait Secondary Navigation Bar -->
         <div class="md:hidden border-t border-slate-200/60 bg-white/70 px-4 py-2 flex items-center justify-start overflow-x-auto gap-1 text-xs">
-            <a href="{{ route('dashboard') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Dashboard</a>
-            <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Registrasi</a>
-            <a href="{{ route('nurse.examination') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('nurse.examination') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Perawat</a>
-            <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Dokter</a>
+            <a href="{{ route('dashboard') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">1. Kunjungan</a>
+            <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">2. Registrasi & Consent</a>
+            <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">3. Pemeriksaan</a>
             <a href="{{ route('clinic.settings') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('clinic.settings') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Pengaturan</a>
         </div>
     </header>

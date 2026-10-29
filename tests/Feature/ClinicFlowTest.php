@@ -101,22 +101,35 @@ class ClinicFlowTest extends TestCase
         Livewire::test(PatientRegistration::class)
             ->set('mode', 'new')
             ->set('name', 'Clara Anindya')
-            ->set('phone_number', '08123456789')
-            ->set('gender', 'female')
+            ->set('nik', '3171234567890001')
+            ->set('birth_place', 'Jakarta')
             ->set('date_of_birth', '1997-08-15')
+            ->set('gender', 'female')
+            ->set('phone_number', '08123456789')
+            ->set('email', 'clara@example.com')
             ->set('address', 'Kebayoran Baru, Jakarta')
-            ->call('registerAndOpenConsent')
+            ->set('emergency_contact_name', 'Budi Anindya')
+            ->set('emergency_contact_relation', 'Orang Tua')
+            ->set('emergency_contact_phone', '08129876543')
+            ->set('doctor_id', $this->doctor->id)
+            ->set('assistant_name', 'Ns. Ratna Dewi')
+            ->set('agreementChecked', true)
+            ->call('registerAndSubmitVisit')
             ->assertHasNoErrors()
             ->assertRedirect();
 
         $this->assertDatabaseHas('patients', [
             'name' => 'Clara Anindya',
+            'nik' => '3171234567890001',
             'phone_number' => '08123456789',
+            'emergency_contact_name' => 'Budi Anindya',
         ]);
 
         $this->assertDatabaseHas('visits', [
-            'status' => 'registered',
-            'consent_signed' => false,
+            'status' => 'waiting_doctor',
+            'consent_signed' => true,
+            'doctor_id' => $this->doctor->id,
+            'assistant_name' => 'Ns. Ratna Dewi',
         ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Contracts\TrustmedisServiceInterface;
 use App\Models\Clinic;
-use App\Models\Patient;
 use App\Models\Visit;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
@@ -29,18 +28,6 @@ class VisitDashboard extends Component
         $this->resetPage();
     }
 
-    public function triggerSync(int $visitId, TrustmedisServiceInterface $trustmedisService): void
-    {
-        $visit = Visit::findOrFail($visitId);
-        $success = $trustmedisService->syncVisit($visit);
-
-        if ($success) {
-            session()->flash('success', "Kunjungan #{$visit->id} berhasil disinkronisasi ke Trustmedis.");
-        } else {
-            session()->flash('error', "Gagal menyinkronkan kunjungan #{$visit->id}.");
-        }
-    }
-
     public function render()
     {
         $clinic = Clinic::first();
@@ -50,7 +37,11 @@ class VisitDashboard extends Component
             ->where('clinic_id', $clinicId)
             ->latest();
 
-        if (!empty($this->statusFilter) && $this->statusFilter !== 'all') {
+        if ($this->statusFilter === 'waiting') {
+            $query->whereIn('status', ['registered', 'consent_signed', 'waiting_doctor', 'in_treatment']);
+        } elseif ($this->statusFilter === 'completed') {
+            $query->where('status', 'completed');
+        } elseif (!empty($this->statusFilter) && $this->statusFilter !== 'all') {
             $query->where('status', $this->statusFilter);
         }
 
@@ -59,7 +50,8 @@ class VisitDashboard extends Component
             $query->whereHas('patient', function ($q) use ($search) {
                 $q->where('name', 'like', $search)
                   ->orWhere('patient_code', 'like', $search)
-                  ->orWhere('phone_number', 'like', $search);
+                  ->orWhere('phone_number', 'like', $search)
+                  ->orWhere('nik', 'like', $search);
             });
         }
 
@@ -69,11 +61,8 @@ class VisitDashboard extends Component
         $today = Carbon::today();
         $counts = [
             'total_today' => Visit::where('clinic_id', $clinicId)->whereDate('created_at', $today)->count(),
-            'registered' => Visit::where('clinic_id', $clinicId)->where('status', 'registered')->count(),
-            'consent_signed' => Visit::where('clinic_id', $clinicId)->where('status', 'consent_signed')->count(),
-            'waiting_doctor' => Visit::where('clinic_id', $clinicId)->whereIn('status', ['waiting_doctor', 'in_treatment'])->count(),
+            'waiting' => Visit::where('clinic_id', $clinicId)->whereIn('status', ['registered', 'consent_signed', 'waiting_doctor', 'in_treatment'])->count(),
             'completed' => Visit::where('clinic_id', $clinicId)->where('status', 'completed')->count(),
-            'synced' => Visit::where('clinic_id', $clinicId)->where('trustmedis_sync_status', 'synced')->count(),
         ];
 
         return view('livewire.visit-dashboard', [
