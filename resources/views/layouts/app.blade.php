@@ -7,6 +7,11 @@
 
     <title>{{ $title ?? ($clinic->name ?? 'ONEW Clinic') . ' — Rekam Medis & Alur Pelayanan' }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <!-- Dynamic White-Label Accent Palette -->
     <style>
         :root {

@@ -7,6 +7,11 @@
 
     <title>{{ ($clinic->name ?? 'ONEW Clinic') }} — Persetujuan Pasien</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <style>
         :root {
             --color-primary: {{ $clinic->primary_color ?? '#0284C7' }};
