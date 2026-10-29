@@ -155,6 +155,46 @@ class DatabaseSeeder extends Seeder
             );
         }
 
+        // 3b. Master Bahan Habis Pakai / BHP (Berdasarkan Formulir BHP Tindakan Harian ONEW)
+        $consumablesList = [
+            ['name' => 'HAIR CUP', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'SPONGE', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 2],
+            ['name' => 'CLEANSING', 'category' => 'Topikal', 'unit' => 'cc', 'default_quantity' => 5],
+            ['name' => 'FACIAL WASH', 'category' => 'Topikal', 'unit' => 'cc', 'default_quantity' => 5],
+            ['name' => 'TONER', 'category' => 'Topikal', 'unit' => 'cc', 'default_quantity' => 5],
+            ['name' => 'KAPAS', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 5],
+            ['name' => 'MASKER ANESTESI', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'CREAM ANESTESI', 'category' => 'Topikal', 'unit' => 'gram', 'default_quantity' => 10],
+            ['name' => 'GELL', 'category' => 'Topikal', 'unit' => 'gram', 'default_quantity' => 15],
+            ['name' => 'CARBONE', 'category' => 'Topikal', 'unit' => 'cc', 'default_quantity' => 5],
+            ['name' => 'MASKER WAJAH', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'ANTI IRITASI /ANTIBIOTIK', 'category' => 'Obat & Salep', 'unit' => 'gram', 'default_quantity' => 5],
+            ['name' => 'SPUIT 1CC', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'SPUIT 3CC', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'SPUIT 5CC', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'SPUIT 10 CC', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEEDLE 27G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEEDLE 30G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEEDLE 32G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEEDLE 23G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEEDLE 18G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+        ];
+
+        foreach ($consumablesList as $consumable) {
+            \App\Models\Consumable::updateOrCreate(
+                [
+                    'clinic_id' => $clinic->id,
+                    'name' => $consumable['name'],
+                ],
+                [
+                    'category' => $consumable['category'],
+                    'unit' => $consumable['unit'],
+                    'default_quantity' => $consumable['default_quantity'],
+                    'is_active' => true,
+                ]
+            );
+        }
+
         // 4. Sample Patients & Visits for demonstration
         $codeGenerator = new PatientCodeGenerator();
         $code1 = $codeGenerator->generate($clinic);

@@ -57,47 +57,84 @@
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
                         1. Kunjungan Hari Ini
                     </a>
-                    <a href="{{ route('patients.register') }}"
-                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('patients.register') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        2. Registrasi & Consent
-                    </a>
-                    <a href="{{ route('doctor.treatment') }}"
-                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('doctor.treatment') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        3. Pemeriksaan Medis
-                    </a>
-                    <a href="{{ route('clinic.settings') }}"
-                       class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('clinic.settings') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                        Pengaturan
-                    </a>
+
+                    @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isReceptionist() || auth()->user()->isNurse()))
+                        <a href="{{ route('patients.register') }}"
+                           class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('patients.register') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            2. Registrasi & Consent
+                        </a>
+                    @endif
+
+                    @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isDoctor() || auth()->user()->isNurse()))
+                        <a href="{{ route('doctor.treatment') }}"
+                           class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('doctor.treatment') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            3. Pemeriksaan Medis
+                        </a>
+                    @endif
+
+                    @if(auth()->check() && auth()->user()->isSuperadmin())
+                        <a href="{{ route('clinic.settings') }}"
+                           class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('clinic.settings') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                            Pengaturan
+                        </a>
+                    @endif
                 </nav>
 
                 <!-- Right Profile / Actions -->
                 <div class="flex items-center gap-3">
-                    <!-- User Role Switcher Pill -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" type="button" class="flex items-center gap-2 p-1.5 pr-2.5 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 text-xs text-slate-700 font-medium shadow-2xs transition-all active:scale-[0.97]">
-                            <span class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center font-medium text-xs">
-                                DR
-                            </span>
-                            <span class="hidden lg:inline text-xs font-medium text-slate-800">dr. Alana Wijaya</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-60 rounded-2xl bg-white shadow-apple-elevated border border-slate-200/80 p-1.5 z-50 text-xs">
-                            <div class="px-3.5 py-2.5 border-b border-slate-100">
-                                <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Pengguna Aktif</span>
-                                <p class="font-semibold text-slate-900 text-sm mt-0.5">dr. Alana Wijaya, Sp.D.V.E</p>
-                                <p class="text-slate-500">Dokter Penanggung Jawab</p>
-                            </div>
-                            <div class="py-1">
-                                <a href="{{ route('patients.register') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Resepsionis</a>
-                                <a href="{{ route('nurse.examination') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Perawat</a>
-                                <a href="{{ route('doctor.treatment') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Layanan Dokter</a>
-                            </div>
-                            <div class="border-t border-slate-100 pt-1">
-                                <a href="{{ route('clinic.settings') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Konfigurasi Klinik</a>
+                    @auth
+                        <!-- User Role Profile Dropdown -->
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" type="button" class="flex items-center gap-2 p-1.5 pr-3 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 text-xs text-slate-700 font-medium shadow-2xs transition-all active:scale-[0.97]">
+                                <span class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center font-medium text-xs">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                                </span>
+                                <span class="hidden lg:inline text-xs font-semibold text-slate-800">{{ auth()->user()->name }}</span>
+                                <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                    {{ auth()->user()->role }}
+                                </span>
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+
+                            <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-64 rounded-2xl bg-white shadow-apple-elevated border border-slate-200/80 p-2 z-50 text-xs">
+                                <div class="px-3.5 py-2.5 border-b border-slate-100">
+                                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Pengguna Aktif</span>
+                                    <p class="font-semibold text-slate-900 text-sm mt-0.5">{{ auth()->user()->name }}</p>
+                                    <p class="text-slate-500 text-[11px]">{{ auth()->user()->email }}</p>
+                                    <span class="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
+                                        Peran: {{ ucfirst(auth()->user()->role) }}
+                                    </span>
+                                </div>
+
+                                <div class="py-1">
+                                    <a href="{{ route('dashboard') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Dashboard Kunjungan</a>
+                                    @if(auth()->user()->isSuperadmin() || auth()->user()->isReceptionist() || auth()->user()->isNurse())
+                                        <a href="{{ route('patients.register') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Pendaftaran Pasien</a>
+                                    @endif
+                                    @if(auth()->user()->isSuperadmin() || auth()->user()->isDoctor() || auth()->user()->isNurse())
+                                        <a href="{{ route('doctor.treatment') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Ruang Pemeriksaan Medis</a>
+                                    @endif
+                                    @if(auth()->user()->isSuperadmin())
+                                        <a href="{{ route('clinic.settings') }}" class="flex items-center px-3.5 py-2 rounded-xl text-slate-700 hover:bg-slate-100 font-medium">Pengaturan Klinik (Admin)</a>
+                                    @endif
+                                </div>
+
+                                <div class="border-t border-slate-100 pt-1">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left flex items-center gap-2 px-3.5 py-2 rounded-xl text-rose-600 hover:bg-rose-50 font-medium transition-colors">
+                                            <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                            <span>Keluar (Logout)</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <a href="{{ route('login') }}" class="text-xs font-semibold text-slate-900 px-4 py-2 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 transition-all">
+                            Masuk
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -105,9 +142,15 @@
         <!-- Mobile / Tablet Portrait Secondary Navigation Bar -->
         <div class="md:hidden border-t border-slate-200/60 bg-white/70 px-4 py-2 flex items-center justify-start overflow-x-auto gap-1 text-xs">
             <a href="{{ route('dashboard') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">1. Kunjungan</a>
-            <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">2. Registrasi & Consent</a>
-            <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">3. Pemeriksaan</a>
-            <a href="{{ route('clinic.settings') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('clinic.settings') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Pengaturan</a>
+            @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isReceptionist() || auth()->user()->isNurse()))
+                <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">2. Registrasi & Consent</a>
+            @endif
+            @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isDoctor() || auth()->user()->isNurse()))
+                <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">3. Pemeriksaan</a>
+            @endif
+            @if(auth()->check() && auth()->user()->isSuperadmin())
+                <a href="{{ route('clinic.settings') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('clinic.settings') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">Pengaturan</a>
+            @endif
         </div>
     </header>
 

@@ -21,12 +21,14 @@ class MedicalReportController extends Controller
             'doctor',
             'nurse',
             'treatments',
-            'visitTreatments.treatment'
+            'visitTreatments.treatment',
+            'visitConsumables.consumable',
+            'informedConsent',
         ]);
 
         $clinic = $visit->clinic ?? Clinic::first();
 
-        // Helper to convert storage file to Base64 for guaranteed DomPDF rendering across Windows/Linux
+        // Helper to convert storage file to Base64 for guaranteed DomPDF rendering
         $toBase64 = function (?string $path): ?string {
             if ($path && Storage::disk('public')->exists($path)) {
                 $content = Storage::disk('public')->get($path);
@@ -36,8 +38,17 @@ class MedicalReportController extends Controller
             return null;
         };
 
-        $logoBase64 = $toBase64($clinic?->logo_path);
+        // Prefer clean icon emblem in public (icon.png without text) as requested by user
+        $logoBase64 = null;
+        if (file_exists(public_path('icon.png'))) {
+            $logoContent = file_get_contents(public_path('icon.png'));
+            $logoBase64 = 'data:image/png;base64,' . base64_encode($logoContent);
+        } elseif ($clinic?->logo_path && Storage::disk('public')->exists($clinic->logo_path)) {
+            $logoBase64 = $toBase64($clinic->logo_path);
+        }
+
         $signatureBase64 = $toBase64($visit->consent_signature_path);
+        $procedureConsentSigBase64 = $toBase64($visit->informedConsent?->patient_signature_path);
         $photoBeforeBase64 = $toBase64($visit->photo_before_path);
         $photoAfterBase64 = $toBase64($visit->photo_after_path);
 
@@ -47,6 +58,7 @@ class MedicalReportController extends Controller
             'patient' => $visit->patient,
             'logoBase64' => $logoBase64,
             'signatureBase64' => $signatureBase64,
+            'procedureConsentSigBase64' => $procedureConsentSigBase64,
             'photoBeforeBase64' => $photoBeforeBase64,
             'photoAfterBase64' => $photoAfterBase64,
             'generatedAt' => now(),

@@ -19,6 +19,9 @@ class Visit extends Model
         'doctor_id',
         'nurse_id',
         'assistant_name',
+        'diagnosis_wd',
+        'diagnosis_dd',
+        'doctor_notes',
         'status',
         'consent_signed',
         'consent_signature_path',
@@ -70,6 +73,23 @@ class Visit extends Model
     public function visitTreatments(): HasMany
     {
         return $this->hasMany(VisitTreatment::class);
+    }
+
+    public function informedConsent(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(InformedConsent::class);
+    }
+
+    public function visitConsumables(): HasMany
+    {
+        return $this->hasMany(VisitConsumable::class);
+    }
+
+    public function consumables(): BelongsToMany
+    {
+        return $this->belongsToMany(Consumable::class, 'visit_consumables')
+            ->withPivot(['quantity', 'notes'])
+            ->withTimestamps();
     }
 
     public function getConsentSignatureUrlAttribute(): ?string

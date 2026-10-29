@@ -271,8 +271,126 @@ class ClinicFlowTest extends TestCase
             'notes' => 'Catatan klinis tindakan',
         ]);
 
-        $response = $this->get(route('reports.visit.pdf', $visit));
+        $response = $this->actingAs($this->doctor)->get(route('reports.visit.pdf', $visit));
         $response->assertStatus(200);
         $this->assertEquals('application/pdf', $response->headers->get('content-type'));
+    }
+
+    public function test_auth_login_and_logout_flow(): void
+    {
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+
+        Livewire::test(\App\Livewire\Auth\Login::class)
+            ->set('email', 'doctor@onewclinic.com')
+            ->set('password', 'password')
+            ->call('login')
+            ->assertRedirect(route('dashboard'));
+
+        $this->assertAuthenticatedAs($this->doctor);
+
+        $logoutResponse = $this->post(route('logout'));
+        $logoutResponse->assertRedirect('/login');
+        $this->assertGuest();
+    }
+
+    public function test_doctor_treatment_saves_diagnosis_consumables_and_informed_consent(): void
+    {
+        $consumable = \App\Models\Consumable::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => 'SPUYT 1CC',
+            'category' => 'Spuit & Needle',
+            'unit' => 'Pcs',
+            'default_quantity' => 1,
+            'is_active' => true,
+        ]);
+
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-000002',
+            'name' => 'Maya Putri',
+            'phone_number' => '081299998888',
+            'gender' => 'female',
+            'date_of_birth' => '1996-03-20',
+        ]);
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'status' => 'waiting_doctor',
+            'consent_signed' => true,
+        ]);
+
+        $dummySignature = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+
+        Livewire::test(DoctorTreatment::class, ['visit_id' => $visit->id])
+            ->set('diagnosis_wd', 'Acne Vulgaris Grade II')
+            ->set('diagnosis_dd', 'Folliculitis')
+            ->set('doctorNotes', 'Pasien disarankan perawatan rutin 2 minggu sekali')
+            ->set('selectedTreatments', [(string) $this->treatment1->id])
+            ->set('selectedConsumables', [$consumable->id => 2])
+            ->set('consent_action_name', 'Facial & Ekstraksi Komedo')
+            ->set('consent_recipient_name', 'Maya Putri')
+            ->set('patientConsentSignature', $dummySignature)
+            ->call('saveInformedConsent')
+            ->call('completeVisitAndSync')
+            ->assertHasNoErrors();
+
+        $visit->refresh();
+        $this->assertEquals('completed', $visit->status);
+        $this->assertEquals('Acne Vulgaris Grade II', $visit->diagnosis_wd);
+        $this->assertEquals('Folliculitis', $visit->diagnosis_dd);
+        $this->assertDatabaseHas('visit_consumables', [
+            'visit_id' => $visit->id,
+            'consumable_id' => $consumable->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseHas('informed_consents', [
+            'visit_id' => $visit->id,
+            'action_name' => 'Facial & Ekstraksi Komedo',
+            'recipient_name' => 'Maya Putri',
+        ]);
+    }
+
+    public function test_superadmin_can_manage_staff_and_consumables_in_settings(): void
+    {
+        $superadmin = User::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => 'Super Administrator',
+            'email' => 'admin@onewclinic.com',
+            'password' => 'password',
+            'role' => 'superadmin',
+        ]);
+
+        Livewire::actingAs($superadmin)
+            ->test(\App\Livewire\ClinicSettings::class)
+            // Add new staff
+            ->set('staff_name', 'dr. Citra Lestari, Sp.KK')
+            ->set('staff_email', 'citra@onewclinic.com')
+            ->set('staff_role', 'doctor')
+            ->set('staff_password', 'secret123')
+            ->call('addStaff')
+            ->assertHasNoErrors()
+            // Add new consumable BHP
+            ->set('consumable_name', 'SERUM HYALURONIC ACID')
+            ->set('consumable_category', 'Topikal & Perawatan')
+            ->set('consumable_unit', 'Vial')
+            ->set('consumable_default_qty', 1)
+            ->call('addConsumable')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('users', [
+            'clinic_id' => $this->clinic->id,
+            'name' => 'dr. Citra Lestari, Sp.KK',
+            'email' => 'citra@onewclinic.com',
+            'role' => 'doctor',
+        ]);
+
+        $this->assertDatabaseHas('consumables', [
+            'clinic_id' => $this->clinic->id,
+            'name' => 'SERUM HYALURONIC ACID',
+            'category' => 'Topikal & Perawatan',
+            'unit' => 'Vial',
+        ]);
     }
 }

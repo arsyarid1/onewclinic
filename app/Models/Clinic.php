@@ -40,4 +40,9 @@ class Clinic extends Model
     {
         return $this->hasMany(Visit::class);
     }
+
+    public function consumables(): HasMany
+    {
+        return $this->hasMany(Consumable::class);
+    }
 }

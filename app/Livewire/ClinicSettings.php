@@ -3,6 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Clinic;
+use App\Models\Consumable;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,6 +18,9 @@ class ClinicSettings extends Component
 
     public Clinic $clinic;
 
+    public string $activeTab = 'general'; // 'general', 'staff', 'consumables'
+
+    // Pengaturan Umum Klinik
     public string $name = '';
     public string $clinic_code = '';
     public string $primary_color = '#0284C7';
@@ -23,8 +30,25 @@ class ClinicSettings extends Component
     public string $general_consent_text = '';
     public $logo;
 
+    // Form Tambah Dokter & Perawat
+    public string $staff_name = '';
+    public string $staff_email = '';
+    public string $staff_password = 'password';
+    public string $staff_role = 'doctor'; // 'doctor' | 'nurse'
+
+    // Form Tambah Bahan Baku (BHP)
+    public string $consumable_name = '';
+    public string $consumable_category = 'Disposable';
+    public string $consumable_unit = 'pcs';
+    public int $consumable_default_qty = 1;
+
     public function mount(): void
     {
+        // Akses khusus Super Admin sesuai instruksi
+        if (Auth::check() && !Auth::user()->isSuperadmin()) {
+            abort(403, 'Akses terbatas: Hanya Super Admin yang berwenang mengakses halaman pengaturan.');
+        }
+
         $this->clinic = Clinic::firstOrCreate(
             ['clinic_code' => 'ONEW'],
             [
@@ -32,8 +56,8 @@ class ClinicSettings extends Component
                 'clinic_code' => 'ONEW',
                 'primary_color' => '#0284C7',
                 'secondary_color' => '#0EA5E9',
-                'address' => 'Jl. Senopati No. 88, Kebayoran Baru, Jakarta Selatan',
-                'phone' => '0812-9988-7766',
+                'address' => 'Jl. Laksana I no 6, Kebayoran Baru, Jaksel 12180',
+                'phone' => '+62 8119 6977 886 / +62 21382 506 94',
             ]
         );
 
@@ -44,6 +68,11 @@ class ClinicSettings extends Component
         $this->address = $this->clinic->address ?? '';
         $this->phone = $this->clinic->phone ?? '';
         $this->general_consent_text = $this->clinic->general_consent_text ?? '';
+    }
+
+    public function setTab(string $tab): void
+    {
+        $this->activeTab = $tab;
     }
 
     public function saveSettings(): void
@@ -76,11 +105,101 @@ class ClinicSettings extends Component
 
         $this->clinic->update($data);
 
-        session()->flash('success', 'Konfigurasi White-Label klinik berhasil diperbarui! Perubahan warna, nama, dan teks persetujuan telah diterapkan.');
+        session()->flash('success', 'Konfigurasi White-Label klinik berhasil diperbarui!');
+    }
+
+    public function addStaff(): void
+    {
+        $this->validate([
+            'staff_name' => ['required', 'string', 'max:255'],
+            'staff_email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'staff_role' => ['required', 'in:doctor,nurse,receptionist'],
+            'staff_password' => ['required', 'string', 'min:6'],
+        ], [
+            'staff_name.required' => 'Nama tenaga medis/staf wajib diisi.',
+            'staff_email.required' => 'Email staf wajib diisi.',
+            'staff_email.unique' => 'Email ini sudah terdaftar untuk pengguna lain.',
+            'staff_password.min' => 'Kata sandi minimal 6 karakter.',
+        ]);
+
+        User::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => trim($this->staff_name),
+            'email' => trim($this->staff_email),
+            'role' => $this->staff_role,
+            'password' => Hash::make($this->staff_password),
+        ]);
+
+        $roleLabel = match($this->staff_role) {
+            'doctor' => 'Dokter',
+            'nurse' => 'Perawat',
+            default => 'Resepsionis',
+        };
+
+        $this->reset(['staff_name', 'staff_email']);
+        $this->staff_password = 'password';
+
+        session()->flash('success', "Tenaga medis baru ({$roleLabel}) berhasil ditambahkan ke klinik!");
+    }
+
+    public function deleteStaff(int $id): void
+    {
+        $staff = User::where('clinic_id', $this->clinic->id)->find($id);
+        if ($staff && $staff->id !== Auth::id()) {
+            $name = $staff->name;
+            $staff->delete();
+            session()->flash('success', "Data staf {$name} berhasil dihapus.");
+        }
+    }
+
+    public function addConsumable(): void
+    {
+        $this->validate([
+            'consumable_name' => ['required', 'string', 'max:255'],
+            'consumable_category' => ['nullable', 'string', 'max:100'],
+            'consumable_unit' => ['required', 'string', 'max:50'],
+            'consumable_default_qty' => ['required', 'integer', 'min:1'],
+        ], [
+            'consumable_name.required' => 'Nama bahan baku (BHP) wajib diisi.',
+        ]);
+
+        Consumable::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => strtoupper(trim($this->consumable_name)),
+            'category' => trim($this->consumable_category) ?: 'BHP',
+            'unit' => trim($this->consumable_unit) ?: 'pcs',
+            'default_quantity' => $this->consumable_default_qty,
+            'is_active' => true,
+        ]);
+
+        $this->reset(['consumable_name']);
+        $this->consumable_default_qty = 1;
+
+        session()->flash('success', 'Bahan baku / BHP baru berhasil ditambahkan ke katalog klinik!');
+    }
+
+    public function deleteConsumable(int $id): void
+    {
+        $item = Consumable::where('clinic_id', $this->clinic->id)->find($id);
+        if ($item) {
+            $name = $item->name;
+            $item->delete();
+            session()->flash('success', "Bahan baku {$name} berhasil dihapus dari katalog.");
+        }
     }
 
     public function render()
     {
-        return view('livewire.clinic-settings');
+        $doctors = User::where('clinic_id', $this->clinic->id)->where('role', 'doctor')->get();
+        $nurses = User::where('clinic_id', $this->clinic->id)->where('role', 'nurse')->get();
+        $receptionists = User::where('clinic_id', $this->clinic->id)->where('role', 'receptionist')->get();
+        $consumables = Consumable::where('clinic_id', $this->clinic->id)->orderBy('name')->get();
+
+        return view('livewire.clinic-settings', [
+            'doctors' => $doctors,
+            'nurses' => $nurses,
+            'receptionists' => $receptionists,
+            'consumables' => $consumables,
+        ]);
     }
 }
