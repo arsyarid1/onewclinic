@@ -42,13 +42,7 @@
                 <!-- Brand & Logo -->
                 <div class="flex items-center gap-3.5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group transition-transform active:scale-[0.98]">
-                        @if(!empty($clinic->logo_path))
-                            <img src="{{ Storage::url($clinic->logo_path) }}" alt="{{ $clinic->name }}" class="h-9 w-auto rounded-xl object-contain shadow-apple">
-                        @else
-                            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-semibold text-xs tracking-wider shadow-apple">
-                                {{ strtoupper(substr($clinic->clinic_code ?? 'ON', 0, 2)) }}
-                            </div>
-                        @endif
+                        <img src="{{ asset('onew_navbar_logo.webp') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-10 w-auto object-contain">
                         <div class="flex flex-col">
                             <div class="flex items-center gap-2">
                                 <span class="font-semibold text-base text-slate-900 tracking-tight">{{ $clinic->name ?? 'ONEW Clinic' }}</span>
@@ -85,13 +79,8 @@
                     </a>
                 </nav>
 
-                <!-- Right System Status -->
+                <!-- Right Profile / Actions -->
                 <div class="flex items-center gap-3">
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-[11px] bg-slate-100/90 text-slate-600 border border-slate-200/60">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        <span class="font-medium tracking-tight">Trustmedis Gateway Aktif</span>
-                    </div>
-
                     <!-- User Role Switcher Pill -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" type="button" class="flex items-center gap-2 p-1.5 pr-2.5 rounded-full border border-slate-200/80 bg-white hover:bg-slate-50 text-xs text-slate-700 font-medium shadow-2xs transition-all active:scale-[0.97]">

@@ -25,13 +25,7 @@
     <header class="glass-surface border-b border-slate-200/80 py-4 px-6 sm:px-10 sticky top-0 z-30">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3.5">
-                @if(!empty($clinic->logo_path))
-                    <img src="{{ Storage::url($clinic->logo_path) }}" alt="{{ $clinic->name }}" class="h-10 w-auto rounded-xl object-contain shadow-apple">
-                @else
-                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm tracking-wider shadow-apple">
-                        {{ strtoupper(substr($clinic->clinic_code ?? 'ON', 0, 2)) }}
-                    </div>
-                @endif
+                <img src="{{ asset('onew_navbar_logo.webp') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-10 w-auto object-contain">
                 <div>
                     <h1 class="text-lg font-bold text-slate-900 tracking-tight leading-none">{{ $clinic->name ?? 'ONEW Clinic' }}</h1>
                     <p class="text-[11px] text-slate-500 font-medium mt-1">Persetujuan Pasien (General Consent)</p>
