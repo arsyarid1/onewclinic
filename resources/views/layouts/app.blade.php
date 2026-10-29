@@ -47,7 +47,7 @@
                 <!-- Brand & Logo -->
                 <div class="flex items-center gap-3.5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group transition-transform active:scale-[0.98]">
-                        <img src="{{ asset('onew_navbar_logo.webp') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-20 w-auto object-contain">
+                        <img src="{{ asset('logo.svg') }}" alt="{{ $clinic->name ?? 'ONEW Clinic' }}" class="h-11 w-auto object-contain">
                     </a>
                 </div>
 
