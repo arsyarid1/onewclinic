@@ -52,7 +52,7 @@
             </div>
 
             <!-- Signature Pad Canvas (Optimized for iPad / Stylus) -->
-            <div x-data="signatureComponent()" x-init="initSignature()" class="space-y-3">
+            <div wire:ignore x-data="signatureComponent()" x-init="initSignature()" class="space-y-3">
                 <div class="flex items-center justify-between">
                     <label class="text-xs font-semibold uppercase tracking-wider text-slate-700">
                         Tanda Tangan Digital Pasien <span class="text-rose-500">*</span>
@@ -65,16 +65,21 @@
                 </div>
 
                 <!-- Canvas Surface -->
-                <div class="relative w-full border border-slate-300/80 rounded-2xl bg-white overflow-hidden shadow-inner flex items-center justify-center p-2"
-                     style="touch-action: none;">
+                <div class="relative w-full border-2 border-slate-200 hover:border-slate-300 rounded-2xl bg-white overflow-hidden shadow-inner transition-colors">
                     <canvas x-ref="canvas"
-                            class="w-full bg-white rounded-xl cursor-crosshair"
-                            style="height: 240px;"></canvas>
+                            class="w-full bg-white cursor-crosshair block"
+                            style="height: 240px; touch-action: none !important;"></canvas>
+
+                    <!-- Apple-style signature baseline indicator -->
+                    <div class="absolute bottom-6 left-8 right-8 border-b border-dashed border-slate-200 pointer-events-none flex justify-between items-center text-[10px] text-slate-300 font-mono select-none">
+                        <span>Tanda Tangan Pasien</span>
+                        <span>✕</span>
+                    </div>
 
                     <div x-show="isEmpty"
-                         class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center text-slate-300 text-xs gap-1.5">
+                         class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center text-slate-300 text-xs gap-1.5 select-none">
                         <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                        <span>Bubuhkan tanda tangan menggunakan jari atau pena stylus</span>
+                        <span>Bubuhkan tanda tangan di sini menggunakan jari atau pena stylus</span>
                     </div>
                 </div>
 
@@ -181,37 +186,79 @@ function signatureComponent() {
         pad: null,
         isEmpty: true,
         saving: false,
+        resizeObserver: null,
+
         initSignature() {
             this.$nextTick(() => {
                 const canvas = this.$refs.canvas;
                 if (!canvas) return;
 
-                const ratio = Math.max(window.devicePixelRatio || 1, 1);
-                canvas.width = canvas.offsetWidth * ratio;
-                canvas.height = canvas.offsetHeight * ratio;
-                const ctx = canvas.getContext('2d');
-                ctx.scale(ratio, ratio);
+                const SigPadClass = window.SignaturePad?.default || window.SignaturePad;
+                if (!SigPadClass) return;
 
-                if (window.SignaturePad) {
-                    this.pad = new window.SignaturePad(canvas, {
-                        backgroundColor: 'rgba(255, 255, 255, 0)',
-                        penColor: '#0f172a', // Apple slate black
-                        minWidth: 1.5,
-                        maxWidth: 3.5
-                    });
+                this.pad = new SigPadClass(canvas, {
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    penColor: '#0f172a',
+                    minWidth: 1.8,
+                    maxWidth: 4.0,
+                    throttle: 0,
+                    velocityFilterWeight: 0.7
+                });
 
-                    this.pad.addEventListener('endStroke', () => {
-                        this.isEmpty = this.pad.isEmpty();
+                const resizeCanvas = () => {
+                    if (!canvas || !this.pad) return;
+
+                    const rect = canvas.getBoundingClientRect();
+                    const width = rect.width;
+                    const height = rect.height;
+                    if (width <= 0 || height <= 0) return;
+
+                    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                    const targetWidth = Math.round(width * ratio);
+                    const targetHeight = Math.round(height * ratio);
+
+                    if (canvas.width === targetWidth && canvas.height === targetHeight) {
+                        return;
+                    }
+
+                    const data = this.pad.toData();
+
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.scale(ratio, ratio);
+
+                    this.pad.clear();
+                    if (data && data.length > 0) {
+                        this.pad.fromData(data);
+                    }
+                };
+
+                requestAnimationFrame(() => resizeCanvas());
+
+                if (window.ResizeObserver) {
+                    this.resizeObserver = new ResizeObserver(() => {
+                        resizeCanvas();
                     });
+                    this.resizeObserver.observe(canvas);
+                } else {
+                    window.addEventListener('resize', resizeCanvas);
                 }
+
+                this.pad.addEventListener('endStroke', () => {
+                    this.isEmpty = this.pad.isEmpty();
+                });
             });
         },
+
         clearSignature() {
             if (this.pad) {
                 this.pad.clear();
                 this.isEmpty = true;
             }
         },
+
         submitSignature() {
             if (!this.pad || this.pad.isEmpty()) {
                 alert('Silakan bubuhkan tanda tangan terlebih dahulu.');
