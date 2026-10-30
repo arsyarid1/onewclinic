@@ -15,6 +15,18 @@
         </a>
     </div>
 
+    @if (session()->has('success'))
+        <div class="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200/90 p-4 text-emerald-950 text-xs shadow-apple flex items-center justify-between" x-data="{ show: true }" x-show="show">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="font-medium">{{ session('success') }}</span>
+            </div>
+            <button @click="show = false" class="text-slate-400 hover:text-slate-700 p-1 rounded-md">&times;</button>
+        </div>
+    @endif
+
     <!-- Main Tablet Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Antrian Pasien Dokter (Left Column) -->

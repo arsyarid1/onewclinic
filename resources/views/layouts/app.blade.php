@@ -154,6 +154,75 @@
         </div>
     </header>
 
+    <!-- Apple-Style Floating Toast Notifications Container -->
+    <div x-data="{
+            toasts: [],
+            add(message, type = 'success') {
+                if (!message) return;
+                const id = Date.now() + Math.random().toString(36).substring(2, 6);
+                this.toasts.push({ id, message, type });
+                setTimeout(() => this.remove(id), 4000);
+            },
+            remove(id) {
+                this.toasts = this.toasts.filter(t => t.id !== id);
+            }
+         }"
+         x-init="
+            @if(session()->has('success'))
+                add(@js(session('success')), 'success');
+            @endif
+            @if(session()->has('error'))
+                add(@js(session('error')), 'error');
+            @endif
+            @if(session()->has('info'))
+                add(@js(session('info')), 'info');
+            @endif
+         "
+         @notify.window="add($event.detail.message, $event.detail.type || 'success')"
+         class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm sm:max-w-md w-full px-4"
+         aria-live="polite">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="opacity-0 translate-y-[-12px] scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-[-8px] scale-95"
+                 class="pointer-events-auto flex items-start gap-3 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-apple-elevated text-xs transition-all">
+                
+                <!-- Status Icon -->
+                <div class="shrink-0 mt-0.5">
+                    <template x-if="toast.type === 'success'">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </template>
+                    <template x-if="toast.type === 'error'">
+                        <div class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </div>
+                    </template>
+                    <template x-if="toast.type === 'info'">
+                        <div class="w-6 h-6 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Message Body -->
+                <div class="flex-1 min-w-0 pr-1">
+                    <p class="font-semibold text-slate-900 text-xs leading-snug tracking-tight" x-text="toast.message"></p>
+                    <span class="text-[10px] text-slate-400 mt-0.5 block">Notifikasi Sistem &bull; ONEW Clinic</span>
+                </div>
+
+                <!-- Dismiss Button -->
+                <button @click="remove(toast.id)" class="shrink-0 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </template>
+    </div>
+
     <!-- Main Content Container with Relaxed Apple Breathing Room -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         @if (session()->has('success'))

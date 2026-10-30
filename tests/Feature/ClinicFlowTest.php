@@ -364,12 +364,18 @@ class ClinicFlowTest extends TestCase
 
         Livewire::actingAs($superadmin)
             ->test(\App\Livewire\ClinicSettings::class)
+            // Save clinic settings
+            ->set('name', 'ONEW Aesthetic Clinic')
+            ->call('saveSettings')
+            ->assertDispatched('notify')
+            ->assertHasNoErrors()
             // Add new staff
             ->set('staff_name', 'dr. Citra Lestari, Sp.KK')
             ->set('staff_email', 'citra@onewclinic.com')
             ->set('staff_role', 'doctor')
             ->set('staff_password', 'secret123')
             ->call('addStaff')
+            ->assertDispatched('notify')
             ->assertHasNoErrors()
             // Add new consumable BHP
             ->set('consumable_name', 'SERUM HYALURONIC ACID')
@@ -377,6 +383,7 @@ class ClinicFlowTest extends TestCase
             ->set('consumable_unit', 'Vial')
             ->set('consumable_default_qty', 1)
             ->call('addConsumable')
+            ->assertDispatched('notify')
             ->assertHasNoErrors();
 
         $this->assertDatabaseHas('users', [

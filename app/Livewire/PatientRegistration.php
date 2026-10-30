@@ -206,7 +206,8 @@ class PatientRegistration extends Component
             ]);
         });
 
-        session()->flash('success', "Registrasi, persetujuan General Consent, dan pemeriksaan awal pasien {$visit->patient->name} berhasil disimpan! Pasien siap masuk ke Ruang Pemeriksaan Dokter.");
+        session()->flash('success', "Registrasi pasien {$visit->patient->name} berhasil disimpan! Pasien siap masuk ke Ruang Pemeriksaan Dokter.");
+        $this->dispatch('notify', message: "Registrasi pasien {$visit->patient->name} berhasil disimpan!");
 
         return redirect()->route('doctor.treatment', ['visit_id' => $visit->id]);
     }

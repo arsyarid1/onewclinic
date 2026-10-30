@@ -363,6 +363,7 @@ class DoctorTreatment extends Component
 
         $this->hasExistingConsent = true;
         $this->showConsentModal = false;
+        $this->dispatch('notify', message: 'Formulir Persetujuan Tindakan Kedokteran (Informed Consent) berhasil disimpan!');
         session()->flash('success', 'Formulir Persetujuan Tindakan Kedokteran (Informed Consent) berhasil ditandatangani dan disimpan!');
     }
 
@@ -431,6 +432,7 @@ class DoctorTreatment extends Component
 
         $this->completedVisitId = $visit->id;
         $this->showSuccessModal = true;
+        $this->dispatch('notify', message: "Pemeriksaan medis pasien {$visit->patient?->name} berhasil diselesaikan!");
         session()->flash('success', "Pemeriksaan medis kunjungan #{$visit->id} selesai dan rekam medis berhasil difinalisasi!");
 
         $this->photo_after = null;

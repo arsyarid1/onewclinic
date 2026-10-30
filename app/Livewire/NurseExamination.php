@@ -85,6 +85,7 @@ class NurseExamination extends Component
 
         $visit->update($updateData);
 
+        $this->dispatch('notify', message: "Pemeriksaan awal & foto pasien {$visit->patient->name} berhasil disimpan!");
         session()->flash('success', "Pemeriksaan awal & Foto Before pasien {$visit->patient->name} berhasil disimpan! Pasien siap masuk ke Ruang Dokter.");
 
         // Reset uploaded file

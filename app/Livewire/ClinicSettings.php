@@ -105,7 +105,8 @@ class ClinicSettings extends Component
 
         $this->clinic->update($data);
 
-        session()->flash('success', 'Konfigurasi White-Label klinik berhasil diperbarui!');
+        $this->dispatch('notify', message: 'Konfigurasi identitas klinik berhasil disimpan!');
+        session()->flash('success', 'Konfigurasi identitas klinik berhasil diperbarui!');
     }
 
     public function addStaff(): void
@@ -122,24 +123,26 @@ class ClinicSettings extends Component
             'staff_password.min' => 'Kata sandi minimal 6 karakter.',
         ]);
 
-        User::create([
-            'clinic_id' => $this->clinic->id,
-            'name' => trim($this->staff_name),
-            'email' => trim($this->staff_email),
-            'role' => $this->staff_role,
-            'password' => Hash::make($this->staff_password),
-        ]);
-
+        $createdName = trim($this->staff_name);
         $roleLabel = match($this->staff_role) {
             'doctor' => 'Dokter',
             'nurse' => 'Perawat',
             default => 'Resepsionis',
         };
 
+        User::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => $createdName,
+            'email' => trim($this->staff_email),
+            'role' => $this->staff_role,
+            'password' => Hash::make($this->staff_password),
+        ]);
+
         $this->reset(['staff_name', 'staff_email']);
         $this->staff_password = 'password';
 
-        session()->flash('success', "Tenaga medis baru ({$roleLabel}) berhasil ditambahkan ke klinik!");
+        $this->dispatch('notify', message: "Tenaga medis baru ({$roleLabel} - {$createdName}) berhasil ditambahkan!");
+        session()->flash('success', "Tenaga medis baru ({$roleLabel} - {$createdName}) berhasil ditambahkan ke klinik!");
     }
 
     public function deleteStaff(int $id): void
@@ -148,6 +151,7 @@ class ClinicSettings extends Component
         if ($staff && $staff->id !== Auth::id()) {
             $name = $staff->name;
             $staff->delete();
+            $this->dispatch('notify', message: "Data staf {$name} berhasil dihapus.");
             session()->flash('success', "Data staf {$name} berhasil dihapus.");
         }
     }
@@ -163,9 +167,11 @@ class ClinicSettings extends Component
             'consumable_name.required' => 'Nama bahan baku (BHP) wajib diisi.',
         ]);
 
+        $createdBhp = strtoupper(trim($this->consumable_name));
+
         Consumable::create([
             'clinic_id' => $this->clinic->id,
-            'name' => strtoupper(trim($this->consumable_name)),
+            'name' => $createdBhp,
             'category' => trim($this->consumable_category) ?: 'BHP',
             'unit' => trim($this->consumable_unit) ?: 'pcs',
             'default_quantity' => $this->consumable_default_qty,
@@ -175,7 +181,8 @@ class ClinicSettings extends Component
         $this->reset(['consumable_name']);
         $this->consumable_default_qty = 1;
 
-        session()->flash('success', 'Bahan baku / BHP baru berhasil ditambahkan ke katalog klinik!');
+        $this->dispatch('notify', message: "Bahan baku ({$createdBhp}) berhasil ditambahkan ke katalog klinik!");
+        session()->flash('success', "Bahan baku / BHP ({$createdBhp}) berhasil ditambahkan ke katalog klinik!");
     }
 
     public function deleteConsumable(int $id): void
@@ -184,6 +191,7 @@ class ClinicSettings extends Component
         if ($item) {
             $name = $item->name;
             $item->delete();
+            $this->dispatch('notify', message: "Bahan baku {$name} berhasil dihapus dari katalog.");
             session()->flash('success', "Bahan baku {$name} berhasil dihapus dari katalog.");
         }
     }
