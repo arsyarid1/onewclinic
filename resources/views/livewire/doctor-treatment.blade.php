@@ -149,7 +149,7 @@
                             <div class="border border-slate-200/90 bg-white rounded-2xl p-4 text-center shadow-2xs">
                                 <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-3">Foto Awal (Sebelum Tindakan)</span>
                                 @if($currentVisit->photo_before_path)
-                                    <img src="{{ Storage::url($currentVisit->photo_before_path) }}" alt="Foto Before" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
+                                    <img src="{{ $currentVisit->photo_before_url }}" alt="Foto Before" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
                                 @else
                                     <div class="h-44 flex flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
                                         <svg class="w-7 h-7 text-slate-300 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -165,7 +165,7 @@
                                     <img src="{{ $photo_after->temporaryUrl() }}" alt="Preview Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
                                     <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">Foto Baru Terpilih</span>
                                 @elseif($currentVisit->photo_after_path)
-                                    <img src="{{ Storage::url($currentVisit->photo_after_path) }}" alt="Foto After Sebelumnya" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
+                                    <img src="{{ $currentVisit->photo_after_url }}" alt="Foto After Sebelumnya" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
                                 @else
                                     <label class="h-44 flex flex-col items-center justify-center border-2 border-dashed border-slate-300/80 hover:border-slate-900 rounded-xl bg-slate-50 hover:bg-slate-50/80 cursor-pointer text-slate-500 transition-all">
                                         <svg class="w-7 h-7 mb-1.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>

@@ -168,7 +168,7 @@
                                             </div>
                                         @elseif($currentVisit->photo_before_path)
                                             <div class="text-center">
-                                                <img src="{{ Storage::url($currentVisit->photo_before_path) }}" alt="Foto Before Sebelumnya" class="h-44 w-auto object-cover rounded-2xl shadow-apple mx-auto">
+                                                <img src="{{ $currentVisit->photo_before_url }}" alt="Foto Before Sebelumnya" class="h-44 w-auto object-cover rounded-2xl shadow-apple mx-auto">
                                                 <span class="inline-block mt-2 text-[10px] font-medium text-slate-400">Foto Tersimpan</span>
                                             </div>
                                         @else

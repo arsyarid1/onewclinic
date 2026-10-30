@@ -94,16 +94,37 @@ class Visit extends Model
 
     public function getConsentSignatureUrlAttribute(): ?string
     {
-        return $this->consent_signature_path ? Storage::disk('public')->url($this->consent_signature_path) : null;
+        if (!$this->consent_signature_path) {
+            return null;
+        }
+        if (str_starts_with($this->consent_signature_path, 'http://') || str_starts_with($this->consent_signature_path, 'https://') || str_starts_with($this->consent_signature_path, 'data:')) {
+            return $this->consent_signature_path;
+        }
+        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->consent_signature_path), '/');
+        return '/storage/' . $cleanPath;
     }
 
     public function getPhotoBeforeUrlAttribute(): ?string
     {
-        return $this->photo_before_path ? Storage::disk('public')->url($this->photo_before_path) : null;
+        if (!$this->photo_before_path) {
+            return null;
+        }
+        if (str_starts_with($this->photo_before_path, 'http://') || str_starts_with($this->photo_before_path, 'https://') || str_starts_with($this->photo_before_path, 'data:')) {
+            return $this->photo_before_path;
+        }
+        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->photo_before_path), '/');
+        return '/storage/' . $cleanPath;
     }
 
     public function getPhotoAfterUrlAttribute(): ?string
     {
-        return $this->photo_after_path ? Storage::disk('public')->url($this->photo_after_path) : null;
+        if (!$this->photo_after_path) {
+            return null;
+        }
+        if (str_starts_with($this->photo_after_path, 'http://') || str_starts_with($this->photo_after_path, 'https://') || str_starts_with($this->photo_after_path, 'data:')) {
+            return $this->photo_after_path;
+        }
+        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->photo_after_path), '/');
+        return '/storage/' . $cleanPath;
     }
 }
