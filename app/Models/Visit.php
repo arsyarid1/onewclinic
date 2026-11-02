@@ -16,9 +16,36 @@ class Visit extends Model
     protected $fillable = [
         'clinic_id',
         'patient_id',
+        'manual_patient_code',
+        'inbody_id',
+        'registration_date',
+        'visit_purpose',
+        'destination_doctor_poli',
+        'chief_complaint',
+        'whatsapp_comm_consent',
+        'registration_patient_signature_path',
+        'registration_patient_signer_name',
+        'registration_staff_signature_path',
+        'registration_staff_signer_name',
+        'registration_staff_signed_at',
+        'general_consent_staff_name',
+        'general_consent_staff_title',
+        'general_consent_staff_signature_path',
+        'general_consent_patient_relation',
+        'general_consent_patient_signer_name',
+        'general_consent_whatsapp_reminder',
+        'general_consent_promo_info',
+        'general_consent_insurance_disclosure',
+        'general_consent_third_party_info',
+        'general_consent_third_party_name',
+        'general_consent_third_party_phone',
+        'general_consent_third_party_notes',
         'doctor_id',
         'nurse_id',
         'assistant_name',
+        'therapist_nurse_name',
+        'doctor_name_override',
+        'custom_treatment_list',
         'diagnosis_wd',
         'diagnosis_dd',
         'doctor_notes',
@@ -28,6 +55,16 @@ class Visit extends Model
         'consent_signed_at',
         'photo_before_path',
         'photo_after_path',
+        'photo_before_front',
+        'photo_before_right_tilt',
+        'photo_before_right_side',
+        'photo_before_left_tilt',
+        'photo_before_left_side',
+        'photo_after_front',
+        'photo_after_right_tilt',
+        'photo_after_right_side',
+        'photo_after_left_tilt',
+        'photo_after_left_side',
         'trustmedis_sync_status',
         'trustmedis_payload',
         'trustmedis_synced_at',
@@ -36,6 +73,13 @@ class Visit extends Model
     protected function casts(): array
     {
         return [
+            'registration_date' => 'date',
+            'registration_staff_signed_at' => 'datetime',
+            'whatsapp_comm_consent' => 'boolean',
+            'general_consent_whatsapp_reminder' => 'boolean',
+            'general_consent_promo_info' => 'boolean',
+            'general_consent_third_party_info' => 'boolean',
+            'custom_treatment_list' => 'array',
             'consent_signed' => 'boolean',
             'consent_signed_at' => 'datetime',
             'trustmedis_payload' => 'array',
@@ -92,39 +136,127 @@ class Visit extends Model
             ->withTimestamps();
     }
 
-    public function getConsentSignatureUrlAttribute(): ?string
+    public static function formatPublicUrl(?string $path): ?string
     {
-        if (!$this->consent_signature_path) {
+        if (!$path) {
             return null;
         }
-        if (str_starts_with($this->consent_signature_path, 'http://') || str_starts_with($this->consent_signature_path, 'https://') || str_starts_with($this->consent_signature_path, 'data:')) {
-            return $this->consent_signature_path;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
+            return $path;
         }
-        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->consent_signature_path), '/');
-        return '/storage/' . $cleanPath;
+        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $path), '/');
+        
+        // Verify file existence on disk to avoid broken image links
+        if (Storage::disk('public')->exists($cleanPath) || file_exists(public_path('storage/' . $cleanPath))) {
+            return '/storage/' . $cleanPath;
+        }
+        
+        return null;
+    }
+
+    public function getConsentSignatureUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->consent_signature_path);
+    }
+
+    public function getRegistrationPatientSignatureUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->registration_patient_signature_path);
+    }
+
+    public function getRegistrationStaffSignatureUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->registration_staff_signature_path);
+    }
+
+    public function getGeneralConsentStaffSignatureUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->general_consent_staff_signature_path);
     }
 
     public function getPhotoBeforeUrlAttribute(): ?string
     {
-        if (!$this->photo_before_path) {
-            return null;
-        }
-        if (str_starts_with($this->photo_before_path, 'http://') || str_starts_with($this->photo_before_path, 'https://') || str_starts_with($this->photo_before_path, 'data:')) {
-            return $this->photo_before_path;
-        }
-        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->photo_before_path), '/');
-        return '/storage/' . $cleanPath;
+        return static::formatPublicUrl($this->photo_before_path)
+            ?: static::formatPublicUrl($this->photo_before_front)
+            ?: static::formatPublicUrl($this->photo_before_right_tilt)
+            ?: static::formatPublicUrl($this->photo_before_left_tilt)
+            ?: static::formatPublicUrl($this->photo_before_right_side)
+            ?: static::formatPublicUrl($this->photo_before_left_side);
     }
 
     public function getPhotoAfterUrlAttribute(): ?string
     {
-        if (!$this->photo_after_path) {
-            return null;
-        }
-        if (str_starts_with($this->photo_after_path, 'http://') || str_starts_with($this->photo_after_path, 'https://') || str_starts_with($this->photo_after_path, 'data:')) {
-            return $this->photo_after_path;
-        }
-        $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $this->photo_after_path), '/');
-        return '/storage/' . $cleanPath;
+        return static::formatPublicUrl($this->photo_after_path)
+            ?: static::formatPublicUrl($this->photo_after_front)
+            ?: static::formatPublicUrl($this->photo_after_right_tilt)
+            ?: static::formatPublicUrl($this->photo_after_left_tilt)
+            ?: static::formatPublicUrl($this->photo_after_right_side)
+            ?: static::formatPublicUrl($this->photo_after_left_side);
+    }
+
+    public function getPhotoBeforeFrontUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_before_front);
+    }
+
+    public function getPhotoBeforeRightTiltUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_before_right_tilt);
+    }
+
+    public function getPhotoBeforeRightSideUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_before_right_side);
+    }
+
+    public function getPhotoBeforeLeftTiltUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_before_left_tilt);
+    }
+
+    public function getPhotoBeforeLeftSideUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_before_left_side);
+    }
+
+    public function getPhotoAfterFrontUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_after_front);
+    }
+
+    public function getPhotoAfterRightTiltUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_after_right_tilt);
+    }
+
+    public function getPhotoAfterRightSideUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_after_right_side);
+    }
+
+    public function getPhotoAfterLeftTiltUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_after_left_tilt);
+    }
+
+    public function getPhotoAfterLeftSideUrlAttribute(): ?string
+    {
+        return static::formatPublicUrl($this->photo_after_left_side);
+    }
+
+    public function getHasFiveSidesBeforeAttribute(): bool
+    {
+        return !empty($this->photo_before_right_tilt_url)
+            || !empty($this->photo_before_right_side_url)
+            || !empty($this->photo_before_left_tilt_url)
+            || !empty($this->photo_before_left_side_url);
+    }
+
+    public function getHasFiveSidesAfterAttribute(): bool
+    {
+        return !empty($this->photo_after_right_tilt_url)
+            || !empty($this->photo_after_right_side_url)
+            || !empty($this->photo_after_left_tilt_url)
+            || !empty($this->photo_after_left_side_url);
     }
 }

@@ -63,19 +63,18 @@
                     </a>
                 </div>
 
-                <!-- Navigation Pill Segments (Clean 4-Step Architecture) -->
+                <!-- Navigation Pill Segments (Clean Multi-Step Architecture) -->
                 <nav class="hidden md:flex items-center p-1 rounded-full bg-slate-100/80 border border-slate-200/50 text-xs font-medium">
                     <a href="{{ route('dashboard') }}"
                        class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
                         1. Kunjungan Hari Ini
                     </a>
 
-                    @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isReceptionist() || auth()->user()->isNurse()))
-                        <a href="{{ route('patients.register') }}"
-                           class="px-4 py-1.5 rounded-full transition-all duration-200 {{ request()->routeIs('patients.register') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
-                            2. Registrasi & Consent
-                        </a>
-                    @endif
+                    <a href="{{ route('clinical.form.flow') }}"
+                       class="px-4 py-1.5 rounded-full transition-all duration-200 inline-flex items-center gap-1.5 {{ request()->routeIs('clinical.form.flow') ? 'bg-white text-slate-950 font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        <span>2. Alur Formulir PWA</span>
+                        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-slate-900 text-white uppercase tracking-wider">Baru</span>
+                    </a>
 
                     @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isDoctor() || auth()->user()->isNurse()))
                         <a href="{{ route('doctor.treatment') }}"
@@ -154,9 +153,7 @@
         <!-- Mobile / Tablet Portrait Secondary Navigation Bar -->
         <div class="md:hidden border-t border-slate-200/60 bg-white/70 px-4 py-2 flex items-center justify-start overflow-x-auto gap-1 text-xs">
             <a href="{{ route('dashboard') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">1. Kunjungan</a>
-            @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isReceptionist() || auth()->user()->isNurse()))
-                <a href="{{ route('patients.register') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('patients.register') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">2. Registrasi & Consent</a>
-            @endif
+            <a href="{{ route('clinical.form.flow') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('clinical.form.flow') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">2. Form PWA</a>
             @if(auth()->check() && (auth()->user()->isSuperadmin() || auth()->user()->isDoctor() || auth()->user()->isNurse()))
                 <a href="{{ route('doctor.treatment') }}" class="px-3.5 py-1.5 rounded-full whitespace-nowrap {{ request()->routeIs('doctor.treatment') ? 'bg-slate-900 text-white font-medium' : 'text-slate-600' }}">3. Pemeriksaan</a>
             @endif

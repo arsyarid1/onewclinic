@@ -12,11 +12,17 @@
                 Alur pelayanan klinik: Registrasi & Consent, Pemeriksaan Medis, dan Rekap Rekam Medis Selesai.
             </p>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('patients.register') }}"
-               class="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-white bg-slate-900 hover:bg-black shadow-apple text-xs tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
-                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span>Registrasi Pasien Baru</span>
+        <div class="flex flex-wrap items-center gap-3">
+            <a href="{{ route('dashboard.export') }}"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs text-xs tracking-wide transition-all active:scale-[0.98]">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span>Export Data Kunjungan (CSV/Excel)</span>
+            </a>
+
+            <a href="{{ route('clinical.form.flow') }}"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-white bg-slate-900 hover:bg-black shadow-apple text-xs tracking-wide transition-all active:scale-[0.98]">
+                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span>+ Buka Alur Formulir PWA (Form Flow)</span>
             </a>
         </div>
     </div>
@@ -112,14 +118,16 @@
                             <!-- Identitas Pasien -->
                             <td class="py-4 px-6">
                                 <div class="font-semibold text-slate-900 text-sm tracking-tight">{{ $visit->patient?->name ?? 'Pasien' }}</div>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="font-mono text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium">
-                                        {{ $visit->patient?->patient_code }}
+                                <div class="flex flex-wrap items-center gap-1.5 mt-1">
+                                    <span class="font-mono text-xs px-2 py-0.5 rounded-md bg-slate-900 text-white font-bold">
+                                        {{ $visit->manual_patient_code ?: ($visit->patient?->patient_code ?? '-') }}
                                     </span>
-                                    <span class="text-xs text-slate-400">{{ $visit->patient?->phone_number }}</span>
-                                    @if($visit->patient?->nik)
-                                        <span class="text-[11px] text-slate-400 font-mono hidden lg:inline">&bull; NIK: {{ $visit->patient->nik }}</span>
+                                    @if($visit->inbody_id || $visit->patient?->inbody_id)
+                                        <span class="font-mono text-[11px] px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 font-semibold">
+                                            ID InBody: {{ $visit->inbody_id ?: $visit->patient?->inbody_id }}
+                                        </span>
                                     @endif
+                                    <span class="text-xs text-slate-500 font-mono">{{ $visit->patient?->phone_number }}</span>
                                 </div>
                             </td>
 
@@ -174,10 +182,17 @@
                             <!-- Action Button -->
                             <td class="py-4 px-6 text-right whitespace-nowrap">
                                 <div class="inline-flex items-center gap-2">
+                                    <a href="{{ route('clinical.form.flow', ['visit_id' => $visit->id]) }}"
+                                       class="h-9 px-3.5 rounded-full text-xs font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-300 transition-all inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.97]"
+                                       title="Buka Form Lengkap PWA">
+                                        <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                        <span>Formulir</span>
+                                    </a>
+
                                     @if($visit->status !== 'completed')
                                         <a href="{{ route('doctor.treatment', ['visit_id' => $visit->id]) }}"
                                            class="h-9 px-4 rounded-full text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
-                                            <span>Masuk Ruang Pemeriksaan</span>
+                                            <span>Pemeriksaan Medis</span>
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                         </a>
                                     @else
@@ -185,7 +200,7 @@
                                            target="_blank"
                                            class="h-9 px-4 rounded-full text-xs font-semibold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
                                             <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                            <span>Cetak Ringkasan Medis</span>
+                                            <span>Cetak PDF</span>
                                         </a>
                                     @endif
                                 </div>

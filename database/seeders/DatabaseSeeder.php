@@ -178,6 +178,15 @@ class DatabaseSeeder extends Seeder
             ['name' => 'NEEDLE 32G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
             ['name' => 'NEEDLE 23G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
             ['name' => 'NEEDLE 18G', 'category' => 'Jarum & Spuit', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'CREAM MASSAGE', 'category' => 'Topikal & Perawatan', 'unit' => 'gram', 'default_quantity' => 1],
+            ['name' => 'INFUSE SET', 'category' => 'Infus & Injeksi', 'unit' => 'set', 'default_quantity' => 1],
+            ['name' => 'ABOCATH', 'category' => 'Infus & Injeksi', 'unit' => 'pcs', 'default_quantity' => 1],
+            ['name' => 'NEUROBION', 'category' => 'Obat & Ampul', 'unit' => 'set', 'default_quantity' => 1],
+            ['name' => 'VITAMIN C', 'category' => 'Obat & Ampul', 'unit' => 'ampul', 'default_quantity' => 1],
+            ['name' => 'MICROPORE', 'category' => 'Plester & Kasa', 'unit' => 'cm', 'default_quantity' => 30],
+            ['name' => 'ALKOHOL SWAB', 'category' => 'Disposable', 'unit' => 'pcs', 'default_quantity' => 10],
+            ['name' => 'NACL 100 ML', 'category' => 'Cairan Infus', 'unit' => 'botol', 'default_quantity' => 1],
+            ['name' => 'OTC PLAST / DERMAHEAL', 'category' => 'Plester & Kasa', 'unit' => 'pcs', 'default_quantity' => 1],
         ];
 
         foreach ($consumablesList as $consumable) {

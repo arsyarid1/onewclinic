@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\MedicalExportController;
 use App\Http\Controllers\MedicalReportController;
 use App\Livewire\Auth\Login;
 use App\Livewire\ClinicSettings;
+use App\Livewire\ClinicalFormFlow;
 use App\Livewire\DoctorTreatment;
 use App\Livewire\NurseExamination;
 use App\Livewire\PatientKiosk;
@@ -35,6 +37,11 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     // Tahap 1: Kunjungan Hari Ini (Dashboard Antrian Pasien)
     Route::get('/dashboard', VisitDashboard::class)->name('dashboard');
+    Route::get('/dashboard/export', [MedicalExportController::class, 'exportCsv'])->name('dashboard.export');
+
+    // ALUR FORMULIR KLINIS RESMI & PWA FLOW (Sesuai formatform.pdf)
+    Route::get('/form-flow/{visit_id?}', ClinicalFormFlow::class)->name('clinical.form.flow');
+    Route::get('/registrasi/{visit_id?}', ClinicalFormFlow::class);
 
     // Tahap 2: Registrasi Pasien & General Consent (Bisa diakses Resepsionis, Perawat, Superadmin)
     Route::get('/patients/register', PatientRegistration::class)->name('patients.register');

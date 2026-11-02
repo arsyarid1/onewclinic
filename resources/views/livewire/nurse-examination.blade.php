@@ -166,9 +166,9 @@
                                                 <img src="{{ $photo_before->temporaryUrl() }}" alt="Preview Foto Before" class="h-44 w-auto object-cover rounded-2xl shadow-apple mx-auto">
                                                 <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">Foto Baru Terpilih</span>
                                             </div>
-                                        @elseif($currentVisit->photo_before_path)
+                                        @elseif($currentVisit->photo_before_url)
                                             <div class="text-center">
-                                                <img src="{{ $currentVisit->photo_before_url }}" alt="Foto Before Sebelumnya" class="h-44 w-auto object-cover rounded-2xl shadow-apple mx-auto">
+                                                <img src="{{ $currentVisit->photo_before_url }}" alt="Foto Before Sebelumnya" class="h-44 w-auto object-cover rounded-2xl shadow-apple mx-auto" onerror="this.style.display='none';">
                                                 <span class="inline-block mt-2 text-[10px] font-medium text-slate-400">Foto Tersimpan</span>
                                             </div>
                                         @else

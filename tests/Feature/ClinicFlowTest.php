@@ -400,4 +400,63 @@ class ClinicFlowTest extends TestCase
             'unit' => 'Vial',
         ]);
     }
+
+    public function test_clinical_form_flow_saves_and_progresses(): void
+    {
+        Livewire::test(\App\Livewire\ClinicalFormFlow::class)
+            ->set('manual_patient_code', 'MR-2026-999')
+            ->set('inbody_id', 'INB-888')
+            ->set('name', 'Nadia Safitri')
+            ->set('phone_number', '081234567899')
+            ->set('gender', 'Perempuan')
+            ->set('date_of_birth', '1996-08-10')
+            ->call('continue')
+            ->assertSet('currentStep', 2)
+            ->assertDispatched('notify');
+
+        $this->assertDatabaseHas('patients', [
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'MR-2026-999',
+            'name' => 'Nadia Safitri',
+            'inbody_id' => 'INB-888',
+        ]);
+    }
+
+    public function test_superadmin_can_export_medical_records_csv(): void
+    {
+        $superadmin = User::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => 'Admin Export',
+            'email' => 'adminexport@onewclinic.com',
+            'password' => 'password',
+            'role' => 'superadmin',
+        ]);
+
+        $response = $this->actingAs($superadmin)->get(route('dashboard.export'));
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'text/csv; charset=UTF-8');
+    }
+
+    public function test_doctor_treatment_photo_url_returns_null_when_file_not_on_disk(): void
+    {
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'TEST-001',
+            'name' => 'Patient Without File',
+            'gender' => 'female',
+            'date_of_birth' => '1995-01-01',
+            'phone_number' => '081234567890',
+        ]);
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'status' => 'waiting_doctor',
+            'photo_before_path' => 'photos/before/non_existent_file.png',
+        ]);
+
+        // photo_before_url should return null instead of broken url
+        $this->assertNull($visit->photo_before_url);
+    }
 }
