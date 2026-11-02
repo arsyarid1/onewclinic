@@ -1,4 +1,4 @@
-const CACHE_NAME = 'onew-clinic-v1';
+const CACHE_NAME = 'onew-clinic-v2';
 const PRECACHE_ASSETS = [
     '/offline.html',
     '/manifest.json',
@@ -45,40 +45,28 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(request.url);
 
-    // Bypass Livewire internal endpoints & API sync calls
-    if (url.pathname.startsWith('/livewire/') || url.pathname.startsWith('/api/')) {
+    // Bypass Livewire internal endpoints, API sync, and storage uploads (photos, signatures)
+    if (
+        url.pathname.startsWith('/livewire/') ||
+        url.pathname.startsWith('/api/') ||
+        url.pathname.startsWith('/storage/')
+    ) {
         return;
     }
 
-    // 1. Navigation requests (HTML pages): Network-First with offline fallback
+    // 1. Navigation requests (HTML pages): Network-only with offline fallback (no caching dynamic pages)
     if (request.mode === 'navigate') {
         event.respondWith(
-            fetch(request)
-                .then((networkResponse) => {
-                    // Cache successful navigation responses for fast back/forward
-                    if (networkResponse && networkResponse.status === 200) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-                    }
-                    return networkResponse;
-                })
-                .catch(() => {
-                    return caches.match(request).then((cachedResponse) => {
-                        return cachedResponse || caches.match('/offline.html');
-                    });
-                })
+            fetch(request).catch(() => {
+                return caches.match('/offline.html');
+            })
         );
         return;
     }
 
-    // 2. Static Assets (Images, Icons, Fonts, Build files): Stale-While-Revalidate
+    // 2. Static Assets (Icons, Fonts, Build files): Stale-While-Revalidate
     if (
         url.pathname.startsWith('/build/') ||
-        url.pathname.startsWith('/storage/') ||
-        url.pathname.endsWith('.png') ||
-        url.pathname.endsWith('.jpg') ||
-        url.pathname.endsWith('.svg') ||
-        url.pathname.endsWith('.ico') ||
         url.pathname.endsWith('.woff2') ||
         url.pathname.endsWith('.woff') ||
         url.pathname.endsWith('.css') ||
