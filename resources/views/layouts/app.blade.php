@@ -7,10 +7,22 @@
 
     <title>{{ $title ?? ($clinic->name ?? 'ONEW Clinic') . ' — Rekam Medis & Alur Pelayanan' }}</title>
 
-    <!-- Favicon -->
+    <!-- Favicon & PWA Icons -->
     <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('icon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
+    <!-- PWA / Web App Capabilities -->
+    <meta name="theme-color" content="{{ $clinic->primary_color ?? '#0284C7' }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="{{ $clinic->name ?? 'ONEW Clinic' }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="{{ $clinic->name ?? 'ONEW Clinic' }}">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('icon-192.png') }}">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ asset('icon-512.png') }}">
 
     <!-- Dynamic White-Label Accent Palette -->
     <style>
@@ -264,11 +276,65 @@
                     <span>{{ $clinic->phone }}</span>
                 @endif
             </div>
-            <div class="text-slate-400">
-                Sistem Rekam Medis Terintegrasi
+            <div class="flex items-center gap-3">
+                <button id="pwa-install-btn" type="button" class="hidden items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors text-[11px]">
+                    <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span>Pasang Aplikasi (Install PWA)</span>
+                </button>
+                <span class="text-slate-400">Sistem Rekam Medis Terintegrasi</span>
             </div>
         </div>
     </footer>
+
+    <!-- PWA Service Worker Registration & Install Prompt -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => {
+                        console.log('ONEW Clinic PWA ServiceWorker active:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('PWA ServiceWorker registration notice:', err);
+                    });
+            });
+        }
+
+        // Handle desktop / tablet "Install PWA" prompt
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('pwa-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) {
+                installBtn.classList.remove('hidden');
+                installBtn.classList.add('inline-flex');
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const choice = await deferredPrompt.userChoice;
+                if (choice.outcome === 'accepted') {
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('inline-flex');
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) {
+                installBtn.classList.add('hidden');
+                installBtn.classList.remove('inline-flex');
+            }
+            deferredPrompt = null;
+        });
+    </script>
 
     @livewireScripts
 </body>

@@ -1,0 +1,86 @@
+{
+  "name": "ONEW Clinic — Rekam Medis & Alur Pelayanan",
+  "short_name": "ONEW Clinic",
+  "description": "Sistem Informasi Rekam Medis & Alur Pelayanan Estetika ONEW Clinic",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284C7",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x324",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "medical",
+    "business",
+    "productivity"
+  ],
+  "shortcuts": [
+    {
+      "name": "Kunjungan Hari Ini",
+      "short_name": "Kunjungan",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Registrasi & Consent",
+      "short_name": "Registrasi",
+      "url": "/patients/register",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Pemeriksaan Medis",
+      "short_name": "Pemeriksaan",
+      "url": "/doctor/treatment",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
