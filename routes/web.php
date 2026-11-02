@@ -33,15 +33,25 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+// Public Medical & Clinical Form Flow Routes (No login required - Tablet / Desktop PWA)
+Route::get('/form-flow/{visit_id?}', ClinicalFormFlow::class)->name('clinical.form.flow');
+Route::get('/registrasi/{visit_id?}', ClinicalFormFlow::class);
+
+// Direct Storage Asset Route (ensures public photos and signatures always resolve across local/nginx/windows)
+Route::get('/storage/{path}', function (string $path) {
+    $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $path), '/');
+    if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+        abort(404);
+    }
+    $fullPath = \Illuminate\Support\Facades\Storage::disk('public')->path($cleanPath);
+    return response()->file($fullPath);
+})->where('path', '.*');
+
 // Protected Medical & Clinic Workflow Routes
 Route::middleware('auth')->group(function () {
     // Tahap 1: Kunjungan Hari Ini (Dashboard Antrian Pasien)
     Route::get('/dashboard', VisitDashboard::class)->name('dashboard');
     Route::get('/dashboard/export', [MedicalExportController::class, 'exportCsv'])->name('dashboard.export');
-
-    // ALUR FORMULIR KLINIS RESMI & PWA FLOW (Sesuai formatform.pdf)
-    Route::get('/form-flow/{visit_id?}', ClinicalFormFlow::class)->name('clinical.form.flow');
-    Route::get('/registrasi/{visit_id?}', ClinicalFormFlow::class);
 
     // Tahap 2: Registrasi Pasien & General Consent (Bisa diakses Resepsionis, Perawat, Superadmin)
     Route::get('/patients/register', PatientRegistration::class)->name('patients.register');

@@ -4,7 +4,7 @@
         <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
             <!-- Brand & Step Indicator -->
             <div class="flex items-center gap-3">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2 group text-slate-700 hover:text-slate-900 transition-colors">
+                <a href="{{ route('clinical.form.flow') }}" class="flex items-center gap-2 group text-slate-700 hover:text-slate-900 transition-colors">
                     <img src="{{ asset('icon.png') }}" alt="ONEW" class="h-7 w-auto object-contain">
                     <span class="font-bold text-xs tracking-tight text-slate-900">ONEW FORM</span>
                 </a>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <!-- Form Title & Manual Top-Right Box (No. Rekam Medis & InBody ID) -->
+                <!-- Form Title & Manual Top-Right Box (No. Rekam Medis & NO. ID) -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5 pb-5 border-b border-slate-200">
                     <div class="md:col-span-7 flex flex-col justify-center">
                         <h1 class="text-lg sm:text-xl font-extrabold uppercase tracking-tight text-slate-900">
@@ -67,7 +67,7 @@
                         <span class="text-xs font-semibold text-slate-500">ONEW Klinik Utama</span>
                     </div>
 
-                    <!-- Kotak Manual No. Rekam Medis, Tanggal Daftar & NO. ID Inbody -->
+                    <!-- Kotak Manual No. Rekam Medis, Tanggal Daftar & NO. ID -->
                     <div class="md:col-span-5 border-2 border-slate-900 rounded-xl p-3 bg-slate-50/70 space-y-2">
                         <div class="flex items-center justify-between gap-2">
                             <label class="text-[11px] font-bold uppercase tracking-wider text-slate-700">No. Rekam Medis <span class="text-rose-600">*</span></label>
@@ -88,11 +88,11 @@
                         <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-200">
                             <div>
                                 <label class="text-[11px] font-bold text-slate-900 uppercase tracking-wider">NO. ID</label>
-                                <span class="text-[9px] text-slate-400 block -mt-0.5">ID InBody (diisi perawat)</span>
+                                <span class="text-[9px] text-slate-400 block -mt-0.5">(diisi perawat)</span>
                             </div>
                             <input type="text"
                                    wire:model="inbody_id"
-                                   placeholder="Nomor ID InBody"
+                                   placeholder="Nomor ID"
                                    class="px-2.5 py-1 text-xs font-mono font-semibold text-slate-800 border border-slate-400 bg-white rounded-md text-right focus:ring-1 focus:ring-slate-900 focus:outline-none w-40">
                         </div>
                     </div>
@@ -327,7 +327,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-12 p-2.5 gap-2 items-center">
                             <span class="sm:col-span-4 font-semibold text-slate-700">Dokter / Poli Tujuan</span>
                             <div class="sm:col-span-8">
-                                <input type="text" wire:model="destination_doctor_poli" placeholder="Contoh: dr. Alana Wijaya / Poli Estetika" class="w-full px-3 py-1.5 border border-slate-300 rounded text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none">
+                                <input type="text" wire:model="destination_doctor_poli" placeholder="" class="w-full px-3 py-1.5 border border-slate-300 rounded text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none">
                             </div>
                         </div>
 
@@ -393,11 +393,11 @@
                             <span class="font-bold text-slate-900 block mb-1.5">Persetujuan menerima informasi/komunikasi administratif melalui telepon atau WhatsApp:</span>
                             <div class="flex items-center gap-6">
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" :value="true" wire:model="whatsapp_comm_consent" class="text-slate-900 focus:ring-slate-900">
+                                    <input type="radio" name="whatsapp_comm_consent" value="1" wire:model.live="whatsapp_comm_consent" class="text-slate-900 focus:ring-slate-900">
                                     <span class="font-semibold text-emerald-800">Saya SETUJU</span>
                                 </label>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" :value="false" wire:model="whatsapp_comm_consent" class="text-slate-900 focus:ring-slate-900">
+                                    <input type="radio" name="whatsapp_comm_consent" value="0" wire:model.live="whatsapp_comm_consent" class="text-slate-900 focus:ring-slate-900">
                                     <span class="text-slate-600">Saya TIDAK SETUJU</span>
                                 </label>
                             </div>
@@ -409,7 +409,7 @@
                             <div class="border border-slate-300 p-3 rounded-lg text-center bg-slate-50/50">
                                 <span class="font-bold text-slate-800 block mb-2">Pasien / Penanggung Jawab</span>
                                 <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas id="canvas-reg-patient" class="w-full h-28 touch-none"></canvas>
+                                    <canvas x-init="setupPad($el, 'canvas-reg-patient')" id="canvas-reg-patient" class="w-full h-28 touch-none"></canvas>
                                     <button type="button" @click="clearSignature('reg-patient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
                                 </div>
                                 <div class="text-left">
@@ -425,7 +425,7 @@
                                     <span class="text-[10px] text-slate-500 font-mono">Tgl: {{ $registration_staff_signed_date }}</span>
                                 </div>
                                 <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas id="canvas-reg-staff" class="w-full h-28 touch-none"></canvas>
+                                    <canvas x-init="setupPad($el, 'canvas-reg-staff')" id="canvas-reg-staff" class="w-full h-28 touch-none"></canvas>
                                     <button type="button" @click="clearSignature('reg-staff')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
                                 </div>
                                 <div class="text-left">
@@ -509,11 +509,11 @@
                             <span>Pengingat jadwal dan komunikasi administrasi melalui WhatsApp:</span>
                             <div class="flex items-center gap-4">
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" :value="true" wire:model="gc_whatsapp_reminder" class="text-slate-900">
+                                    <input type="radio" name="gc_whatsapp_reminder" value="1" wire:model.live="gc_whatsapp_reminder" class="text-slate-900">
                                     <span>Ya</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" :value="false" wire:model="gc_whatsapp_reminder" class="text-slate-900">
+                                    <input type="radio" name="gc_whatsapp_reminder" value="0" wire:model.live="gc_whatsapp_reminder" class="text-slate-900">
                                     <span>Tidak</span>
                                 </label>
                             </div>
@@ -523,11 +523,11 @@
                             <span>Informasi promosi layanan klinik (opsional; tidak memengaruhi pelayanan):</span>
                             <div class="flex items-center gap-4">
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" :value="true" wire:model="gc_promo_info" class="text-slate-900">
+                                    <input type="radio" name="gc_promo_info" value="1" wire:model.live="gc_promo_info" class="text-slate-900">
                                     <span>Ya</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" :value="false" wire:model="gc_promo_info" class="text-slate-900">
+                                    <input type="radio" name="gc_promo_info" value="0" wire:model.live="gc_promo_info" class="text-slate-900">
                                     <span>Tidak</span>
                                 </label>
                             </div>
@@ -537,15 +537,15 @@
                             <span>Pengungkapan data yang diperlukan untuk verifikasi klaim kepada penjamin:</span>
                             <div class="flex items-center gap-4">
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" value="Ya" wire:model="gc_insurance_disclosure" class="text-slate-900">
+                                    <input type="radio" name="gc_insurance_disclosure" value="Ya" wire:model.live="gc_insurance_disclosure" class="text-slate-900">
                                     <span>Ya</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" value="Tidak" wire:model="gc_insurance_disclosure" class="text-slate-900">
+                                    <input type="radio" name="gc_insurance_disclosure" value="Tidak" wire:model.live="gc_insurance_disclosure" class="text-slate-900">
                                     <span>Tidak</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" value="N/A" wire:model="gc_insurance_disclosure" class="text-slate-900">
+                                    <input type="radio" name="gc_insurance_disclosure" value="N/A" wire:model.live="gc_insurance_disclosure" class="text-slate-900">
                                     <span>N/A</span>
                                 </label>
                             </div>
@@ -556,11 +556,11 @@
                                 <span>Izin pemberian informasi kesehatan kepada orang yang saya tunjuk:</span>
                                 <div class="flex items-center gap-4">
                                     <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                        <input type="radio" :value="true" wire:model.live="gc_third_party_info" class="text-slate-900">
+                                        <input type="radio" name="gc_third_party_info" value="1" wire:model.live="gc_third_party_info" class="text-slate-900">
                                         <span>Ya</span>
                                     </label>
                                     <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                        <input type="radio" :value="false" wire:model.live="gc_third_party_info" class="text-slate-900">
+                                        <input type="radio" name="gc_third_party_info" value="0" wire:model.live="gc_third_party_info" class="text-slate-900">
                                         <span>Tidak</span>
                                     </label>
                                 </div>
@@ -599,7 +599,7 @@
                                     </select>
                                 </div>
                                 <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas id="canvas-gc-patient" class="w-full h-28 touch-none"></canvas>
+                                    <canvas x-init="setupPad($el, 'canvas-gc-patient')" id="canvas-gc-patient" class="w-full h-28 touch-none"></canvas>
                                     <button type="button" @click="clearSignature('gc-patient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
                                 </div>
                                 <input type="text" wire:model="gc_patient_signer_name" placeholder="Nama jelas penandatangan" class="w-full px-2 py-1 text-xs border border-slate-300 rounded font-semibold text-slate-900 text-center">
@@ -610,7 +610,7 @@
                                 <span class="font-bold text-slate-800 block mb-1">PETUGAS YANG MEMBERIKAN PENJELASAN</span>
                                 <div class="text-[10px] text-slate-500 mb-2 font-medium">Jabatan: Petugas Pendaftaran / Perawat</div>
                                 <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas id="canvas-gc-staff" class="w-full h-28 touch-none"></canvas>
+                                    <canvas x-init="setupPad($el, 'canvas-gc-staff')" id="canvas-gc-staff" class="w-full h-28 touch-none"></canvas>
                                     <button type="button" @click="clearSignature('gc-staff')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
                                 </div>
                                 <input type="text" wire:model="gc_staff_name" placeholder="Nama petugas pendaftaran" class="w-full px-2 py-1 text-xs border border-slate-300 rounded font-semibold text-slate-900 text-center">
@@ -766,7 +766,7 @@
                     <div class="border border-slate-300 p-3 rounded bg-slate-50/50 text-center">
                         <p class="text-[11px] text-justify mb-2">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas:</p>
                         <div class="relative bg-white border border-slate-300 rounded mb-2">
-                            <canvas id="canvas-ic-doctor" class="w-full h-24 touch-none"></canvas>
+                            <canvas x-init="setupPad($el, 'canvas-ic-doctor')" id="canvas-ic-doctor" class="w-full h-24 touch-none"></canvas>
                             <button type="button" @click="clearSignature('ic-doctor')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
                         </div>
                         <span class="text-[10px] text-slate-500 font-semibold block">Tanda tangan Dokter Pelaksana</span>
@@ -775,7 +775,7 @@
                     <div class="border border-slate-300 p-3 rounded bg-slate-50/50 text-center">
                         <p class="text-[11px] text-justify mb-2">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan memahaminya:</p>
                         <div class="relative bg-white border border-slate-300 rounded mb-2">
-                            <canvas id="canvas-ic-recipient" class="w-full h-24 touch-none"></canvas>
+                            <canvas x-init="setupPad($el, 'canvas-ic-recipient')" id="canvas-ic-recipient" class="w-full h-24 touch-none"></canvas>
                             <button type="button" @click="clearSignature('ic-recipient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
                         </div>
                         <span class="text-[10px] text-slate-500 font-semibold block">Tanda tangan Pasien / Wali</span>
@@ -786,7 +786,7 @@
                 <div class="mt-6 border-t-2 border-slate-900 pt-4 text-xs text-slate-800 space-y-3">
                     <h3 class="font-black text-center uppercase tracking-widest text-slate-900 text-sm">PERSETUJUAN TINDAKAN KEDOKTERAN</h3>
                     <p class="leading-relaxed">
-                        Yang bertandatangan di bawah ini, saya, nama <strong>{{ $ic_recipient_name ?: $name }}</strong>, umur: <strong>{{ $ic_patient_age ?: '30' }}</strong> tahun, alamat: <strong>{{ $id_address ?: 'Jakarta' }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan <strong>{{ $ic_medical_procedure }}</strong> terhadap <strong>{{ $name }}</strong>.
+                        Yang bertandatangan di bawah ini, saya, nama <strong>{{ $ic_recipient_name ?: ($name ?: '........................................') }}</strong>, umur: <strong>{{ $ic_patient_age ?: '......' }}</strong> tahun, alamat: <strong>{{ $id_address ?: ($domicile_address ?: '........................................') }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan <strong class="text-sky-900 underline">{{ $ic_medical_procedure ?: '........................................' }}</strong> terhadap <strong>{{ $name ?: '........................................' }}</strong>.
                     </p>
                     <p class="text-[11px] text-slate-600 text-justify">
                         Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan. Saya juga menyadari bahwa ilmu kedokteran bukanlah ilmu pasti, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
@@ -797,8 +797,8 @@
                         <div class="border border-slate-300 p-3 rounded bg-white text-center">
                             <span class="font-bold text-slate-900 block mb-2">Yang Menyatakan (Pasien / Wali)</span>
                             <div class="relative bg-slate-50 border border-slate-300 rounded mb-2">
-                                <canvas id="canvas-ic-witness" class="w-full h-24 touch-none"></canvas>
-                                <button type="button" @click="clearSignature('ic-witness')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
+                                <canvas x-init="setupPad($el, 'canvas-ic-recipient-stmt')" id="canvas-ic-recipient-stmt" class="w-full h-24 touch-none"></canvas>
+                                <button type="button" @click="clearSignature('canvas-ic-recipient-stmt')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
                             </div>
                             <span class="text-[11px] font-semibold text-slate-900">{{ $ic_recipient_name ?: $name }}</span>
                         </div>
@@ -806,10 +806,11 @@
                         <!-- Saksi / Perawat -->
                         <div class="border border-slate-300 p-3 rounded bg-white text-center">
                             <span class="font-bold text-slate-900 block mb-2">Saksi (Perawat / Petugas)</span>
-                            <div class="h-24 flex items-center justify-center bg-slate-50 border border-slate-300 rounded mb-2">
-                                <span class="font-serif italic text-slate-500">Tercatat Sistem Klinis</span>
+                            <div class="relative bg-slate-50 border border-slate-300 rounded mb-2">
+                                <canvas x-init="setupPad($el, 'canvas-ic-witness')" id="canvas-ic-witness" class="w-full h-24 touch-none"></canvas>
+                                <button type="button" @click="clearSignature('ic-witness')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
                             </div>
-                            <input type="text" wire:model="ic_witness_name" class="w-full px-2 py-1 text-center text-xs font-semibold text-slate-900 border border-slate-300 rounded">
+                            <input type="text" wire:model="ic_witness_name" placeholder="Nama saksi / perawat" class="w-full px-2 py-1 text-center text-xs font-semibold text-slate-900 border border-slate-300 rounded">
                         </div>
                     </div>
                 </div>
@@ -1159,7 +1160,7 @@
                             <strong class="font-mono text-slate-900">{{ $manual_patient_code }}</strong>
                         </div>
                         <div class="flex justify-between border-b border-slate-200 pb-1.5">
-                            <span class="text-slate-500">NO. ID (InBody):</span>
+                            <span class="text-slate-500">NO. ID:</span>
                             <strong class="font-mono text-slate-900">{{ $inbody_id ?: '-' }}</strong>
                         </div>
                         <div class="flex justify-between border-b border-slate-200 pb-1.5">
@@ -1168,7 +1169,7 @@
                         </div>
                         <div class="flex justify-between border-b border-slate-200 pb-1.5">
                             <span class="text-slate-500">Dokter & Perawat:</span>
-                            <span class="text-slate-800">{{ $bhp_doctor_name }} / {{ $bhp_therapist_nurse }}</span>
+                            <span class="text-slate-800">{{ $bhp_doctor_name ?: '-' }} / {{ $bhp_therapist_nurse ?: '-' }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-slate-500">Status Kunjungan:</span>
@@ -1189,11 +1190,6 @@
                                 class="w-full sm:w-auto px-5 py-2.5 rounded-full border border-slate-300 bg-white text-slate-800 font-semibold text-xs shadow-2xs hover:bg-slate-50 transition-all">
                             + Pendaftaran Pasien Baru
                         </button>
-
-                        <a href="{{ route('dashboard') }}"
-                           class="w-full sm:w-auto px-5 py-2.5 rounded-full border border-slate-300 bg-white text-slate-800 font-semibold text-xs shadow-2xs hover:bg-slate-50 transition-all">
-                            Kembali ke Dashboard Superadmin
-                        </a>
                     </div>
                 </div>
             @endif
@@ -1213,10 +1209,6 @@
                         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         <span>Go Back (Kembali)</span>
                     </button>
-                @else
-                    <a href="{{ route('dashboard') }}" class="text-xs text-slate-400 hover:text-slate-600 font-medium px-2 py-1">
-                        &larr; Dashboard
-                    </a>
                 @endif
             </div>
 
@@ -1273,33 +1265,51 @@ function formFlowApp() {
             });
 
             // Re-initialize canvases when Livewire updates step
-            Livewire.hook('morph.updated', () => {
-                this.$nextTick(() => {
-                    this.initCanvases();
+            document.addEventListener('livewire:navigated', () => this.initCanvases());
+            if (window.Livewire) {
+                Livewire.hook('morph.updated', () => {
+                    this.$nextTick(() => this.initCanvases());
                 });
+            }
+        },
+        setupPad(el, id) {
+            this.$nextTick(() => {
+                if (!el) return;
+                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                const rect = el.getBoundingClientRect();
+                const width = rect.width || el.offsetWidth || 300;
+                const height = rect.height || el.offsetHeight || 112;
+
+                el.width = width * ratio;
+                el.height = height * ratio;
+                const ctx = el.getContext('2d');
+                ctx.scale(ratio, ratio);
+
+                if (this.signaturePads[id]) {
+                    try { this.signaturePads[id].off(); } catch(e){}
+                }
+
+                if (window.SignaturePad) {
+                    this.signaturePads[id] = new SignaturePad(el, {
+                        backgroundColor: 'rgba(255, 255, 255, 0)',
+                        penColor: '#0f172a',
+                        minWidth: 1.5,
+                        maxWidth: 3.0
+                    });
+                }
             });
         },
         initCanvases() {
             const canvasIds = [
                 'canvas-reg-patient', 'canvas-reg-staff',
                 'canvas-gc-patient', 'canvas-gc-staff',
-                'canvas-ic-doctor', 'canvas-ic-recipient', 'canvas-ic-witness'
+                'canvas-ic-doctor', 'canvas-ic-recipient', 'canvas-ic-recipient-stmt', 'canvas-ic-witness'
             ];
 
             canvasIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el && !this.signaturePads[id]) {
-                    const ratio = Math.max(window.devicePixelRatio || 1, 1);
-                    el.width = el.offsetWidth * ratio;
-                    el.height = el.offsetHeight * ratio;
-                    el.getContext('2d').scale(ratio, ratio);
-
-                    this.signaturePads[id] = new SignaturePad(el, {
-                        backgroundColor: 'rgba(255, 255, 255, 0)',
-                        penColor: '#0f172a',
-                        minWidth: 1.2,
-                        maxWidth: 2.8
-                    });
+                if (el) {
+                    this.setupPad(el, id);
                 }
             });
         },
@@ -1311,9 +1321,10 @@ function formFlowApp() {
                 'gc-staff': 'canvas-gc-staff',
                 'ic-doctor': 'canvas-ic-doctor',
                 'ic-recipient': 'canvas-ic-recipient',
-                'ic-witness': 'canvas-ic-witness'
+                'ic-witness': 'canvas-ic-witness',
+                'canvas-ic-recipient-stmt': 'canvas-ic-recipient-stmt'
             };
-            const id = map[target];
+            const id = map[target] || target;
             if (this.signaturePads[id]) {
                 this.signaturePads[id].clear();
             }
@@ -1340,7 +1351,7 @@ function formFlowApp() {
             const icDoc = getSig('canvas-ic-doctor');
             if (icDoc) @this.set('ic_doctor_signature', icDoc, false);
 
-            const icRec = getSig('canvas-ic-recipient');
+            const icRec = getSig('canvas-ic-recipient') || getSig('canvas-ic-recipient-stmt');
             if (icRec) @this.set('ic_recipient_signature', icRec, false);
 
             const icWit = getSig('canvas-ic-witness');

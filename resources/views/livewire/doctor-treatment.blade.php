@@ -159,7 +159,10 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Foto Before -->
                             <div class="border border-slate-200/90 bg-white rounded-2xl p-4 text-center shadow-2xs"
-                                 x-data="{ angle: '{{ $currentVisit->photo_before_front_url ? 'front' : ($currentVisit->photo_before_url ? 'default' : 'none') }}' }">
+                                 x-data="{
+                                     angle: '{{ $currentVisit->photo_before_front_url ? 'front' : ($currentVisit->photo_before_right_tilt_url ? 'right_tilt' : ($currentVisit->photo_before_right_side_url ? 'right_side' : ($currentVisit->photo_before_left_tilt_url ? 'left_tilt' : ($currentVisit->photo_before_left_side_url ? 'left_side' : ($currentVisit->photo_before_url ? 'default' : 'none'))))) }}',
+                                     hasError: false
+                                 }">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Foto Awal (Sebelum Tindakan)</span>
                                     @if($currentVisit->has_five_sides_before)
@@ -188,29 +191,29 @@
                                     </div>
                                 @endif
 
-                                @if($currentVisit->photo_before_url)
+                                @if($currentVisit->has_five_sides_before || $currentVisit->photo_before_url)
                                     <div class="relative min-h-[11rem] flex items-center justify-center">
                                         @if($currentVisit->photo_before_front_url)
-                                            <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_before_front_url }}" alt="Foto Before Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                            <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_before_front_url }}" alt="Foto Before Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_before_right_tilt_url)
-                                            <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_before_right_tilt_url }}" alt="Foto Before Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_before_right_tilt_url }}" alt="Foto Before Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_before_right_side_url)
-                                            <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_before_right_side_url }}" alt="Foto Before Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_before_right_side_url }}" alt="Foto Before Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_before_left_tilt_url)
-                                            <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_before_left_tilt_url }}" alt="Foto Before Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_before_left_tilt_url }}" alt="Foto Before Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_before_left_side_url)
-                                            <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_before_left_side_url }}" alt="Foto Before Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_before_left_side_url }}" alt="Foto Before Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
-                                        @if(!$currentVisit->has_five_sides_before && $currentVisit->photo_before_url)
-                                            <img src="{{ $currentVisit->photo_before_url }}" alt="Foto Before" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                        @if(!$currentVisit->has_five_sides_before && $currentVisit->photo_before_url && !$currentVisit->photo_before_front_url)
+                                            <img x-show="!hasError" src="{{ $currentVisit->photo_before_url }}" alt="Foto Before" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
 
                                         <!-- Fallback placeholder if image load fails -->
-                                        <div class="hidden h-44 w-full flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
+                                        <div x-show="hasError" class="h-44 w-full flex flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
                                             <svg class="w-7 h-7 text-slate-300 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             <span>Foto belum dapat ditampilkan</span>
                                         </div>
@@ -225,7 +228,10 @@
 
                             <!-- Foto After -->
                             <div class="border border-slate-200/90 bg-white rounded-2xl p-4 text-center shadow-2xs"
-                                 x-data="{ angle: '{{ $currentVisit->photo_after_front_url ? 'front' : ($currentVisit->photo_after_url ? 'default' : 'none') }}' }">
+                                 x-data="{
+                                     angle: '{{ $currentVisit->photo_after_front_url ? 'front' : ($currentVisit->photo_after_right_tilt_url ? 'right_tilt' : ($currentVisit->photo_after_right_side_url ? 'right_side' : ($currentVisit->photo_after_left_tilt_url ? 'left_tilt' : ($currentVisit->photo_after_left_side_url ? 'left_side' : ($currentVisit->photo_after_url ? 'default' : 'none'))))) }}',
+                                     hasError: false
+                                 }">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Foto Akhir (Setelah Tindakan)</span>
                                     @if($currentVisit->has_five_sides_after)
@@ -257,26 +263,31 @@
                                 @if($photo_after)
                                     <img src="{{ $photo_after->temporaryUrl() }}" alt="Preview Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
                                     <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">Foto Baru Terpilih</span>
-                                @elseif($currentVisit->photo_after_url)
+                                @elseif($currentVisit->has_five_sides_after || $currentVisit->photo_after_url)
                                     <div class="relative min-h-[11rem] flex items-center justify-center">
                                         @if($currentVisit->photo_after_front_url)
-                                            <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_after_front_url }}" alt="Foto After Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_after_front_url }}" alt="Foto After Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_after_right_tilt_url)
-                                            <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_after_right_tilt_url }}" alt="Foto After Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_after_right_tilt_url }}" alt="Foto After Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_after_right_side_url)
-                                            <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_after_right_side_url }}" alt="Foto After Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_after_right_side_url }}" alt="Foto After Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_after_left_tilt_url)
-                                            <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_after_left_tilt_url }}" alt="Foto After Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_after_left_tilt_url }}" alt="Foto After Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
                                         @if($currentVisit->photo_after_left_side_url)
-                                            <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_after_left_side_url }}" alt="Foto After Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                            <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_after_left_side_url }}" alt="Foto After Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
-                                        @if(!$currentVisit->has_five_sides_after && $currentVisit->photo_after_url)
-                                            <img src="{{ $currentVisit->photo_after_url }}" alt="Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" onerror="this.style.display='none';">
+                                        @if(!$currentVisit->has_five_sides_after && $currentVisit->photo_after_url && !$currentVisit->photo_after_front_url)
+                                            <img x-show="!hasError" src="{{ $currentVisit->photo_after_url }}" alt="Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
                                         @endif
+
+                                        <div x-show="hasError" class="h-44 w-full flex flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
+                                            <svg class="w-7 h-7 text-slate-300 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            <span>Foto belum dapat ditampilkan</span>
+                                        </div>
                                     </div>
                                 @else
                                     <label class="h-44 flex flex-col items-center justify-center border-2 border-dashed border-slate-300/80 hover:border-slate-900 rounded-xl bg-slate-50 hover:bg-slate-50/80 cursor-pointer text-slate-500 transition-all">

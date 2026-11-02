@@ -257,6 +257,14 @@
                             {{ $patient->patient_code }}
                         </td>
                     </tr>
+                    @if($patient->inbody_id)
+                    <tr>
+                        <td class="info-label">NO. ID</td>
+                        <td class="info-value" style="font-family: monospace; font-weight: bold;">
+                            {{ $patient->inbody_id }}
+                        </td>
+                    </tr>
+                    @endif
                     <tr>
                         <td class="info-label">Nama Lengkap / NIK</td>
                         <td class="info-value"><strong>{{ $patient->name }}</strong> @if($patient->nik) <span style="font-size: 7pt; color: #64748b;">({{ $patient->nik }})</span> @endif</td>
@@ -289,11 +297,11 @@
                     </tr>
                     <tr>
                         <td class="info-label">Dokter Pemeriksa</td>
-                        <td class="info-value"><strong>{{ $visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E' }}</strong></td>
+                        <td class="info-value"><strong>{{ $visit->custom_doctor_name ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E') }}</strong></td>
                     </tr>
                     <tr>
                         <td class="info-label">Perawat / Asisten</td>
-                        <td class="info-value">{{ $visit->assistant_name ?? 'Ns. Ratna Dewi, S.Kep' }}</td>
+                        <td class="info-value">{{ $visit->custom_nurse_name ?: ($visit->assistant_name ?? 'Ns. Ratna Dewi, S.Kep') }}</td>
                     </tr>
                     <tr>
                         <td class="info-label">General Consent</td>
@@ -345,24 +353,66 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($visit->treatments as $index => $treatment)
-                <tr>
-                    <td style="text-align: center;">{{ $index + 1 }}</td>
-                    <td><strong>{{ $treatment->name }}</strong></td>
-                    <td style="color: #64748b;">{{ $treatment->category ?? 'Estetika' }}</td>
-                    <td style="font-size: 7.5pt; color: #334155;">
-                        {{ $treatment->pivot->notes ?: 'Tindakan selesai dilakukan tanpa komplikasi.' }}
-                    </td>
-                </tr>
-            @empty
+            @if($visit->treatments && $visit->treatments->count() > 0)
+                @foreach($visit->treatments as $index => $treatment)
+                    <tr>
+                        <td style="text-align: center;">{{ $index + 1 }}</td>
+                        <td><strong>{{ $treatment->name }}</strong></td>
+                        <td style="color: #64748b;">{{ $treatment->category ?? 'Estetika' }}</td>
+                        <td style="font-size: 7.5pt; color: #334155;">
+                            {{ $treatment->pivot->notes ?: 'Tindakan selesai dilakukan tanpa komplikasi.' }}
+                        </td>
+                    </tr>
+                @endforeach
+            @elseif($visit->custom_treatment_list && count($visit->custom_treatment_list) > 0)
+                @foreach($visit->custom_treatment_list as $index => $item)
+                    <tr>
+                        <td style="text-align: center;">{{ $index + 1 }}</td>
+                        <td><strong>{{ $item['action'] ?? ($item['name'] ?? '-') }}</strong></td>
+                        <td style="color: #64748b;">Tindakan Estetika / Klinis</td>
+                        <td style="font-size: 7.5pt; color: #334155;">Tindakan selesai dilakukan.</td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
                     <td colspan="4" style="text-align: center; color: #94a3b8; padding: 6px;">
                         Tidak ada tindakan perawatan yang tercatat.
                     </td>
                 </tr>
-            @endforelse
+            @endif
         </tbody>
     </table>
+
+    <!-- Persetujuan Tindakan Kedokteran (Informed Consent) -->
+    @if($visit->informedConsent)
+        <div class="section-header">Persetujuan Tindakan Kedokteran (Informed Consent)</div>
+        <table class="info-table" style="margin-bottom: 6px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px;">
+            <tr>
+                <td style="width: 25%; font-weight: bold; color: #475569; padding: 3px 6px;">Tindakan Kedokteran:</td>
+                <td style="width: 75%; font-weight: bold; color: #0f172a; padding: 3px 6px;">{{ $visit->informedConsent->medical_procedure ?: 'Tindakan Medis Estetika' }}</td>
+            </tr>
+            @if($visit->informedConsent->indication)
+                <tr>
+                    <td style="font-weight: bold; color: #475569; padding: 3px 6px;">Indikasi Tindakan:</td>
+                    <td style="color: #334155; padding: 3px 6px;">{{ $visit->informedConsent->indication }}</td>
+                </tr>
+            @endif
+            <tr>
+                <td style="font-weight: bold; color: #475569; padding: 3px 6px;">Dokter Pelaksana:</td>
+                <td style="color: #334155; padding: 3px 6px;">{{ $visit->informedConsent->doctor_name ?? ($visit->informedConsent->information_provider ?? '-') }}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold; color: #475569; padding: 3px 6px;">Penerima Informasi / Pasien:</td>
+                <td style="color: #334155; padding: 3px 6px;">{{ $visit->informedConsent->recipient_name }} ({{ $visit->informedConsent->recipient_relation ?: 'Pasien Sendiri' }})</td>
+            </tr>
+            @if($visit->informedConsent->witness_name)
+                <tr>
+                    <td style="font-weight: bold; color: #475569; padding: 3px 6px;">Saksi Tindakan:</td>
+                    <td style="color: #334155; padding: 3px 6px;">{{ $visit->informedConsent->witness_name }}</td>
+                </tr>
+            @endif
+        </table>
+    @endif
 
     <!-- Bahan Baku / BHP (Barang Habis Pakai) yang Digunakan -->
     @if($visit->visitConsumables && $visit->visitConsumables->count() > 0)
@@ -391,57 +441,138 @@
         </table>
     @endif
 
-    <!-- Komparasi Foto Klinis Side-by-Side (Before & After) -->
+    <!-- Dokumentasi Foto Klinis -->
     <div class="section-header">Dokumentasi Foto Klinis (Before & After)</div>
-    <table class="photo-table">
-        <tr>
-            <td class="photo-box">
-                <div class="photo-title">Foto Sebelum Tindakan (Before)</div>
-                @if($photoBeforeBase64)
-                    <img src="{{ $photoBeforeBase64 }}" alt="Foto Before" class="photo-img">
-                @else
-                    <div class="photo-placeholder">Tidak Ada Foto Before</div>
-                @endif
-                <div style="font-size: 6.5pt; color: #64748b; margin-top: 2px;">Pemeriksaan Awal</div>
-            </td>
-            <td class="photo-box">
-                <div class="photo-title">Foto Sesudah Tindakan (After)</div>
-                @if($photoAfterBase64)
-                    <img src="{{ $photoAfterBase64 }}" alt="Foto After" class="photo-img">
-                @else
-                    <div class="photo-placeholder">Tidak Ada Foto After</div>
-                @endif
-                <div style="font-size: 6.5pt; color: #64748b; margin-top: 2px;">Evaluasi Pasca Tindakan (Perawat / Dokter)</div>
-            </td>
-        </tr>
-    </table>
+    @php
+        $has5SidesBefore = $photoBeforeFrontBase64 || $photoBeforeRightTiltBase64 || $photoBeforeRightSideBase64 || $photoBeforeLeftTiltBase64 || $photoBeforeLeftSideBase64;
+        $has5SidesAfter = $photoAfterFrontBase64 || $photoAfterRightTiltBase64 || $photoAfterRightSideBase64 || $photoAfterLeftTiltBase64 || $photoAfterLeftSideBase64;
+    @endphp
 
-    <!-- Tanda Tangan Pasien & Dokter Penanggung Jawab -->
+    @if($has5SidesBefore || $has5SidesAfter)
+        <table class="photo-table" style="margin-bottom: 6px;">
+            <tr>
+                <th colspan="5" style="background-color: #f1f5f9; font-size: 7pt; padding: 3px; text-transform: uppercase; color: #334155; text-align: center; border: 1px solid #cbd5e1;">Dokumentasi Foto 5 Sisi Wajah — Sebelum Tindakan (Before)</th>
+            </tr>
+            <tr>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Depan</div>
+                    @if($photoBeforeFrontBase64) <img src="{{ $photoBeforeFrontBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Serong Kanan</div>
+                    @if($photoBeforeRightTiltBase64) <img src="{{ $photoBeforeRightTiltBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Samping Kanan</div>
+                    @if($photoBeforeRightSideBase64) <img src="{{ $photoBeforeRightSideBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Serong Kiri</div>
+                    @if($photoBeforeLeftTiltBase64) <img src="{{ $photoBeforeLeftTiltBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Samping Kiri</div>
+                    @if($photoBeforeLeftSideBase64) <img src="{{ $photoBeforeLeftSideBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+            </tr>
+            @if($has5SidesAfter)
+            <tr>
+                <th colspan="5" style="background-color: #f1f5f9; font-size: 7pt; padding: 3px; text-transform: uppercase; color: #334155; text-align: center; border: 1px solid #cbd5e1;">Dokumentasi Foto 5 Sisi Wajah — Sesudah Tindakan (After)</th>
+            </tr>
+            <tr>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Depan</div>
+                    @if($photoAfterFrontBase64) <img src="{{ $photoAfterFrontBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Serong Kanan</div>
+                    @if($photoAfterRightTiltBase64) <img src="{{ $photoAfterRightTiltBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Samping Kanan</div>
+                    @if($photoAfterRightSideBase64) <img src="{{ $photoAfterRightSideBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Serong Kiri</div>
+                    @if($photoAfterLeftTiltBase64) <img src="{{ $photoAfterLeftTiltBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+                <td style="width: 20%; text-align: center; padding: 2px; vertical-align: top; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 6pt; color: #64748b; margin-bottom: 2px;">Samping Kiri</div>
+                    @if($photoAfterLeftSideBase64) <img src="{{ $photoAfterLeftSideBase64 }}" class="photo-img" style="max-height: 80px;"> @else <div class="photo-placeholder" style="height: 60px; line-height: 60px; font-size: 6pt;">—</div> @endif
+                </td>
+            </tr>
+            @endif
+        </table>
+    @else
+        <table class="photo-table">
+            <tr>
+                <td class="photo-box">
+                    <div class="photo-title">Foto Sebelum Tindakan (Before)</div>
+                    @if($photoBeforeBase64)
+                        <img src="{{ $photoBeforeBase64 }}" alt="Foto Before" class="photo-img">
+                    @else
+                        <div class="photo-placeholder">Tidak Ada Foto Before</div>
+                    @endif
+                    <div style="font-size: 6.5pt; color: #64748b; margin-top: 2px;">Pemeriksaan Awal</div>
+                </td>
+                <td class="photo-box">
+                    <div class="photo-title">Foto Sesudah Tindakan (After)</div>
+                    @if($photoAfterBase64)
+                        <img src="{{ $photoAfterBase64 }}" alt="Foto After" class="photo-img">
+                    @else
+                        <div class="photo-placeholder">Tidak Ada Foto After</div>
+                    @endif
+                    <div style="font-size: 6.5pt; color: #64748b; margin-top: 2px;">Evaluasi Pasca Tindakan (Perawat / Dokter)</div>
+                </td>
+            </tr>
+        </table>
+    @endif
+
+    <!-- Tanda Tangan Dokumen -->
     <table class="sign-table">
         <tr>
-            <td class="sign-col">
+            <td class="sign-col" style="width: {{ $witnessConsentSigBase64 || $visit->informedConsent?->witness_name ? '33.3%' : '50%' }};">
                 <div>Persetujuan Pasien (General Consent)</div>
                 @if($signatureBase64)
                     <img src="{{ $signatureBase64 }}" alt="Tanda Tangan Pasien" class="sign-img">
                 @else
                     <div style="height: 45px; line-height: 45px; color: #94a3b8; font-style: italic;">[Tanda Tangan Tersimpan]</div>
                 @endif
-                <div style="border-top: 1px dotted #94a3b8; width: 60%; margin: 0 auto; padding-top: 2px;">
+                <div style="border-top: 1px dotted #94a3b8; width: 80%; margin: 0 auto; padding-top: 2px;">
                     <strong>{{ $patient->name }}</strong><br>
                     <span style="font-size: 6.5pt; color: #64748b;">Pasien / Penanggung Jawab</span>
                 </div>
             </td>
 
-            <td class="sign-col">
+            <td class="sign-col" style="width: {{ $witnessConsentSigBase64 || $visit->informedConsent?->witness_name ? '33.3%' : '50%' }};">
                 <div>Dokter Penanggung Jawab Pelayanan</div>
-                <div style="height: 45px; line-height: 45px; font-style: italic; color: {{ $clinic->primary_color ?? '#0284c7' }}; font-weight: bold; font-size: 10pt;">
-                    Signed Electronically
-                </div>
-                <div style="border-top: 1px dotted #94a3b8; width: 60%; margin: 0 auto; padding-top: 2px;">
-                    <strong>{{ $visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E' }}</strong><br>
+                @if($doctorConsentSigBase64)
+                    <img src="{{ $doctorConsentSigBase64 }}" alt="Tanda Tangan Dokter" class="sign-img">
+                @else
+                    <div style="height: 45px; line-height: 45px; font-style: italic; color: {{ $clinic->primary_color ?? '#0284c7' }}; font-weight: bold; font-size: 10pt;">
+                        Signed Electronically
+                    </div>
+                @endif
+                <div style="border-top: 1px dotted #94a3b8; width: 80%; margin: 0 auto; padding-top: 2px;">
+                    <strong>{{ $visit->custom_doctor_name ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E') }}</strong><br>
                     <span style="font-size: 6.5pt; color: #64748b;">Dokter Pelaksana Tindakan</span>
                 </div>
             </td>
+
+            @if($witnessConsentSigBase64 || $visit->informedConsent?->witness_name)
+            <td class="sign-col" style="width: 33.3%;">
+                <div>Saksi Tindakan Medis</div>
+                @if($witnessConsentSigBase64)
+                    <img src="{{ $witnessConsentSigBase64 }}" alt="Tanda Tangan Saksi" class="sign-img">
+                @else
+                    <div style="height: 45px; line-height: 45px; color: #94a3b8; font-style: italic;">[Tanda Tangan Saksi]</div>
+                @endif
+                <div style="border-top: 1px dotted #94a3b8; width: 80%; margin: 0 auto; padding-top: 2px;">
+                    <strong>{{ $visit->informedConsent->witness_name ?: 'Saksi Klinik' }}</strong><br>
+                    <span style="font-size: 6.5pt; color: #64748b;">Saksi Tindakan Kedokteran</span>
+                </div>
+            </td>
+            @endif
         </tr>
     </table>
 </body>

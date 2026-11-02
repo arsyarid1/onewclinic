@@ -10,15 +10,15 @@
     <!-- Favicon & PWA Icons -->
     <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <link rel="manifest" href="{{ asset('manifest-form.json') }}">
 
     <!-- PWA / Web App Capabilities - Standalone without address bar -->
     <meta name="theme-color" content="#0284C7">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ONEW Clinic">
+    <meta name="application-name" content="ONEW Form">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ONEW Clinic">
+    <meta name="apple-mobile-web-app-title" content="ONEW Form">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('icon-192.png') }}">
@@ -103,6 +103,45 @@
                 </button>
             </div>
         </template>
+    </div>
+
+    <!-- Desktop / Tablet PWA Install Floating Banner -->
+    <div x-data="{
+            deferredPrompt: null,
+            canInstall: false,
+            isStandalone: window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true,
+            init() {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    this.deferredPrompt = e;
+                    this.canInstall = true;
+                });
+                window.addEventListener('appinstalled', () => {
+                    this.canInstall = false;
+                    this.deferredPrompt = null;
+                });
+            },
+            installApp() {
+                if (this.deferredPrompt) {
+                    this.deferredPrompt.prompt();
+                    this.deferredPrompt.userChoice.then((choice) => {
+                        if (choice.outcome === 'accepted') {
+                            this.canInstall = false;
+                        }
+                        this.deferredPrompt = null;
+                    });
+                }
+            }
+         }"
+         x-show="canInstall && !isStandalone"
+         x-cloak
+         class="fixed top-3 left-1/2 -translate-x-1/2 z-50 no-print">
+        <button type="button"
+                @click="installApp()"
+                class="px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-semibold shadow-apple-elevated flex items-center gap-2 hover:bg-black transition-all active:scale-95 border border-slate-700">
+            <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>Pasang Aplikasi ke Desktop (PWA Tanpa Address Bar)</span>
+        </button>
     </div>
 
     <!-- Main Content Container -->

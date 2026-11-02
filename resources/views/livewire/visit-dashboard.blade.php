@@ -123,8 +123,8 @@
                                         {{ $visit->manual_patient_code ?: ($visit->patient?->patient_code ?? '-') }}
                                     </span>
                                     @if($visit->inbody_id || $visit->patient?->inbody_id)
-                                        <span class="font-mono text-[11px] px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 font-semibold">
-                                            ID InBody: {{ $visit->inbody_id ?: $visit->patient?->inbody_id }}
+                                        <span class="font-mono text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200 font-semibold">
+                                            NO. ID: {{ $visit->inbody_id ?: $visit->patient?->inbody_id }}
                                         </span>
                                     @endif
                                     <span class="text-xs text-slate-500 font-mono">{{ $visit->patient?->phone_number }}</span>

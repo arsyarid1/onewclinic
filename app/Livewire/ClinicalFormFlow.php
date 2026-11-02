@@ -78,7 +78,7 @@ class ClinicalFormFlow extends Component
     public string $registration_patient_signature = '';
     public string $registration_patient_signer_name = '';
     public string $registration_staff_signature = '';
-    public string $registration_staff_signer_name = 'Ns. Ratna Dewi, S.Kep';
+    public string $registration_staff_signer_name = '';
     public string $registration_staff_signed_date = '';
 
     // ==========================================
@@ -99,46 +99,46 @@ class ClinicalFormFlow extends Component
     public string $gc_patient_signer_name = '';
     public string $gc_patient_signature = '';
 
-    public string $gc_staff_name = 'Ns. Ratna Dewi, S.Kep';
+    public string $gc_staff_name = '';
     public string $gc_staff_title = 'Petugas Pendaftaran';
     public string $gc_staff_signature = '';
 
     // ==========================================
     // STEP 3: PERSETUJUAN TINDAKAN KEDOKTERAN (Hal 5)
     // ==========================================
-    public string $ic_doctor_name = 'dr. Alana Wijaya, Sp.D.V.E';
-    public string $ic_info_provider = 'dr. Alana Wijaya, Sp.D.V.E';
+    public string $ic_doctor_name = '';
+    public string $ic_info_provider = '';
     public string $ic_recipient_name = '';
 
-    // 11 Poin Informasi Medis
+    // 11 Poin Informasi Medis (Default Kosong & Checklist False)
     public string $ic_diagnosis = '';
-    public bool $ic_diagnosis_checked = true;
-    public string $ic_diagnosis_basis = 'Pemeriksaan Klinis & Evaluasi Kondisi Kulit';
-    public bool $ic_diagnosis_basis_checked = true;
-    public string $ic_medical_procedure = 'Messo + Botox + Laser CO2 + Multivitamin Infuse';
-    public bool $ic_medical_procedure_checked = true;
-    public string $ic_indication = 'Peremajaan kulit, perbaikan tekstur & hiperpigmentasi';
-    public bool $ic_indication_checked = true;
-    public string $ic_procedure_steps = 'Asepsis, anestesi topikal 30-45 menit, tindakan klinis, post-treatment soothing';
-    public bool $ic_procedure_steps_checked = true;
-    public string $ic_procedure_goal = 'Meningkatkan elastisitas, kecerahan, dan regenerasi sel kulit';
-    public bool $ic_procedure_goal_checked = true;
-    public string $ic_risks = 'Kemerahan sementara (eritema), pembengkakan ringan, rasa hangat';
-    public bool $ic_risks_checked = true;
-    public string $ic_complications = 'Hematoma ringan, reaksi hipersensitivitas minimal';
-    public bool $ic_complications_checked = true;
-    public string $ic_prognosis = 'Dubia ad Bonam';
-    public bool $ic_prognosis_checked = true;
-    public string $ic_alternatives_risks = 'Perawatan topikal harian atau peeling kimiawi bertahap';
-    public bool $ic_alternatives_risks_checked = true;
-    public string $ic_other_notes = 'Gunakan sunscreen SPF 50+, hindari paparan sinar matahari langsung 3 hari';
+    public bool $ic_diagnosis_checked = false;
+    public string $ic_diagnosis_basis = '';
+    public bool $ic_diagnosis_basis_checked = false;
+    public string $ic_medical_procedure = '';
+    public bool $ic_medical_procedure_checked = false;
+    public string $ic_indication = '';
+    public bool $ic_indication_checked = false;
+    public string $ic_procedure_steps = '';
+    public bool $ic_procedure_steps_checked = false;
+    public string $ic_procedure_goal = '';
+    public bool $ic_procedure_goal_checked = false;
+    public string $ic_risks = '';
+    public bool $ic_risks_checked = false;
+    public string $ic_complications = '';
+    public bool $ic_complications_checked = false;
+    public string $ic_prognosis = '';
+    public bool $ic_prognosis_checked = false;
+    public string $ic_alternatives_risks = '';
+    public bool $ic_alternatives_risks_checked = false;
+    public string $ic_other_notes = '';
     public bool $ic_other_notes_checked = false;
 
     // Tanda Tangan Informed Consent
     public string $ic_doctor_signature = '';
     public string $ic_recipient_signature = '';
     public string $ic_witness_signature = '';
-    public string $ic_witness_name = 'Ns. Ratna Dewi, S.Kep';
+    public string $ic_witness_name = '';
 
     public string $ic_patient_age = '';
     public string $ic_patient_gender = 'Perempuan';
@@ -165,17 +165,13 @@ class ClinicalFormFlow extends Component
     // STEP 5: TINDAKAN & BHP TINDAKAN HARIAN (Hal 6)
     // ==========================================
     public string $bhp_patient_name = '';
-    public string $bhp_therapist_nurse = 'Ns. Ratna Dewi, S.Kep';
-    public string $bhp_doctor_name = 'dr. Alana Wijaya, Sp.D.V.E';
+    public string $bhp_therapist_nurse = '';
+    public string $bhp_doctor_name = '';
     public string $bhp_date = '';
 
-    // List Tindakan (Custom dynamic rows)
+    // List Tindakan (Custom dynamic rows - Default Kosong)
     public array $treatmentRows = [
-        ['action' => 'Messo perut 1 Vial'],
-        ['action' => 'Botox 50 unit'],
-        ['action' => 'Laser CO2'],
-        ['action' => 'Multivitamin Infus'],
-        ['action' => 'Secretome 1'],
+        ['action' => ''],
     ];
 
     // Master BHP List & Selected Quantities [consumable_id => quantity]
@@ -225,31 +221,8 @@ class ClinicalFormFlow extends Component
         $consumables = Consumable::where('is_active', true)->get();
         foreach ($consumables as $c) {
             if (!isset($this->selectedBhpQuantities[$c->id])) {
-                // Initialize default quantities for common items like on paper
-                if (str_contains($c->name, 'SPONGE')) $this->selectedBhpQuantities[$c->id] = 2;
-                elseif (str_contains($c->name, 'HAIR CUP')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'CLEANSING')) $this->selectedBhpQuantities[$c->id] = 3;
-                elseif (str_contains($c->name, 'FACIAL WASH')) $this->selectedBhpQuantities[$c->id] = 3;
-                elseif (str_contains($c->name, 'TONER')) $this->selectedBhpQuantities[$c->id] = 3;
-                elseif (str_contains($c->name, 'KAPAS')) $this->selectedBhpQuantities[$c->id] = 10;
-                elseif (str_contains($c->name, 'MASKER ANESTESI')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'MASKER WAJAH')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'ANTI IRITASI')) $this->selectedBhpQuantities[$c->id] = 3;
-                elseif (str_contains($c->name, 'SPUIT 1CC')) $this->selectedBhpQuantities[$c->id] = 3;
-                elseif (str_contains($c->name, 'SPUIT 3CC')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'SPUIT 5CC')) $this->selectedBhpQuantities[$c->id] = 2;
-                elseif (str_contains($c->name, 'NEEDLE 27G')) $this->selectedBhpQuantities[$c->id] = 4;
-                elseif (str_contains($c->name, 'NEEDLE 30G')) $this->selectedBhpQuantities[$c->id] = 4;
-                elseif (str_contains($c->name, 'NEEDLE 32G')) $this->selectedBhpQuantities[$c->id] = 2;
-                elseif (str_contains($c->name, 'INFUSE SET')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'ABOCATH')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'NEUROBION')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'VITAMIN C')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'MICROPORE')) $this->selectedBhpQuantities[$c->id] = 30;
-                elseif (str_contains($c->name, 'ALKOHOL SWAB')) $this->selectedBhpQuantities[$c->id] = 10;
-                elseif (str_contains($c->name, 'NACL 100')) $this->selectedBhpQuantities[$c->id] = 1;
-                elseif (str_contains($c->name, 'OTC PLAST')) $this->selectedBhpQuantities[$c->id] = 1;
-                else $this->selectedBhpQuantities[$c->id] = 0;
+                // Default quantity kosong sesuai permintaan user
+                $this->selectedBhpQuantities[$c->id] = '';
             }
         }
     }
@@ -560,10 +533,10 @@ class ClinicalFormFlow extends Component
             'chief_complaint' => trim($this->chief_complaint) ?: null,
             'whatsapp_comm_consent' => $this->whatsapp_comm_consent,
             'registration_patient_signer_name' => trim($this->registration_patient_signer_name) ?: $patient->name,
-            'registration_staff_signer_name' => trim($this->registration_staff_signer_name) ?: 'Ns. Ratna Dewi, S.Kep',
+            'registration_staff_signer_name' => trim($this->registration_staff_signer_name) ?: null,
             'registration_staff_signed_at' => Carbon::now(),
 
-            'general_consent_staff_name' => trim($this->gc_staff_name) ?: 'Ns. Ratna Dewi, S.Kep',
+            'general_consent_staff_name' => trim($this->gc_staff_name) ?: null,
             'general_consent_staff_title' => trim($this->gc_staff_title) ?: 'Petugas Pendaftaran',
             'general_consent_patient_relation' => $this->gc_patient_relation,
             'general_consent_patient_signer_name' => trim($this->gc_patient_signer_name) ?: $patient->name,
@@ -589,13 +562,13 @@ class ClinicalFormFlow extends Component
             'photo_after_left_side' => $this->photo_after_left_side_path,
             'photo_after_path' => $this->photo_after_front_path ?: $this->photo_after_right_tilt_path,
 
-            'therapist_nurse_name' => trim($this->bhp_therapist_nurse) ?: 'Ns. Ratna Dewi, S.Kep',
-            'doctor_name_override' => trim($this->bhp_doctor_name) ?: 'dr. Alana Wijaya, Sp.D.V.E',
+            'therapist_nurse_name' => trim($this->bhp_therapist_nurse) ?: null,
+            'doctor_name_override' => trim($this->bhp_doctor_name) ?: null,
             'custom_treatment_list' => array_values(array_filter($this->treatmentRows, fn($r) => !empty(trim($r['action'] ?? '')))),
 
             'doctor_id' => $doctor?->id,
             'nurse_id' => $nurse?->id,
-            'assistant_name' => trim($this->bhp_therapist_nurse) ?: 'Ns. Ratna Dewi, S.Kep',
+            'assistant_name' => trim($this->bhp_therapist_nurse) ?: null,
             'diagnosis_wd' => trim($this->ic_diagnosis) ?: 'Pemeriksaan Estetika Klinis',
             'diagnosis_dd' => 'Kondisi Kulit & Kontur Wajah',
             'doctor_notes' => trim($this->ic_other_notes) ?: null,
@@ -635,7 +608,7 @@ class ClinicalFormFlow extends Component
         $consentData = [
             'visit_id' => $visit->id,
             'doctor_id' => $doctor?->id,
-            'information_provider' => trim($this->ic_info_provider) ?: 'dr. Alana Wijaya, Sp.D.V.E',
+            'information_provider' => trim($this->ic_info_provider) ?: null,
             'recipient_name' => trim($this->ic_recipient_name) ?: $patient->name,
             'recipient_age' => $this->ic_patient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : '28'),
             'recipient_gender' => $patient->gender,
@@ -670,7 +643,7 @@ class ClinicalFormFlow extends Component
             'other_notes' => trim($this->ic_other_notes),
             'other_notes_checked' => $this->ic_other_notes_checked,
 
-            'witness_name' => trim($this->ic_witness_name) ?: 'Ns. Ratna Dewi, S.Kep',
+            'witness_name' => trim($this->ic_witness_name) ?: null,
             'consent_city' => 'Jakarta',
             'consent_date' => Carbon::today(),
             'consent_time' => Carbon::now()->format('H:i'),

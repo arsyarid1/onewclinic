@@ -246,7 +246,8 @@ class Visit extends Model
 
     public function getHasFiveSidesBeforeAttribute(): bool
     {
-        return !empty($this->photo_before_right_tilt_url)
+        return !empty($this->photo_before_front_url)
+            || !empty($this->photo_before_right_tilt_url)
             || !empty($this->photo_before_right_side_url)
             || !empty($this->photo_before_left_tilt_url)
             || !empty($this->photo_before_left_side_url);
@@ -254,7 +255,8 @@ class Visit extends Model
 
     public function getHasFiveSidesAfterAttribute(): bool
     {
-        return !empty($this->photo_after_right_tilt_url)
+        return !empty($this->photo_after_front_url)
+            || !empty($this->photo_after_right_tilt_url)
             || !empty($this->photo_after_right_side_url)
             || !empty($this->photo_after_left_tilt_url)
             || !empty($this->photo_after_left_side_url);

@@ -459,4 +459,18 @@ class ClinicFlowTest extends TestCase
         // photo_before_url should return null instead of broken url
         $this->assertNull($visit->photo_before_url);
     }
+
+    public function test_guest_can_access_clinical_form_flow_without_login(): void
+    {
+        $response = $this->get('/form-flow');
+        $response->assertOk();
+    }
+
+    public function test_direct_storage_route_serves_public_disk_files(): void
+    {
+        \Illuminate\Support\Facades\Storage::disk('public')->put('test_asset.txt', 'hello clinical flow');
+        $response = $this->get('/storage/test_asset.txt');
+        $response->assertOk();
+        \Illuminate\Support\Facades\Storage::disk('public')->delete('test_asset.txt');
+    }
 }
