@@ -10,19 +10,19 @@
     <!-- Favicon & PWA Icons -->
     <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <link rel="manifest" href="{{ asset('manifest-form.json') }}">
+    <link rel="manifest" href="/manifest.json">
 
     <!-- PWA / Web App Capabilities - Standalone without address bar -->
-    <meta name="theme-color" content="#0284C7">
+    <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ONEW Form">
+    <meta name="application-name" content="Form Flow">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ONEW Form">
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('icon-192.png') }}">
-    <link rel="apple-touch-icon" sizes="512x512" href="{{ asset('icon-512.png') }}">
+    <meta name="apple-mobile-web-app-title" content="Form Flow">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png">
 
     <style>
         @media print {
@@ -153,13 +153,9 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((reg) => {
-                        console.log('ONEW Clinic Form PWA ServiceWorker active:', reg.scope);
-                    })
-                    .catch((err) => {
-                        console.warn('PWA ServiceWorker notice:', err);
-                    });
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.error('ServiceWorker registration failed: ', err);
+                });
             });
         }
     </script>
