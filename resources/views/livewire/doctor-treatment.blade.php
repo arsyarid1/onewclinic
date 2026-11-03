@@ -459,7 +459,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('icon.png') }}" alt="ONEW" class="h-9 w-auto object-contain">
+                        <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-9 w-auto object-contain">
                         <div>
                             <h2 class="text-lg font-bold text-slate-900 tracking-tight leading-none">
                                 Formulir Persetujuan Tindakan Kedokteran

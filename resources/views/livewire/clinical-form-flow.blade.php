@@ -5,8 +5,8 @@
             <!-- Brand & Step Indicator -->
             <div class="flex items-center gap-3">
                 <a href="{{ route('clinical.form.flow') }}" class="flex items-center gap-2 group text-slate-700 hover:text-slate-900 transition-colors">
-                    <img src="{{ asset('icon.png') }}" alt="ONEW" class="h-7 w-auto object-contain">
-                    <span class="font-bold text-xs tracking-tight text-slate-900">ONEW FORM</span>
+                    <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-7 w-auto object-contain">
+                    <span class="font-bold text-xs tracking-tight text-slate-900">FORM FLOW</span>
                 </a>
                 <span class="text-slate-300">|</span>
                 <span class="text-xs font-semibold text-slate-800">
@@ -44,11 +44,7 @@
                 <!-- Kop Surat Header Form -->
                 <div class="flex flex-col sm:flex-row items-start justify-between pb-4 border-b-2 border-slate-900 gap-4">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('icon.png') }}" alt="ONEW Logo" class="h-14 w-auto object-contain">
-                        <div>
-                            <h2 class="text-2xl font-black tracking-widest text-slate-900">ONEW</h2>
-                            <span class="text-[10px] font-bold tracking-wider text-slate-500 uppercase block">Klinik Utama Estetika</span>
-                        </div>
+                        <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-14 w-auto object-contain">
                     </div>
                     <div class="text-left sm:text-right text-[11px] text-slate-600 leading-tight">
                         <p class="font-bold text-slate-900 text-xs">ONEW Klinik Utama</p>
@@ -446,7 +442,7 @@
             <!-- ==================================================== -->
             @elseif($currentStep === 2)
                 <div class="text-center pb-4 border-b-2 border-slate-900">
-                    <img src="{{ asset('icon.png') }}" alt="ONEW" class="h-12 w-auto mx-auto mb-1 object-contain">
+                    <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-12 w-auto mx-auto mb-2 object-contain">
                     <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-800">Klinik Utama ONEW &bull; PT Permata Medikal Jaya</h3>
                     <p class="text-[11px] text-slate-500">Jl. Laksana I no 6, Kebayoran Baru, Jaksel 12180 &bull; +62 8119 6977 886 / +62 21382 506 94</p>
                     <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 mt-3">
@@ -624,7 +620,7 @@
             <!-- ==================================================== -->
             @elseif($currentStep === 3)
                 <div class="text-center pb-4 border-b-2 border-slate-900">
-                    <img src="{{ asset('icon.png') }}" alt="ONEW" class="h-12 w-auto mx-auto mb-1 object-contain">
+                    <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-12 w-auto mx-auto mb-2 object-contain">
                     <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">
                         PERSETUJUAN TINDAKAN KEDOKTERAN
                     </h1>

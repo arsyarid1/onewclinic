@@ -38,9 +38,12 @@ class MedicalReportController extends Controller
             return null;
         };
 
-        // Prefer clean icon emblem in public (icon.png without text) as requested by user
+        // Prefer official SVG logo as seen in dashboard (without extra text)
         $logoBase64 = null;
-        if (file_exists(public_path('icon.png'))) {
+        if (file_exists(public_path('logo.svg'))) {
+            $logoContent = file_get_contents(public_path('logo.svg'));
+            $logoBase64 = 'data:image/svg+xml;base64,' . base64_encode($logoContent);
+        } elseif (file_exists(public_path('icon.png'))) {
             $logoContent = file_get_contents(public_path('icon.png'));
             $logoBase64 = 'data:image/png;base64,' . base64_encode($logoContent);
         } elseif ($clinic?->logo_path && Storage::disk('public')->exists($clinic->logo_path)) {
@@ -53,6 +56,7 @@ class MedicalReportController extends Controller
         $witnessConsentSigBase64 = $toBase64($visit->informedConsent?->witness_signature_path);
         $registrationPatientSigBase64 = $toBase64($visit->registration_patient_signature_path);
         $registrationStaffSigBase64 = $toBase64($visit->registration_staff_signature_path);
+        $generalConsentStaffSigBase64 = $toBase64($visit->general_consent_staff_signature_path ?: $visit->registration_staff_signature_path);
 
         $photoBeforeBase64 = $toBase64($visit->photo_before_path ?: $visit->photo_before_front);
         $photoAfterBase64 = $toBase64($visit->photo_after_path ?: $visit->photo_after_front);
@@ -69,10 +73,13 @@ class MedicalReportController extends Controller
         $photoAfterLeftTiltBase64 = $toBase64($visit->photo_after_left_tilt);
         $photoAfterLeftSideBase64 = $toBase64($visit->photo_after_left_side);
 
+        $consumables = \App\Models\Consumable::orderBy('id')->get();
+
         $data = [
             'clinic' => $clinic,
             'visit' => $visit,
             'patient' => $visit->patient,
+            'consumables' => $consumables,
             'logoBase64' => $logoBase64,
             'signatureBase64' => $signatureBase64,
             'procedureConsentSigBase64' => $procedureConsentSigBase64,
@@ -80,6 +87,7 @@ class MedicalReportController extends Controller
             'witnessConsentSigBase64' => $witnessConsentSigBase64,
             'registrationPatientSigBase64' => $registrationPatientSigBase64,
             'registrationStaffSigBase64' => $registrationStaffSigBase64,
+            'generalConsentStaffSigBase64' => $generalConsentStaffSigBase64,
             'photoBeforeBase64' => $photoBeforeBase64,
             'photoAfterBase64' => $photoAfterBase64,
             'photoBeforeFrontBase64' => $photoBeforeFrontBase64,
