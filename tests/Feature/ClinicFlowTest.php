@@ -2,17 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Contracts\TrustmedisServiceInterface;
+use App\Livewire\Auth\Login;
+use App\Livewire\ClinicalFormFlow;
+use App\Livewire\ClinicSettings;
 use App\Livewire\DoctorTreatment;
 use App\Livewire\NurseExamination;
 use App\Livewire\PatientKiosk;
 use App\Livewire\PatientRegistration;
 use App\Models\Clinic;
+use App\Models\Consumable;
 use App\Models\Patient;
 use App\Models\Treatment;
 use App\Models\User;
 use App\Models\Visit;
-use App\Services\MockTrustmedisService;
 use App\Services\PatientCodeGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -25,9 +27,13 @@ class ClinicFlowTest extends TestCase
     use RefreshDatabase;
 
     protected Clinic $clinic;
+
     protected User $doctor;
+
     protected User $nurse;
+
     protected Treatment $treatment1;
+
     protected Treatment $treatment2;
 
     protected function setUp(): void
@@ -78,7 +84,7 @@ class ClinicFlowTest extends TestCase
 
     public function test_patient_code_generator_produces_sequential_codes_with_lock_for_update(): void
     {
-        $generator = new PatientCodeGenerator();
+        $generator = new PatientCodeGenerator;
         $code1 = $generator->generate($this->clinic);
 
         $patient1 = Patient::create([
@@ -281,7 +287,7 @@ class ClinicFlowTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200);
 
-        Livewire::test(\App\Livewire\Auth\Login::class)
+        Livewire::test(Login::class)
             ->set('email', 'doctor@onewclinic.com')
             ->set('password', 'password')
             ->call('login')
@@ -296,7 +302,7 @@ class ClinicFlowTest extends TestCase
 
     public function test_doctor_treatment_saves_diagnosis_consumables_and_informed_consent(): void
     {
-        $consumable = \App\Models\Consumable::create([
+        $consumable = Consumable::create([
             'clinic_id' => $this->clinic->id,
             'name' => 'SPUYT 1CC',
             'category' => 'Spuit & Needle',
@@ -363,7 +369,7 @@ class ClinicFlowTest extends TestCase
         ]);
 
         Livewire::actingAs($superadmin)
-            ->test(\App\Livewire\ClinicSettings::class)
+            ->test(ClinicSettings::class)
             // Save clinic settings
             ->set('name', 'ONEW Aesthetic Clinic')
             ->call('saveSettings')
@@ -403,7 +409,7 @@ class ClinicFlowTest extends TestCase
 
     public function test_clinical_form_flow_saves_and_progresses(): void
     {
-        Livewire::test(\App\Livewire\ClinicalFormFlow::class)
+        Livewire::test(ClinicalFormFlow::class)
             ->set('manual_patient_code', 'MR-2026-999')
             ->set('inbody_id', 'INB-888')
             ->set('name', 'Nadia Safitri')
@@ -468,9 +474,157 @@ class ClinicFlowTest extends TestCase
 
     public function test_direct_storage_route_serves_public_disk_files(): void
     {
-        \Illuminate\Support\Facades\Storage::disk('public')->put('test_asset.txt', 'hello clinical flow');
+        Storage::disk('public')->put('test_asset.txt', 'hello clinical flow');
         $response = $this->get('/storage/test_asset.txt');
         $response->assertOk();
-        \Illuminate\Support\Facades\Storage::disk('public')->delete('test_asset.txt');
+        Storage::disk('public')->delete('test_asset.txt');
+    }
+
+    public function test_clinical_form_flow_renders_photo_uploader_with_instant_preview_on_step_4_and_6(): void
+    {
+        Livewire::test(ClinicalFormFlow::class)
+            ->set('currentStep', 4)
+            ->assertSeeHtml('photoUploader(\'temp_photo_before_front\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_before_right_tilt\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_before_right_side\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_before_left_tilt\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_before_left_side\'');
+
+        Livewire::test(ClinicalFormFlow::class)
+            ->set('currentStep', 6)
+            ->assertSeeHtml('photoUploader(\'temp_photo_after_front\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_after_right_tilt\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_after_right_side\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_after_left_tilt\'')
+            ->assertSeeHtml('photoUploader(\'temp_photo_after_left_side\'');
+    }
+
+    public function test_clinical_form_flow_stores_uploaded_photos(): void
+    {
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-PHOTO',
+            'name' => 'Photo Patient',
+            'phone_number' => '081234567800',
+            'gender' => 'Perempuan',
+            'date_of_birth' => '1995-05-15',
+        ]);
+
+        $photoFront = UploadedFile::fake()->create('front.jpg', 150, 'image/jpeg');
+
+        Livewire::test(ClinicalFormFlow::class)
+            ->set('manual_patient_code', 'ONEW26-PHOTO')
+            ->set('name', 'Photo Patient')
+            ->set('phone_number', '081234567800')
+            ->set('currentStep', 4)
+            ->set('temp_photo_before_front', $photoFront)
+            ->call('continue')
+            ->assertHasNoErrors();
+
+        $visit = Visit::where('patient_id', $patient->id)->first();
+        $this->assertNotNull($visit);
+        $this->assertNotNull($visit->photo_before_front);
+        Storage::disk('public')->assertExists($visit->photo_before_front);
+    }
+
+    public function test_signature_persistence_across_step_navigation(): void
+    {
+        $dummySig = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+
+        $component = Livewire::test(ClinicalFormFlow::class)
+            ->set('manual_patient_code', 'ONEW26-SIGTEST')
+            ->set('name', 'Signature Patient')
+            ->set('phone_number', '081234567899')
+            ->set('registration_patient_signature', $dummySig)
+            ->set('registration_staff_signature', $dummySig)
+            ->call('continue'); // Continues to step 2
+
+        $this->assertEquals(2, $component->get('currentStep'));
+        $this->assertEquals($dummySig, $component->get('registration_patient_signature'));
+        $this->assertEquals($dummySig, $component->get('registration_staff_signature'));
+
+        // Navigate back to step 1
+        $component->call('goBack');
+        $this->assertEquals(1, $component->get('currentStep'));
+
+        // Signatures must still be present!
+        $this->assertEquals($dummySig, $component->get('registration_patient_signature'));
+        $this->assertEquals($dummySig, $component->get('registration_staff_signature'));
+    }
+
+    public function test_backend_official_can_load_and_edit_completed_visit(): void
+    {
+        $dummySig = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+        $sigPath = 'signatures/test_sig.png';
+        Storage::disk('public')->put($sigPath, 'fake_png_data');
+
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-EDIT',
+            'name' => 'Original Name',
+            'phone_number' => '081234567811',
+            'gender' => 'female',
+            'date_of_birth' => '1992-03-10',
+        ]);
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'manual_patient_code' => 'ONEW26-EDIT',
+            'registration_patient_signature_path' => $sigPath,
+            'status' => 'completed',
+        ]);
+
+        // Official opens form flow for this visit
+        $component = Livewire::test(ClinicalFormFlow::class, ['visit_id' => $visit->id])
+            ->assertSet('visitId', $visit->id)
+            ->assertSet('name', 'Original Name')
+            ->assertSet('manual_patient_code', 'ONEW26-EDIT');
+
+        $loadedSig = $component->get('registration_patient_signature');
+        $this->assertNotNull($loadedSig);
+        $this->assertStringStartsWith('data:image', $loadedSig);
+
+        // Official updates chief complaint and treatment
+        $component->set('chief_complaint', 'Keluhan diperbarui oleh official')
+            ->set('name', 'Updated Name')
+            ->call('saveCurrentState');
+
+        $visit->refresh();
+        $patient->refresh();
+        $this->assertEquals('Keluhan diperbarui oleh official', $visit->chief_complaint);
+        $this->assertEquals('Updated Name', $patient->name);
+        $this->assertEquals('completed', $visit->status); // Status preserved
+    }
+
+    public function test_medical_report_pdf_renders_with_photos_and_signatures(): void
+    {
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-FULLPDF',
+            'name' => 'Full PDF Patient',
+            'phone_number' => '081234567822',
+            'gender' => 'female',
+            'date_of_birth' => '1990-12-25',
+        ]);
+
+        Storage::disk('public')->put('photos/before/front.png', 'fake_img');
+        Storage::disk('public')->put('photos/after/front.png', 'fake_img');
+        Storage::disk('public')->put('signatures/sig.png', 'fake_sig');
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'manual_patient_code' => 'ONEW26-FULLPDF',
+            'photo_before_front' => 'photos/before/front.png',
+            'photo_after_front' => 'photos/after/front.png',
+            'registration_patient_signature_path' => 'signatures/sig.png',
+            'consent_signature_path' => 'signatures/sig.png',
+            'status' => 'completed',
+        ]);
+
+        $response = $this->actingAs($this->doctor)->get(route('reports.visit.pdf', $visit));
+        $response->assertStatus(200);
+        $this->assertEquals('application/pdf', $response->headers->get('content-type'));
     }
 }

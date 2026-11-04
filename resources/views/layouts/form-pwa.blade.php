@@ -160,6 +160,7 @@
         }
     </script>
 
+    @include('partials.photo-uploader-script')
     @livewireScripts
 </body>
 </html>

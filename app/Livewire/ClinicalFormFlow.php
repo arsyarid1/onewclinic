@@ -6,12 +6,10 @@ use App\Models\Clinic;
 use App\Models\Consumable;
 use App\Models\InformedConsent;
 use App\Models\Patient;
-use App\Models\Treatment;
 use App\Models\User;
 use App\Models\Visit;
 use App\Models\VisitConsumable;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -36,137 +34,217 @@ class ClinicalFormFlow extends Component
     // STEP 1: FORMULIR PENDAFTARAN PASIEN (Hal 1 & 2)
     // ==========================================
     public string $manual_patient_code = ''; // Ditulis Manual
+
     public string $registration_date = '';
+
     public string $inbody_id = ''; // ID Inbody dari alat kesehatan
 
     // Identitas Pasien
     public string $name = '';
+
     public string $nik_passport = '';
+
     public string $birth_place = '';
+
     public string $date_of_birth = '';
+
     public string $gender = 'Perempuan'; // Laki-laki / Perempuan
+
     public string $marital_status = 'Belum Menikah'; // Belum Menikah / Menikah / Cerai
+
     public string $id_address = '';
+
     public bool $is_domicile_same = true;
+
     public string $domicile_address = '';
+
     public string $phone_number = '';
+
     public string $email = '';
+
     public string $occupation = '';
 
     // Kontak Darurat / Penanggung Jawab
     public string $emergency_name = '';
+
     public string $emergency_relation = 'Keluarga';
+
     public string $emergency_phone = '';
 
     // Data Penjamin / Pembayaran
     public string $payment_type = 'Pribadi / Umum';
+
     public string $insurance_company_name = '';
+
     public string $insurance_card_number = '';
 
     // Informasi Pelayanan
     public string $patient_service_status = 'Pasien Baru';
+
     public string $visit_purpose = 'Estetika';
+
     public string $destination_doctor_poli = '';
+
     public string $chief_complaint = '';
 
     // Informasi Tambahan
     public string $referral_source = 'Instagram / TikTok';
+
     public string $referral_source_other = '';
 
     // Pernyataan & Persetujuan
     public bool $whatsapp_comm_consent = true;
-    public string $registration_patient_signature = '';
+
+    public ?string $registration_patient_signature = null;
+
     public string $registration_patient_signer_name = '';
-    public string $registration_staff_signature = '';
+
+    public ?string $registration_staff_signature = null;
+
     public string $registration_staff_signer_name = '';
+
     public string $registration_staff_signed_date = '';
 
     // ==========================================
     // STEP 2: GENERAL CONSENT (Hal 3 & 4)
     // ==========================================
     public bool $gc_whatsapp_reminder = true;
+
     public bool $gc_promo_info = false;
+
     public string $gc_insurance_disclosure = 'Ya';
+
     public bool $gc_third_party_info = false;
+
     public string $gc_third_party_name = '';
+
     public string $gc_third_party_phone = '';
+
     public string $gc_third_party_notes = '';
 
     public string $gc_city = 'Jakarta';
+
     public string $gc_date = '';
+
     public string $gc_time = '';
+
     public string $gc_patient_relation = 'Diri Sendiri';
+
     public string $gc_patient_signer_name = '';
-    public string $gc_patient_signature = '';
+
+    public ?string $gc_patient_signature = null;
 
     public string $gc_staff_name = '';
+
     public string $gc_staff_title = 'Petugas Pendaftaran';
-    public string $gc_staff_signature = '';
+
+    public ?string $gc_staff_signature = null;
 
     // ==========================================
     // STEP 3: PERSETUJUAN TINDAKAN KEDOKTERAN (Hal 5)
     // ==========================================
     public string $ic_doctor_name = '';
+
     public string $ic_info_provider = '';
+
     public string $ic_recipient_name = '';
 
     // 11 Poin Informasi Medis (Default Kosong & Checklist False)
     public string $ic_diagnosis = '';
+
     public bool $ic_diagnosis_checked = false;
+
     public string $ic_diagnosis_basis = '';
+
     public bool $ic_diagnosis_basis_checked = false;
+
     public string $ic_medical_procedure = '';
+
     public bool $ic_medical_procedure_checked = false;
+
     public string $ic_indication = '';
+
     public bool $ic_indication_checked = false;
+
     public string $ic_procedure_steps = '';
+
     public bool $ic_procedure_steps_checked = false;
+
     public string $ic_procedure_goal = '';
+
     public bool $ic_procedure_goal_checked = false;
+
     public string $ic_risks = '';
+
     public bool $ic_risks_checked = false;
+
     public string $ic_complications = '';
+
     public bool $ic_complications_checked = false;
+
     public string $ic_prognosis = '';
+
     public bool $ic_prognosis_checked = false;
+
     public string $ic_alternatives_risks = '';
+
     public bool $ic_alternatives_risks_checked = false;
+
     public string $ic_other_notes = '';
+
     public bool $ic_other_notes_checked = false;
 
     // Tanda Tangan Informed Consent
-    public string $ic_doctor_signature = '';
-    public string $ic_recipient_signature = '';
-    public string $ic_witness_signature = '';
+    public ?string $ic_doctor_signature = null;
+
+    public ?string $ic_recipient_signature = null;
+
+    public ?string $ic_witness_signature = null;
+
     public string $ic_witness_name = '';
 
     public string $ic_patient_age = '';
+
     public string $ic_patient_gender = 'Perempuan';
+
     public string $ic_patient_address = '';
+
     public string $ic_action_target_relation = 'saya';
+
     public string $ic_target_patient_name = '';
 
     // ==========================================
     // STEP 4: FOTO BEFORE 5 SISI WAJAH
     // ==========================================
     public $temp_photo_before_front;
+
     public $temp_photo_before_right_tilt;
+
     public $temp_photo_before_right_side;
+
     public $temp_photo_before_left_tilt;
+
     public $temp_photo_before_left_side;
 
     public ?string $photo_before_front_path = null;
+
     public ?string $photo_before_right_tilt_path = null;
+
     public ?string $photo_before_right_side_path = null;
+
     public ?string $photo_before_left_tilt_path = null;
+
     public ?string $photo_before_left_side_path = null;
 
     // ==========================================
     // STEP 5: TINDAKAN & BHP TINDAKAN HARIAN (Hal 6)
     // ==========================================
     public string $bhp_patient_name = '';
+
     public string $bhp_therapist_nurse = '';
+
     public string $bhp_doctor_name = '';
+
     public string $bhp_date = '';
 
     // List Tindakan (Custom dynamic rows - Default Kosong)
@@ -176,23 +254,84 @@ class ClinicalFormFlow extends Component
 
     // Master BHP List & Selected Quantities [consumable_id => quantity]
     public array $selectedBhpQuantities = [];
+
     public string $newCustomBhpName = '';
+
     public int $newCustomBhpQty = 1;
 
     // ==========================================
     // STEP 6: FOTO AFTER 5 SISI WAJAH
     // ==========================================
     public $temp_photo_after_front;
+
     public $temp_photo_after_right_tilt;
+
     public $temp_photo_after_right_side;
+
     public $temp_photo_after_left_tilt;
+
     public $temp_photo_after_left_side;
 
     public ?string $photo_after_front_path = null;
+
     public ?string $photo_after_right_tilt_path = null;
+
     public ?string $photo_after_right_side_path = null;
+
     public ?string $photo_after_left_tilt_path = null;
+
     public ?string $photo_after_left_side_path = null;
+
+    // Auto-save on photo upload completion
+    public function updatedTempPhotoBeforeFront(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoBeforeRightTilt(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoBeforeRightSide(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoBeforeLeftTilt(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoBeforeLeftSide(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoAfterFront(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoAfterRightTilt(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoAfterRightSide(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoAfterLeftTilt(): void
+    {
+        $this->saveCurrentState();
+    }
+
+    public function updatedTempPhotoAfterLeftSide(): void
+    {
+        $this->saveCurrentState();
+    }
 
     public function mount(?int $visit_id = null): void
     {
@@ -209,7 +348,7 @@ class ClinicalFormFlow extends Component
             $this->loadExistingVisit((int) $targetVisitId);
         } else {
             // Default sample number format placeholder
-            $this->manual_patient_code = 'ONEW260000' . rand(10, 99);
+            $this->manual_patient_code = 'ONEW260000'.rand(10, 99);
         }
 
         // Initialize default consumables quantity from database
@@ -220,7 +359,7 @@ class ClinicalFormFlow extends Component
     {
         $consumables = Consumable::where('is_active', true)->get();
         foreach ($consumables as $c) {
-            if (!isset($this->selectedBhpQuantities[$c->id])) {
+            if (! isset($this->selectedBhpQuantities[$c->id])) {
                 // Default quantity kosong sesuai permintaan user
                 $this->selectedBhpQuantities[$c->id] = '';
             }
@@ -230,7 +369,9 @@ class ClinicalFormFlow extends Component
     public function loadExistingVisit(int $visitId): void
     {
         $visit = Visit::with(['patient', 'informedConsent', 'visitConsumables'])->find($visitId);
-        if (!$visit) return;
+        if (! $visit) {
+            return;
+        }
 
         $this->visitId = $visit->id;
         $this->patientId = $visit->patient_id;
@@ -286,22 +427,75 @@ class ClinicalFormFlow extends Component
         $this->gc_staff_name = $visit->general_consent_staff_name ?: 'Ns. Ratna Dewi, S.Kep';
         $this->gc_staff_title = $visit->general_consent_staff_title ?: 'Petugas Pendaftaran';
 
+        // Helper to convert stored signature file to base64 Data URL so SignaturePad can display it
+        $pathToDataUrl = function (?string $path): ?string {
+            if (! $path) {
+                return null;
+            }
+            if (str_starts_with($path, 'data:image')) {
+                return $path;
+            }
+            $cleanPath = ltrim(preg_replace('#^/?storage/#', '', str_replace('\\', '/', $path)), '/');
+            if (Storage::disk('public')->exists($cleanPath)) {
+                $mime = Storage::disk('public')->mimeType($cleanPath) ?: 'image/png';
+                $content = Storage::disk('public')->get($cleanPath);
+
+                return 'data:'.$mime.';base64,'.base64_encode($content);
+            }
+            $fullPath = storage_path('app/public/'.$cleanPath);
+            if (file_exists($fullPath)) {
+                $mime = mime_content_type($fullPath) ?: 'image/png';
+
+                return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($fullPath));
+            }
+
+            return null;
+        };
+
+        // Load existing signatures for Step 1 & Step 2
+        $this->registration_patient_signature = $pathToDataUrl($visit->registration_patient_signature_path);
+        $this->registration_staff_signature = $pathToDataUrl($visit->registration_staff_signature_path);
+        $this->gc_patient_signature = $pathToDataUrl($visit->consent_signature_path);
+        $this->gc_staff_signature = $pathToDataUrl($visit->general_consent_staff_signature_path);
+
         // Step 3 Informed Consent
         if ($visit->informedConsent) {
             $ic = $visit->informedConsent;
             $this->ic_doctor_name = $ic->doctor_name ?? 'dr. Alana Wijaya, Sp.D.V.E';
             $this->ic_info_provider = $ic->information_provider ?? $this->ic_doctor_name;
             $this->ic_recipient_name = $ic->recipient_name ?: $this->name;
+            $this->ic_patient_age = $ic->recipient_age ?: ($p->date_of_birth ? (string) $p->date_of_birth->age : '28');
+            $this->ic_action_target_relation = $ic->recipient_relation ?: 'Diri Sendiri';
+            $this->ic_target_patient_name = $ic->target_patient_name ?: $this->name;
+
             $this->ic_diagnosis = $ic->diagnosis_wd_dd ?? '';
+            $this->ic_diagnosis_checked = (bool) ($ic->diagnosis_checked ?? true);
+            $this->ic_diagnosis_basis = $ic->diagnosis_basis ?? '';
+            $this->ic_diagnosis_basis_checked = (bool) ($ic->diagnosis_basis_checked ?? true);
             $this->ic_medical_procedure = $ic->medical_procedure ?? 'Messo + Botox + Laser CO2 + Multivitamin Infuse';
+            $this->ic_medical_procedure_checked = (bool) ($ic->medical_procedure_checked ?? true);
             $this->ic_indication = $ic->indication ?? '';
+            $this->ic_indication_checked = (bool) ($ic->indication_checked ?? true);
             $this->ic_procedure_steps = $ic->procedure_steps ?? '';
+            $this->ic_procedure_steps_checked = (bool) ($ic->procedure_steps_checked ?? true);
             $this->ic_procedure_goal = $ic->procedure_goal ?? '';
+            $this->ic_procedure_goal_checked = (bool) ($ic->procedure_goal_checked ?? true);
             $this->ic_risks = $ic->risks ?? '';
+            $this->ic_risks_checked = (bool) ($ic->risks_checked ?? true);
             $this->ic_complications = $ic->complications ?? '';
+            $this->ic_complications_checked = (bool) ($ic->complications_checked ?? true);
             $this->ic_prognosis = $ic->prognosis ?? '';
+            $this->ic_prognosis_checked = (bool) ($ic->prognosis_checked ?? true);
             $this->ic_alternatives_risks = $ic->alternatives_risks ?? '';
+            $this->ic_alternatives_risks_checked = (bool) ($ic->alternatives_risks_checked ?? true);
             $this->ic_other_notes = $ic->other_notes ?? '';
+            $this->ic_other_notes_checked = (bool) ($ic->other_notes_checked ?? true);
+            $this->ic_witness_name = $ic->witness_name ?? '';
+
+            // Load existing signatures for Step 3
+            $this->ic_doctor_signature = $pathToDataUrl($ic->doctor_signature_path);
+            $this->ic_recipient_signature = $pathToDataUrl($ic->patient_signature_path);
+            $this->ic_witness_signature = $pathToDataUrl($ic->witness_signature_path);
         }
 
         // Step 4 & 6 Photos
@@ -321,7 +515,7 @@ class ClinicalFormFlow extends Component
         $this->bhp_patient_name = $this->name;
         $this->bhp_therapist_nurse = $visit->therapist_nurse_name ?: 'Ns. Ratna Dewi, S.Kep';
         $this->bhp_doctor_name = $visit->doctor_name_override ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E');
-        if (!empty($visit->custom_treatment_list)) {
+        if (! empty($visit->custom_treatment_list)) {
             $this->treatmentRows = $visit->custom_treatment_list;
         }
 
@@ -369,8 +563,12 @@ class ClinicalFormFlow extends Component
     // Navigation methods
     public function goToStep(int $step): void
     {
-        if ($step < 1) $step = 1;
-        if ($step > 7) $step = 7;
+        if ($step < 1) {
+            $step = 1;
+        }
+        if ($step > 7) {
+            $step = 7;
+        }
 
         // Auto save on step change if patient data exists
         $this->saveCurrentState();
@@ -409,12 +607,14 @@ class ClinicalFormFlow extends Component
     public function saveCurrentState(): void
     {
         $clinic = Clinic::first();
-        if (!$clinic) return;
+        if (! $clinic) {
+            return;
+        }
 
         // 1. Create / Update Patient
         $patientData = [
             'clinic_id' => $clinic->id,
-            'patient_code' => trim($this->manual_patient_code) ?: ('ONEW' . time()),
+            'patient_code' => trim($this->manual_patient_code) ?: ('ONEW'.time()),
             'inbody_id' => trim($this->inbody_id) ?: null,
             'name' => trim($this->name) ?: 'Pasien Baru',
             'nik' => trim($this->nik_passport) ?: null,
@@ -460,63 +660,83 @@ class ClinicalFormFlow extends Component
         $this->gc_patient_signer_name = $this->gc_patient_signer_name ?: $this->name;
         $this->registration_patient_signer_name = $this->registration_patient_signer_name ?: $this->name;
 
+        // Existing visit if present
+        $existingVisit = $this->visitId ? Visit::find($this->visitId) : null;
+
         // Helper to save base64 signature
-        $saveSig = function (?string $base64Data, string $prefix) use ($patient): ?string {
-            if ($base64Data && str_starts_with($base64Data, 'data:image')) {
+        $saveSig = function (?string $base64Data, string $prefix, ?string $fallback = null) use ($patient): ?string {
+            if (! $base64Data) {
+                return null;
+            }
+            if (str_starts_with($base64Data, 'data:image')) {
                 $parts = explode(',', $base64Data);
                 $decoded = base64_decode($parts[1] ?? '');
                 if ($decoded) {
-                    $path = "signatures/{$prefix}_patient_{$patient->id}_" . time() . "_" . rand(100, 999) . ".png";
+                    $path = "signatures/{$prefix}_patient_{$patient->id}_".time().'_'.rand(100, 999).'.png';
                     Storage::disk('public')->put($path, $decoded);
+
                     return $path;
                 }
             }
-            return null;
+
+            return $fallback ?: $base64Data;
         };
 
         // 2. Handle 5 Before Photos
         if ($this->temp_photo_before_front) {
-            $this->photo_before_front_path = $this->temp_photo_before_front->storeAs('photos/before', "before_front_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_before_front_path = $this->temp_photo_before_front->storeAs('photos/before', "before_front_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_before_front = null;
         }
         if ($this->temp_photo_before_right_tilt) {
-            $this->photo_before_right_tilt_path = $this->temp_photo_before_right_tilt->storeAs('photos/before', "before_rtilt_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_before_right_tilt_path = $this->temp_photo_before_right_tilt->storeAs('photos/before', "before_rtilt_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_before_right_tilt = null;
         }
         if ($this->temp_photo_before_right_side) {
-            $this->photo_before_right_side_path = $this->temp_photo_before_right_side->storeAs('photos/before', "before_rside_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_before_right_side_path = $this->temp_photo_before_right_side->storeAs('photos/before', "before_rside_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_before_right_side = null;
         }
         if ($this->temp_photo_before_left_tilt) {
-            $this->photo_before_left_tilt_path = $this->temp_photo_before_left_tilt->storeAs('photos/before', "before_ltilt_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_before_left_tilt_path = $this->temp_photo_before_left_tilt->storeAs('photos/before', "before_ltilt_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_before_left_tilt = null;
         }
         if ($this->temp_photo_before_left_side) {
-            $this->photo_before_left_side_path = $this->temp_photo_before_left_side->storeAs('photos/before', "before_lside_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_before_left_side_path = $this->temp_photo_before_left_side->storeAs('photos/before', "before_lside_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_before_left_side = null;
         }
 
+        $this->photo_before_path = $this->photo_before_front_path
+            ?: $this->photo_before_right_tilt_path
+            ?: $this->photo_before_right_side_path
+            ?: $this->photo_before_left_tilt_path
+            ?: $this->photo_before_left_side_path;
+
         // 3. Handle 5 After Photos
         if ($this->temp_photo_after_front) {
-            $this->photo_after_front_path = $this->temp_photo_after_front->storeAs('photos/after', "after_front_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_after_front_path = $this->temp_photo_after_front->storeAs('photos/after', "after_front_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_after_front = null;
         }
         if ($this->temp_photo_after_right_tilt) {
-            $this->photo_after_right_tilt_path = $this->temp_photo_after_right_tilt->storeAs('photos/after', "after_rtilt_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_after_right_tilt_path = $this->temp_photo_after_right_tilt->storeAs('photos/after', "after_rtilt_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_after_right_tilt = null;
         }
         if ($this->temp_photo_after_right_side) {
-            $this->photo_after_right_side_path = $this->temp_photo_after_right_side->storeAs('photos/after', "after_rside_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_after_right_side_path = $this->temp_photo_after_right_side->storeAs('photos/after', "after_rside_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_after_right_side = null;
         }
         if ($this->temp_photo_after_left_tilt) {
-            $this->photo_after_left_tilt_path = $this->temp_photo_after_left_tilt->storeAs('photos/after', "after_ltilt_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_after_left_tilt_path = $this->temp_photo_after_left_tilt->storeAs('photos/after', "after_ltilt_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_after_left_tilt = null;
         }
         if ($this->temp_photo_after_left_side) {
-            $this->photo_after_left_side_path = $this->temp_photo_after_left_side->storeAs('photos/after', "after_lside_{$patient->id}_" . time() . '.png', 'public');
+            $this->photo_after_left_side_path = $this->temp_photo_after_left_side->storeAs('photos/after', "after_lside_{$patient->id}_".time().'.png', 'public');
             $this->temp_photo_after_left_side = null;
         }
+
+        $this->photo_after_path = $this->photo_after_front_path
+            ?: $this->photo_after_right_tilt_path
+            ?: $this->photo_after_right_side_path
+            ?: $this->photo_after_left_tilt_path
+            ?: $this->photo_after_left_side_path;
 
         // 4. Create / Update Visit
         $doctor = User::where('role', 'doctor')->first();
@@ -553,18 +773,18 @@ class ClinicalFormFlow extends Component
             'photo_before_right_side' => $this->photo_before_right_side_path,
             'photo_before_left_tilt' => $this->photo_before_left_tilt_path,
             'photo_before_left_side' => $this->photo_before_left_side_path,
-            'photo_before_path' => $this->photo_before_front_path ?: $this->photo_before_right_tilt_path,
+            'photo_before_path' => $this->photo_before_path,
 
             'photo_after_front' => $this->photo_after_front_path,
             'photo_after_right_tilt' => $this->photo_after_right_tilt_path,
             'photo_after_right_side' => $this->photo_after_right_side_path,
             'photo_after_left_tilt' => $this->photo_after_left_tilt_path,
             'photo_after_left_side' => $this->photo_after_left_side_path,
-            'photo_after_path' => $this->photo_after_front_path ?: $this->photo_after_right_tilt_path,
+            'photo_after_path' => $this->photo_after_path,
 
             'therapist_nurse_name' => trim($this->bhp_therapist_nurse) ?: null,
             'doctor_name_override' => trim($this->bhp_doctor_name) ?: null,
-            'custom_treatment_list' => array_values(array_filter($this->treatmentRows, fn($r) => !empty(trim($r['action'] ?? '')))),
+            'custom_treatment_list' => array_values(array_filter($this->treatmentRows, fn ($r) => ! empty(trim($r['action'] ?? '')))),
 
             'doctor_id' => $doctor?->id,
             'nurse_id' => $nurse?->id,
@@ -572,25 +792,31 @@ class ClinicalFormFlow extends Component
             'diagnosis_wd' => trim($this->ic_diagnosis) ?: 'Pemeriksaan Estetika Klinis',
             'diagnosis_dd' => 'Kondisi Kulit & Kontur Wajah',
             'doctor_notes' => trim($this->ic_other_notes) ?: null,
-            'status' => $this->currentStep >= 6 ? 'completed' : 'in_treatment',
+            'status' => ($existingVisit?->status === 'completed' || $this->currentStep >= 6) ? 'completed' : 'in_treatment',
             'consent_signed' => true,
             'consent_signed_at' => Carbon::now(),
         ];
 
-        // Process Signatures if provided as new dataURL
-        $regPatSig = $saveSig($this->registration_patient_signature, 'reg_patient');
-        if ($regPatSig) $visitData['registration_patient_signature_path'] = $regPatSig;
+        // Process Signatures
+        $regPatSig = $saveSig($this->registration_patient_signature, 'reg_patient', $existingVisit?->registration_patient_signature_path);
+        if ($regPatSig !== null || $this->registration_patient_signature === null) {
+            $visitData['registration_patient_signature_path'] = $regPatSig;
+        }
 
-        $regStaffSig = $saveSig($this->registration_staff_signature, 'reg_staff');
-        if ($regStaffSig) $visitData['registration_staff_signature_path'] = $regStaffSig;
+        $regStaffSig = $saveSig($this->registration_staff_signature, 'reg_staff', $existingVisit?->registration_staff_signature_path);
+        if ($regStaffSig !== null || $this->registration_staff_signature === null) {
+            $visitData['registration_staff_signature_path'] = $regStaffSig;
+        }
 
-        $gcPatSig = $saveSig($this->gc_patient_signature, 'gc_patient');
-        if ($gcPatSig) {
+        $gcPatSig = $saveSig($this->gc_patient_signature, 'gc_patient', $existingVisit?->consent_signature_path);
+        if ($gcPatSig !== null || $this->gc_patient_signature === null) {
             $visitData['consent_signature_path'] = $gcPatSig;
         }
 
-        $gcStaffSig = $saveSig($this->gc_staff_signature, 'gc_staff');
-        if ($gcStaffSig) $visitData['general_consent_staff_signature_path'] = $gcStaffSig;
+        $gcStaffSig = $saveSig($this->gc_staff_signature, 'gc_staff', $existingVisit?->general_consent_staff_signature_path);
+        if ($gcStaffSig !== null || $this->gc_staff_signature === null) {
+            $visitData['general_consent_staff_signature_path'] = $gcStaffSig;
+        }
 
         if ($this->visitId) {
             $visit = Visit::find($this->visitId);
@@ -601,9 +827,10 @@ class ClinicalFormFlow extends Component
         }
 
         // 5. Create / Update Informed Consent (Step 3)
-        $icDocSig = $saveSig($this->ic_doctor_signature, 'ic_doctor');
-        $icRecSig = $saveSig($this->ic_recipient_signature, 'ic_recipient');
-        $icWitSig = $saveSig($this->ic_witness_signature, 'ic_witness');
+        $existingIc = InformedConsent::where('visit_id', $visit->id)->first();
+        $icDocSig = $saveSig($this->ic_doctor_signature, 'ic_doctor', $existingIc?->doctor_signature_path);
+        $icRecSig = $saveSig($this->ic_recipient_signature, 'ic_recipient', $existingIc?->patient_signature_path);
+        $icWitSig = $saveSig($this->ic_witness_signature, 'ic_witness', $existingIc?->witness_signature_path);
 
         $consentData = [
             'visit_id' => $visit->id,
@@ -652,9 +879,15 @@ class ClinicalFormFlow extends Component
             'doctor_signed' => true,
         ];
 
-        if ($icDocSig) $consentData['doctor_signature_path'] = $icDocSig;
-        if ($icRecSig) $consentData['patient_signature_path'] = $icRecSig;
-        if ($icWitSig) $consentData['witness_signature_path'] = $icWitSig;
+        if ($icDocSig !== null || $this->ic_doctor_signature === null) {
+            $consentData['doctor_signature_path'] = $icDocSig;
+        }
+        if ($icRecSig !== null || $this->ic_recipient_signature === null) {
+            $consentData['patient_signature_path'] = $icRecSig;
+        }
+        if ($icWitSig !== null || $this->ic_witness_signature === null) {
+            $consentData['witness_signature_path'] = $icWitSig;
+        }
 
         InformedConsent::updateOrCreate(['visit_id' => $visit->id], $consentData);
 

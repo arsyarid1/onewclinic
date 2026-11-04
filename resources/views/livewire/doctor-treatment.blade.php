@@ -228,10 +228,14 @@
 
                             <!-- Foto After -->
                             <div class="border border-slate-200/90 bg-white rounded-2xl p-4 text-center shadow-2xs"
-                                 x-data="{
-                                     angle: '{{ $currentVisit->photo_after_front_url ? 'front' : ($currentVisit->photo_after_right_tilt_url ? 'right_tilt' : ($currentVisit->photo_after_right_side_url ? 'right_side' : ($currentVisit->photo_after_left_tilt_url ? 'left_tilt' : ($currentVisit->photo_after_left_side_url ? 'left_side' : ($currentVisit->photo_after_url ? 'default' : 'none'))))) }}',
-                                     hasError: false
-                                 }">
+                                 x-data="Object.assign(
+                                     photoUploader('photo_after', '{{ $photo_after ? $photo_after->temporaryUrl() : ($currentVisit->photo_after_url ?? '') }}'),
+                                     {
+                                         angle: '{{ $currentVisit->photo_after_front_url ? 'front' : ($currentVisit->photo_after_right_tilt_url ? 'right_tilt' : ($currentVisit->photo_after_right_side_url ? 'right_side' : ($currentVisit->photo_after_left_tilt_url ? 'left_tilt' : ($currentVisit->photo_after_left_side_url ? 'left_side' : ($currentVisit->photo_after_url ? 'default' : 'none'))))) }}',
+                                         hasError: false
+                                     }
+                                 )"
+                                 wire:key="doctor-uploader-after">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Foto Akhir (Setelah Tindakan)</span>
                                     @if($currentVisit->has_five_sides_after)
@@ -240,8 +244,8 @@
                                 </div>
 
                                 @if($currentVisit->has_five_sides_after && !$photo_after)
-                                    <!-- Angle Tabs for 5 Sides After -->
-                                    <div class="flex items-center justify-center gap-1 mb-3 flex-wrap">
+                                    <!-- Angle Tabs for 5 Sides After (when viewing saved multi-angle photos) -->
+                                    <div x-show="!previewUrl || previewUrl === '{{ $currentVisit->photo_after_url }}'" class="flex items-center justify-center gap-1 mb-3 flex-wrap">
                                         @if($currentVisit->photo_after_front_url)
                                             <button type="button" @click="angle = 'front'" :class="angle === 'front' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-2 py-0.5 text-[10px] rounded-md transition-all">Depan</button>
                                         @endif
@@ -260,52 +264,68 @@
                                     </div>
                                 @endif
 
-                                @if($photo_after)
-                                    <img src="{{ $photo_after->temporaryUrl() }}" alt="Preview Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
-                                    <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">Foto Baru Terpilih</span>
-                                @elseif($currentVisit->has_five_sides_after || $currentVisit->photo_after_url)
-                                    <div class="relative min-h-[11rem] flex items-center justify-center">
-                                        @if($currentVisit->photo_after_front_url)
-                                            <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_after_front_url }}" alt="Foto After Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-                                        @if($currentVisit->photo_after_right_tilt_url)
-                                            <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_after_right_tilt_url }}" alt="Foto After Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-                                        @if($currentVisit->photo_after_right_side_url)
-                                            <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_after_right_side_url }}" alt="Foto After Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-                                        @if($currentVisit->photo_after_left_tilt_url)
-                                            <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_after_left_tilt_url }}" alt="Foto After Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-                                        @if($currentVisit->photo_after_left_side_url)
-                                            <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_after_left_side_url }}" alt="Foto After Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-                                        @if(!$currentVisit->has_five_sides_after && $currentVisit->photo_after_url && !$currentVisit->photo_after_front_url)
-                                            <img x-show="!hasError" src="{{ $currentVisit->photo_after_url }}" alt="Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
-                                        @endif
-
-                                        <div x-show="hasError" class="h-44 w-full flex flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
-                                            <svg class="w-7 h-7 text-slate-300 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            <span>Foto belum dapat ditampilkan</span>
+                                <!-- Instant Preview / Captured Photo -->
+                                <template x-if="previewUrl">
+                                    <div class="relative group">
+                                        <img :src="previewUrl" alt="Preview Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-xl flex flex-col items-center justify-center text-white text-xs font-medium gap-1.5 p-3">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Memproses & mengunggah foto...</span>
                                         </div>
+                                        <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+                                            <span x-text="isUploading ? 'Sedang Mengunggah...' : 'Foto Baru Terpilih ✓'"></span>
+                                        </span>
                                     </div>
-                                @else
-                                    <label class="h-44 flex flex-col items-center justify-center border-2 border-dashed border-slate-300/80 hover:border-slate-900 rounded-xl bg-slate-50 hover:bg-slate-50/80 cursor-pointer text-slate-500 transition-all">
-                                        <svg class="w-7 h-7 mb-1.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                        <span class="text-xs font-semibold text-slate-800">Ambil Foto Akhir (After)</span>
-                                        <span class="text-[10px] text-slate-400 mt-0.5">Kamera Tablet / File Upload</span>
-                                        <input type="file" wire:model="photo_after" accept="image/*" capture="environment" class="hidden">
-                                    </label>
-                                @endif
+                                </template>
 
-                                @if($photo_after || $currentVisit->photo_after_url)
-                                    <div class="mt-2.5">
-                                        <label class="text-[11px] font-medium text-slate-600 hover:text-slate-900 underline cursor-pointer">
-                                            <span>Ambil Ulang Foto Akhir</span>
-                                            <input type="file" wire:model="photo_after" accept="image/*" capture="environment" class="hidden">
+                                <!-- Existing 5-sides photos if no new photo taken -->
+                                <div x-show="!previewUrl">
+                                    @if($currentVisit->has_five_sides_after || $currentVisit->photo_after_url)
+                                        <div class="relative min-h-[11rem] flex items-center justify-center">
+                                            @if($currentVisit->photo_after_front_url)
+                                                <img x-show="angle === 'front' || angle === 'default'" src="{{ $currentVisit->photo_after_front_url }}" alt="Foto After Depan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+                                            @if($currentVisit->photo_after_right_tilt_url)
+                                                <img x-show="angle === 'right_tilt'" src="{{ $currentVisit->photo_after_right_tilt_url }}" alt="Foto After Serong Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+                                            @if($currentVisit->photo_after_right_side_url)
+                                                <img x-show="angle === 'right_side'" src="{{ $currentVisit->photo_after_right_side_url }}" alt="Foto After Samping Kanan" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+                                            @if($currentVisit->photo_after_left_tilt_url)
+                                                <img x-show="angle === 'left_tilt'" src="{{ $currentVisit->photo_after_left_tilt_url }}" alt="Foto After Serong Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+                                            @if($currentVisit->photo_after_left_side_url)
+                                                <img x-show="angle === 'left_side'" src="{{ $currentVisit->photo_after_left_side_url }}" alt="Foto After Samping Kiri" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+                                            @if(!$currentVisit->has_five_sides_after && $currentVisit->photo_after_url && !$currentVisit->photo_after_front_url)
+                                                <img x-show="!hasError" src="{{ $currentVisit->photo_after_url }}" alt="Foto After" class="h-44 w-auto object-cover rounded-xl mx-auto shadow-apple" x-on:error="hasError = true">
+                                            @endif
+
+                                            <div x-show="hasError" class="h-44 w-full flex flex-col items-center justify-center bg-slate-50 rounded-xl text-slate-400 text-xs">
+                                                <svg class="w-7 h-7 text-slate-300 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                <span>Foto belum dapat ditampilkan</span>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <label class="h-44 flex flex-col items-center justify-center border-2 border-dashed border-slate-300/80 hover:border-slate-900 rounded-xl bg-slate-50 hover:bg-slate-50/80 cursor-pointer text-slate-500 transition-all">
+                                            <svg class="w-7 h-7 mb-1.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                            <span class="text-xs font-semibold text-slate-800">Ambil Foto Akhir (After)</span>
+                                            <span class="text-[10px] text-slate-400 mt-0.5">Kamera Tablet / File Upload</span>
+                                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                                         </label>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
+
+                                <div x-show="errorMessage" x-text="errorMessage" class="text-xs text-rose-500 mt-1.5 block font-medium"></div>
+
+                                <!-- Retake / Change Button -->
+                                <div class="mt-2.5">
+                                    <label class="text-[11px] font-medium text-slate-600 hover:text-slate-900 underline cursor-pointer inline-flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                        <span x-text="previewUrl || '{{ $currentVisit->photo_after_url }}' ? 'Ambil Ulang Foto Akhir' : 'Buka Kamera / Pilih Foto'"></span>
+                                        <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

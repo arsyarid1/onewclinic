@@ -273,32 +273,48 @@
                     </label>
                     <p class="text-xs text-slate-400 mb-3">Ambil foto klinis area perawatan pasien menggunakan kamera tablet atau unggah file foto.</p>
 
-                    <div class="flex flex-col sm:flex-row items-start gap-5">
+                    <div x-data="photoUploader('photo_before', '{{ $photo_before ? $photo_before->temporaryUrl() : '' }}')"
+                         wire:key="patient-uploader-before"
+                         class="flex flex-col sm:flex-row items-start gap-5">
                         <div class="w-full sm:w-1/2">
                             <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300/80 hover:border-slate-900 rounded-3xl p-6 bg-slate-50/50 hover:bg-slate-50 cursor-pointer transition-all text-center">
                                 <svg class="w-7 h-7 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <span class="text-xs font-semibold text-slate-800">Ambil Foto / Buka Kamera</span>
+                                <span class="text-xs font-semibold text-slate-800" x-text="previewUrl ? 'Ambil Ulang Foto / Buka Kamera' : 'Ambil Foto / Buka Kamera'"></span>
                                 <span class="text-[10px] text-slate-400 mt-0.5">Kamera Belakang HTML5</span>
-                                <input type="file" wire:model="photo_before" accept="image/*" capture="environment" class="hidden">
+                                <input type="file"
+                                       accept="image/*"
+                                       capture="environment"
+                                       @change="handleFileSelect($event)"
+                                       class="hidden">
                             </label>
                             @error('photo_before') <span class="text-xs text-rose-500 mt-1 block font-medium">{{ $message }}</span> @enderror
-                            <div wire:loading wire:target="photo_before" class="text-xs text-slate-600 mt-2 font-medium flex items-center gap-1.5">
-                                <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                <span>Memproses foto...</span>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-xs text-rose-500 mt-1 block font-medium"></div>
+
+                            <div x-show="isUploading" class="text-xs text-slate-600 mt-2 font-medium flex items-center gap-1.5">
+                                <svg class="animate-spin h-3.5 w-3.5 text-slate-600" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                <span>Memproses & mengunggah foto...</span>
                             </div>
                         </div>
 
                         <div class="w-full sm:w-1/2">
-                            <div class="border border-slate-200 rounded-3xl p-3 bg-slate-50/50 flex flex-col items-center justify-center min-h-[160px]">
-                                @if($photo_before)
-                                    <img src="{{ $photo_before->temporaryUrl() }}" alt="Preview Foto Before" class="h-36 w-auto object-cover rounded-2xl shadow-apple mx-auto">
-                                    <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-white px-2 py-0.5 rounded-full border border-slate-200">Foto Siap Disimpan</span>
-                                @else
-                                    <div class="text-center text-slate-300 py-6">
-                                        <svg class="w-7 h-7 mx-auto text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                        <span class="text-xs text-slate-400">Preview foto akan muncul di sini</span>
+                            <div class="border border-slate-200 rounded-3xl p-3 bg-slate-50/50 flex flex-col items-center justify-center min-h-[160px] relative">
+                                <template x-if="previewUrl">
+                                    <div class="text-center relative group">
+                                        <img :src="previewUrl" alt="Preview Foto Before" class="h-36 w-auto object-cover rounded-2xl shadow-apple mx-auto">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center text-white text-xs font-medium gap-1.5 p-3">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <span class="inline-block mt-2 text-[10px] font-semibold text-slate-700 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+                                            <span x-text="isUploading ? 'Sedang Mengunggah...' : 'Foto Baru Terpilih ✓'"></span>
+                                        </span>
                                     </div>
-                                @endif
+                                </template>
+
+                                <div x-show="!previewUrl" class="text-center text-slate-300 py-6">
+                                    <svg class="w-7 h-7 mx-auto text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <span class="text-xs text-slate-400">Preview foto akan muncul di sini setelah difoto</span>
+                                </div>
                             </div>
                         </div>
                     </div>

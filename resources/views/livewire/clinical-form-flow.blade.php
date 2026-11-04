@@ -404,9 +404,9 @@
                             <!-- Kiri: Pasien / Penanggung Jawab -->
                             <div class="border border-slate-300 p-3 rounded-lg text-center bg-slate-50/50">
                                 <span class="font-bold text-slate-800 block mb-2">Pasien / Penanggung Jawab</span>
-                                <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas x-init="setupPad($el, 'canvas-reg-patient')" id="canvas-reg-patient" class="w-full h-28 touch-none"></canvas>
-                                    <button type="button" @click="clearSignature('reg-patient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
+                                <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                    <canvas x-init="setupPad($el, 'canvas-reg-patient')" id="canvas-reg-patient" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                    <button type="button" @click="clearSignature('reg-patient')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                                 </div>
                                 <div class="text-left">
                                     <label class="text-[10px] font-semibold text-slate-500">Nama Jelas:</label>
@@ -420,9 +420,9 @@
                                     <span class="font-bold text-slate-800">Petugas Pendaftaran</span>
                                     <span class="text-[10px] text-slate-500 font-mono">Tgl: {{ $registration_staff_signed_date }}</span>
                                 </div>
-                                <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas x-init="setupPad($el, 'canvas-reg-staff')" id="canvas-reg-staff" class="w-full h-28 touch-none"></canvas>
-                                    <button type="button" @click="clearSignature('reg-staff')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
+                                <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                    <canvas x-init="setupPad($el, 'canvas-reg-staff')" id="canvas-reg-staff" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                    <button type="button" @click="clearSignature('reg-staff')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                                 </div>
                                 <div class="text-left">
                                     <label class="text-[10px] font-semibold text-slate-500">Nama Petugas / Perawat:</label>
@@ -594,9 +594,9 @@
                                         <option value="Wali Sah">Wali Sah</option>
                                     </select>
                                 </div>
-                                <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas x-init="setupPad($el, 'canvas-gc-patient')" id="canvas-gc-patient" class="w-full h-28 touch-none"></canvas>
-                                    <button type="button" @click="clearSignature('gc-patient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
+                                <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                    <canvas x-init="setupPad($el, 'canvas-gc-patient')" id="canvas-gc-patient" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                    <button type="button" @click="clearSignature('gc-patient')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                                 </div>
                                 <input type="text" wire:model="gc_patient_signer_name" placeholder="Nama jelas penandatangan" class="w-full px-2 py-1 text-xs border border-slate-300 rounded font-semibold text-slate-900 text-center">
                             </div>
@@ -605,9 +605,9 @@
                             <div class="border border-slate-300 p-3 rounded-lg text-center bg-slate-50/50">
                                 <span class="font-bold text-slate-800 block mb-1">PETUGAS YANG MEMBERIKAN PENJELASAN</span>
                                 <div class="text-[10px] text-slate-500 mb-2 font-medium">Jabatan: Petugas Pendaftaran / Perawat</div>
-                                <div class="relative bg-white border border-slate-300 rounded mb-2">
-                                    <canvas x-init="setupPad($el, 'canvas-gc-staff')" id="canvas-gc-staff" class="w-full h-28 touch-none"></canvas>
-                                    <button type="button" @click="clearSignature('gc-staff')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600 font-medium">Hapus</button>
+                                <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                    <canvas x-init="setupPad($el, 'canvas-gc-staff')" id="canvas-gc-staff" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                    <button type="button" @click="clearSignature('gc-staff')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                                 </div>
                                 <input type="text" wire:model="gc_staff_name" placeholder="Nama petugas pendaftaran" class="w-full px-2 py-1 text-xs border border-slate-300 rounded font-semibold text-slate-900 text-center">
                             </div>
@@ -761,18 +761,18 @@
                 <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div class="border border-slate-300 p-3 rounded bg-slate-50/50 text-center">
                         <p class="text-[11px] text-justify mb-2">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas:</p>
-                        <div class="relative bg-white border border-slate-300 rounded mb-2">
-                            <canvas x-init="setupPad($el, 'canvas-ic-doctor')" id="canvas-ic-doctor" class="w-full h-24 touch-none"></canvas>
-                            <button type="button" @click="clearSignature('ic-doctor')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
+                        <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                            <canvas x-init="setupPad($el, 'canvas-ic-doctor')" id="canvas-ic-doctor" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                            <button type="button" @click="clearSignature('ic-doctor')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                         </div>
                         <span class="text-[10px] text-slate-500 font-semibold block">Tanda tangan Dokter Pelaksana</span>
                     </div>
 
                     <div class="border border-slate-300 p-3 rounded bg-slate-50/50 text-center">
                         <p class="text-[11px] text-justify mb-2">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan memahaminya:</p>
-                        <div class="relative bg-white border border-slate-300 rounded mb-2">
-                            <canvas x-init="setupPad($el, 'canvas-ic-recipient')" id="canvas-ic-recipient" class="w-full h-24 touch-none"></canvas>
-                            <button type="button" @click="clearSignature('ic-recipient')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
+                        <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                            <canvas x-init="setupPad($el, 'canvas-ic-recipient')" id="canvas-ic-recipient" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                            <button type="button" @click="clearSignature('ic-recipient')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                         </div>
                         <span class="text-[10px] text-slate-500 font-semibold block">Tanda tangan Pasien / Wali</span>
                     </div>
@@ -792,9 +792,9 @@
                         <!-- Yang Menyatakan -->
                         <div class="border border-slate-300 p-3 rounded bg-white text-center">
                             <span class="font-bold text-slate-900 block mb-2">Yang Menyatakan (Pasien / Wali)</span>
-                            <div class="relative bg-slate-50 border border-slate-300 rounded mb-2">
-                                <canvas x-init="setupPad($el, 'canvas-ic-recipient-stmt')" id="canvas-ic-recipient-stmt" class="w-full h-24 touch-none"></canvas>
-                                <button type="button" @click="clearSignature('canvas-ic-recipient-stmt')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
+                            <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                <canvas x-init="setupPad($el, 'canvas-ic-recipient-stmt')" id="canvas-ic-recipient-stmt" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                <button type="button" @click="clearSignature('canvas-ic-recipient-stmt')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                             </div>
                             <span class="text-[11px] font-semibold text-slate-900">{{ $ic_recipient_name ?: $name }}</span>
                         </div>
@@ -802,9 +802,9 @@
                         <!-- Saksi / Perawat -->
                         <div class="border border-slate-300 p-3 rounded bg-white text-center">
                             <span class="font-bold text-slate-900 block mb-2">Saksi (Perawat / Petugas)</span>
-                            <div class="relative bg-slate-50 border border-slate-300 rounded mb-2">
-                                <canvas x-init="setupPad($el, 'canvas-ic-witness')" id="canvas-ic-witness" class="w-full h-24 touch-none"></canvas>
-                                <button type="button" @click="clearSignature('ic-witness')" class="absolute top-1 right-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px]">Hapus</button>
+                            <div class="relative bg-white border-2 border-slate-300 rounded-lg mb-2 shadow-inner">
+                                <canvas x-init="setupPad($el, 'canvas-ic-witness')" id="canvas-ic-witness" class="w-full h-44 sm:h-52 touch-none cursor-crosshair"></canvas>
+                                <button type="button" @click="clearSignature('ic-witness')" class="absolute top-2 right-2 px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-xs text-slate-700 font-semibold shadow-xs">Hapus</button>
                             </div>
                             <input type="text" wire:model="ic_witness_name" placeholder="Nama saksi / perawat" class="w-full px-2 py-1 text-center text-xs font-semibold text-slate-900 border border-slate-300 rounded">
                         </div>
@@ -825,107 +825,167 @@
 
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
                     <!-- 1. Depan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_before_front', '{{ $temp_photo_before_front ? $temp_photo_before_front->temporaryUrl() : ($photo_before_front_path ? \App\Models\Visit::formatPublicUrl($photo_before_front_path) : '') }}')"
+                         wire:key="uploader-before-front"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">1. Tampak Depan (0°)</span>
-                            @if($temp_photo_before_front)
-                                <img src="{{ $temp_photo_before_front->temporaryUrl() }}" alt="Front" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_before_front_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_before_front_path) }}" alt="Front" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Depan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Wajah Depan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_before_front" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 2. Serong Kanan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_before_right_tilt', '{{ $temp_photo_before_right_tilt ? $temp_photo_before_right_tilt->temporaryUrl() : ($photo_before_right_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_tilt_path) : '') }}')"
+                         wire:key="uploader-before-right-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">2. Serong Kanan (45°)</span>
-                            @if($temp_photo_before_right_tilt)
-                                <img src="{{ $temp_photo_before_right_tilt->temporaryUrl() }}" alt="Right Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_before_right_tilt_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_before_right_tilt_path) }}" alt="Right Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kanan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_before_right_tilt" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 3. Samping Kanan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_before_right_side', '{{ $temp_photo_before_right_side ? $temp_photo_before_right_side->temporaryUrl() : ($photo_before_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) : '') }}')"
+                         wire:key="uploader-before-right-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Samping Kanan (90°)</span>
-                            @if($temp_photo_before_right_side)
-                                <img src="{{ $temp_photo_before_right_side->temporaryUrl() }}" alt="Right Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_before_right_side_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) }}" alt="Right Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Samping Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Samping Kanan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_before_right_side" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 4. Serong Kiri -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_before_left_tilt', '{{ $temp_photo_before_left_tilt ? $temp_photo_before_left_tilt->temporaryUrl() : ($photo_before_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_tilt_path) : '') }}')"
+                         wire:key="uploader-before-left-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Serong Kiri (45°)</span>
-                            @if($temp_photo_before_left_tilt)
-                                <img src="{{ $temp_photo_before_left_tilt->temporaryUrl() }}" alt="Left Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_before_left_tilt_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_before_left_tilt_path) }}" alt="Left Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kiri</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_before_left_tilt" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 5. Samping Kiri -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_before_left_side', '{{ $temp_photo_before_left_side ? $temp_photo_before_left_side->temporaryUrl() : ($photo_before_left_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_side_path) : '') }}')"
+                         wire:key="uploader-before-left-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">5. Samping Kiri (90°)</span>
-                            @if($temp_photo_before_left_side)
-                                <img src="{{ $temp_photo_before_left_side->temporaryUrl() }}" alt="Left Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_before_left_side_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_before_left_side_path) }}" alt="Left Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Samping Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Samping Kiri</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_before_left_side" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
                 </div>
@@ -1032,107 +1092,167 @@
 
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
                     <!-- 1. Depan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_after_front', '{{ $temp_photo_after_front ? $temp_photo_after_front->temporaryUrl() : ($photo_after_front_path ? \App\Models\Visit::formatPublicUrl($photo_after_front_path) : '') }}')"
+                         wire:key="uploader-after-front"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">1. Tampak Depan (0°)</span>
-                            @if($temp_photo_after_front)
-                                <img src="{{ $temp_photo_after_front->temporaryUrl() }}" alt="Front" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_after_front_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_after_front_path) }}" alt="Front" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Depan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Wajah Depan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_after_front" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 2. Serong Kanan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_after_right_tilt', '{{ $temp_photo_after_right_tilt ? $temp_photo_after_right_tilt->temporaryUrl() : ($photo_after_right_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_after_right_tilt_path) : '') }}')"
+                         wire:key="uploader-after-right-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">2. Serong Kanan (45°)</span>
-                            @if($temp_photo_after_right_tilt)
-                                <img src="{{ $temp_photo_after_right_tilt->temporaryUrl() }}" alt="Right Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_after_right_tilt_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_after_right_tilt_path) }}" alt="Right Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kanan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_after_right_tilt" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 3. Samping Kanan -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_after_right_side', '{{ $temp_photo_after_right_side ? $temp_photo_after_right_side->temporaryUrl() : ($photo_after_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_after_right_side_path) : '') }}')"
+                         wire:key="uploader-after-right-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Samping Kanan (90°)</span>
-                            @if($temp_photo_after_right_side)
-                                <img src="{{ $temp_photo_after_right_side->temporaryUrl() }}" alt="Right Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_after_right_side_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_after_right_side_path) }}" alt="Right Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Samping Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Samping Kanan</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_after_right_side" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 4. Serong Kiri -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_after_left_tilt', '{{ $temp_photo_after_left_tilt ? $temp_photo_after_left_tilt->temporaryUrl() : ($photo_after_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_after_left_tilt_path) : '') }}')"
+                         wire:key="uploader-after-left-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Serong Kiri (45°)</span>
-                            @if($temp_photo_after_left_tilt)
-                                <img src="{{ $temp_photo_after_left_tilt->temporaryUrl() }}" alt="Left Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_after_left_tilt_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_after_left_tilt_path) }}" alt="Left Tilt" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kiri</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_after_left_tilt" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
 
                     <!-- 5. Samping Kiri -->
-                    <div class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between">
+                    <div x-data="photoUploader('temp_photo_after_left_side', '{{ $temp_photo_after_left_side ? $temp_photo_after_left_side->temporaryUrl() : ($photo_after_left_side_path ? \App\Models\Visit::formatPublicUrl($photo_after_left_side_path) : '') }}')"
+                         wire:key="uploader-after-left-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">5. Samping Kiri (90°)</span>
-                            @if($temp_photo_after_left_side)
-                                <img src="{{ $temp_photo_after_left_side->temporaryUrl() }}" alt="Left Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @elseif($photo_after_left_side_path)
-                                <img src="{{ \App\Models\Visit::formatPublicUrl($photo_after_left_side_path) }}" alt="Left Side" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2">
-                            @else
-                                <div class="h-40 flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Samping Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Samping Kiri</span>
                                 </div>
-                            @endif
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
                         </div>
                         <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <span>Ambil / Ganti</span>
-                            <input type="file" wire:model="temp_photo_after_left_side" accept="image/*" capture="environment" class="hidden">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
                         </label>
                     </div>
                 </div>
@@ -1260,21 +1380,61 @@ function formFlowApp() {
                 this.initCanvases();
             });
 
-            // Re-initialize canvases when Livewire updates step
-            document.addEventListener('livewire:navigated', () => this.initCanvases());
+            // Re-initialize canvases when Livewire updates step or navigates
+            document.addEventListener('livewire:navigated', () => {
+                this.$nextTick(() => this.initCanvases());
+            });
+
             if (window.Livewire) {
                 Livewire.hook('morph.updated', () => {
                     this.$nextTick(() => this.initCanvases());
                 });
             }
         },
+
+        getInitialSig(id) {
+            try {
+                switch(id) {
+                    case 'canvas-reg-patient': return @this.get('registration_patient_signature');
+                    case 'canvas-reg-staff': return @this.get('registration_staff_signature');
+                    case 'canvas-gc-patient': return @this.get('gc_patient_signature');
+                    case 'canvas-gc-staff': return @this.get('gc_staff_signature');
+                    case 'canvas-ic-doctor': return @this.get('ic_doctor_signature');
+                    case 'canvas-ic-recipient':
+                    case 'canvas-ic-recipient-stmt': return @this.get('ic_recipient_signature');
+                    case 'canvas-ic-witness': return @this.get('ic_witness_signature');
+                    default: return null;
+                }
+            } catch(e) {
+                return null;
+            }
+        },
+
+        syncSignatureToLivewire(id) {
+            const pad = this.signaturePads[id];
+            if (!pad || pad.isEmpty()) return;
+            const dataUrl = pad.toDataURL('image/png');
+            try {
+                switch(id) {
+                    case 'canvas-reg-patient': @this.set('registration_patient_signature', dataUrl, false); break;
+                    case 'canvas-reg-staff': @this.set('registration_staff_signature', dataUrl, false); break;
+                    case 'canvas-gc-patient': @this.set('gc_patient_signature', dataUrl, false); break;
+                    case 'canvas-gc-staff': @this.set('gc_staff_signature', dataUrl, false); break;
+                    case 'canvas-ic-doctor': @this.set('ic_doctor_signature', dataUrl, false); break;
+                    case 'canvas-ic-recipient':
+                    case 'canvas-ic-recipient-stmt': @this.set('ic_recipient_signature', dataUrl, false); break;
+                    case 'canvas-ic-witness': @this.set('ic_witness_signature', dataUrl, false); break;
+                }
+            } catch(e) {}
+        },
+
         setupPad(el, id) {
             this.$nextTick(() => {
                 if (!el) return;
                 const ratio = Math.max(window.devicePixelRatio || 1, 1);
                 const rect = el.getBoundingClientRect();
-                const width = rect.width || el.offsetWidth || 300;
-                const height = rect.height || el.offsetHeight || 112;
+                const width = rect.width || el.offsetWidth || 340;
+                const height = rect.height || el.offsetHeight || 192;
 
                 el.width = width * ratio;
                 el.height = height * ratio;
@@ -1286,15 +1446,32 @@ function formFlowApp() {
                 }
 
                 if (window.SignaturePad) {
-                    this.signaturePads[id] = new SignaturePad(el, {
+                    const pad = new SignaturePad(el, {
                         backgroundColor: 'rgba(255, 255, 255, 0)',
                         penColor: '#0f172a',
                         minWidth: 1.5,
-                        maxWidth: 3.0
+                        maxWidth: 3.5
+                    });
+                    this.signaturePads[id] = pad;
+
+                    // Restore existing signature if previously signed or loaded
+                    const sigData = this.getInitialSig(id);
+                    if (sigData && typeof sigData === 'string' && sigData.startsWith('data:image')) {
+                        try {
+                            pad.fromDataURL(sigData, { ratio: ratio, width: width, height: height });
+                        } catch(e) {
+                            console.warn('Could not restore signature on ' + id, e);
+                        }
+                    }
+
+                    // Auto sync to Livewire immediately when user finishes signature stroke
+                    pad.addEventListener('endStroke', () => {
+                        this.syncSignatureToLivewire(id);
                     });
                 }
             });
         },
+
         initCanvases() {
             const canvasIds = [
                 'canvas-reg-patient', 'canvas-reg-staff',
@@ -1309,6 +1486,7 @@ function formFlowApp() {
                 }
             });
         },
+
         clearSignature(target) {
             const map = {
                 'reg-patient': 'canvas-reg-patient',
@@ -1324,9 +1502,21 @@ function formFlowApp() {
             if (this.signaturePads[id]) {
                 this.signaturePads[id].clear();
             }
+            try {
+                switch(id) {
+                    case 'canvas-reg-patient': @this.set('registration_patient_signature', null, false); break;
+                    case 'canvas-reg-staff': @this.set('registration_staff_signature', null, false); break;
+                    case 'canvas-gc-patient': @this.set('gc_patient_signature', null, false); break;
+                    case 'canvas-gc-staff': @this.set('gc_staff_signature', null, false); break;
+                    case 'canvas-ic-doctor': @this.set('ic_doctor_signature', null, false); break;
+                    case 'canvas-ic-recipient':
+                    case 'canvas-ic-recipient-stmt': @this.set('ic_recipient_signature', null, false); break;
+                    case 'canvas-ic-witness': @this.set('ic_witness_signature', null, false); break;
+                }
+            } catch(e) {}
         },
+
         submitStepWithSignatures() {
-            // Save signatures based on current step
             const getSig = (id) => {
                 const pad = this.signaturePads[id];
                 return (pad && !pad.isEmpty()) ? pad.toDataURL('image/png') : null;
