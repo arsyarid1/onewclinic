@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Clinic;
 use App\Models\User;
 use App\Models\Visit;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -19,7 +18,9 @@ class NurseExamination extends Component
 
     // Form inputs
     public ?int $doctor_id = null;
-    public string $assistant_name = 'Ns. Ratna Dewi, S.Kep';
+
+    public string $assistant_name = '';
+
     public $photo_before;
 
     public function mount(?int $visit_id = null): void
@@ -78,7 +79,7 @@ class NurseExamination extends Component
 
         // Store Photo Before if uploaded
         if ($this->photo_before) {
-            $filename = "photos/before/before_visit_{$visit->id}_" . time() . '.' . $this->photo_before->getClientOriginalExtension();
+            $filename = "photos/before/before_visit_{$visit->id}_".time().'.'.$this->photo_before->getClientOriginalExtension();
             $path = $this->photo_before->storeAs('photos/before', basename($filename), 'public');
             $updateData['photo_before_path'] = $path;
         }

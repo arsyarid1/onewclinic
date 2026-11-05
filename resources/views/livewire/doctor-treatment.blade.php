@@ -49,7 +49,7 @@
                                 <span class="font-mono text-[10px] px-2 py-0.5 rounded-md bg-white text-slate-600 border border-slate-200">{{ $item->patient?->patient_code }}</span>
                             </div>
                             <div class="flex items-center justify-between text-xs">
-                                <span class="text-slate-400 truncate max-w-[150px]">Dr: {{ $item->doctor?->name ?? 'dr. Alana Wijaya' }}</span>
+                                <span class="text-slate-400 truncate max-w-[150px]">Dr: {{ $item->doctor_name_override ?: ($item->doctor?->name ?? '-') }}</span>
                                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $item->status === 'in_treatment' ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-700' }}">
                                     {{ $item->status === 'in_treatment' ? 'Dalam Tindakan' : 'Siap Diperiksa' }}
                                 </span>
@@ -88,7 +88,7 @@
 
                         <!-- Doctor & Assistant Info + Informed Consent Trigger -->
                         <div class="flex flex-col sm:items-end gap-2 text-xs text-slate-500">
-                            <div><span class="text-slate-400">Dokter:</span> <strong class="text-slate-900 font-semibold">{{ $currentVisit->doctor?->name ?? 'dr. Alana Wijaya' }}</strong></div>
+                            <div><span class="text-slate-400">Dokter:</span> <strong class="text-slate-900 font-semibold">{{ $currentVisit->doctor_name_override ?: ($currentVisit->doctor?->name ?? '-') }}</strong></div>
                             @if($currentVisit->assistant_name)
                                 <div><span class="text-slate-400">Perawat/Asisten:</span> <strong class="text-slate-800">{{ $currentVisit->assistant_name }}</strong></div>
                             @endif

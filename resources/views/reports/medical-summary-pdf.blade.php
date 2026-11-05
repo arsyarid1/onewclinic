@@ -2,10 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Rekap Formulir Medis Pasien - {{ $visit->manual_patient_code ?: ($patient->patient_code ?? 'PASIEN') }}</title>
+    <title>Rekap Medis Pasien - {{ $visit->manual_patient_code ?: ($patient->patient_code ?? 'PASIEN') }}</title>
     <style>
         @page {
-            margin: 10mm 14mm 10mm 14mm;
+            margin: 8mm 12mm 8mm 12mm;
             size: a4 portrait;
         }
 
@@ -18,8 +18,8 @@
             margin: 0;
             padding: 0;
             color: #0f172a;
-            line-height: 1.28;
-            font-size: 8pt;
+            line-height: 1.25;
+            font-size: 7.5pt;
             background: #ffffff;
         }
 
@@ -36,8 +36,8 @@
         .kop-table {
             width: 100%;
             border-bottom: 2px solid #0f172a;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .kop-logo {
@@ -47,7 +47,7 @@
         }
 
         .kop-logo img {
-            height: 42px;
+            height: 40px;
             width: auto;
             display: inline-block;
         }
@@ -56,28 +56,66 @@
             width: 55%;
             text-align: right;
             vertical-align: middle;
-            font-size: 7.5pt;
+            font-size: 7pt;
             color: #475569;
-            line-height: 1.25;
+            line-height: 1.2;
         }
 
         .kop-clinic-title {
-            font-size: 9pt;
+            font-size: 8.5pt;
             font-weight: bold;
             color: #0f172a;
             text-transform: uppercase;
         }
 
+        /* Center Header for General Consent / Informed Consent */
+        .center-header {
+            text-align: center;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .center-header img {
+            height: 38px;
+            width: auto;
+            margin: 0 auto 2px auto;
+            display: block;
+        }
+
+        .center-header h1 {
+            margin: 1px 0 0 0;
+            font-size: 11pt;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .center-header h2 {
+            margin: 0;
+            font-size: 10pt;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        .center-header p {
+            margin: 1px 0 0 0;
+            font-size: 7pt;
+            color: #475569;
+        }
+
         /* Title Box for Registration Form */
         .title-box-table {
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #cbd5e1;
-            padding-bottom: 6px;
+            padding-bottom: 4px;
         }
 
         .title-box-left {
-            width: 55%;
+            width: 60%;
             vertical-align: middle;
         }
 
@@ -91,22 +129,22 @@
         }
 
         .title-box-left p {
-            margin: 2px 0 0 0;
-            font-size: 8pt;
+            margin: 1px 0 0 0;
+            font-size: 7.5pt;
             font-weight: bold;
             color: #64748b;
         }
 
         .title-box-right {
-            width: 45%;
+            width: 40%;
             vertical-align: middle;
         }
 
         .rm-meta-card {
             border: 1.5px solid #0f172a;
             border-radius: 4px;
-            padding: 4px 6px;
-            font-size: 7.5pt;
+            padding: 3px 6px;
+            font-size: 7pt;
             background-color: #f8fafc;
         }
 
@@ -116,7 +154,7 @@
         }
 
         .rm-meta-card td {
-            padding: 1.5px 3px;
+            padding: 1px 2px;
         }
 
         .rm-label {
@@ -129,7 +167,7 @@
             font-weight: 900;
             color: #0f172a;
             font-family: monospace;
-            font-size: 8.5pt;
+            font-size: 8pt;
         }
 
         /* Section Headings */
@@ -137,48 +175,47 @@
             background-color: #0f172a;
             color: #ffffff;
             font-weight: bold;
-            font-size: 8pt;
-            padding: 3px 6px;
+            font-size: 7.5pt;
+            padding: 2.5px 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-top: 6px;
-            margin-bottom: 4px;
+            margin-top: 5px;
+            margin-bottom: 3px;
             border-radius: 2px;
         }
 
-        /* Form Tables */
+        /* Form Grid Table */
         .form-grid-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7.5pt;
-            margin-bottom: 5px;
+            font-size: 7pt;
+            margin-bottom: 3px;
         }
 
         .form-grid-table td {
-            padding: 3px 5px;
+            padding: 2px 4px;
             vertical-align: top;
-            border-bottom: 1px dotted #cbd5e1;
+            border-bottom: 1px dotted #e2e8f0;
         }
 
         .field-label {
             color: #475569;
             font-weight: 600;
-            width: 28%;
+            width: 22%;
         }
 
         .field-val {
             color: #0f172a;
             font-weight: normal;
-            width: 72%;
         }
 
-        /* Bordered Box Table */
+        /* Bordered Tables */
         .bordered-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7.5pt;
-            margin-top: 4px;
-            margin-bottom: 6px;
+            font-size: 7pt;
+            margin-top: 3px;
+            margin-bottom: 4px;
         }
 
         .bordered-table th {
@@ -186,14 +223,14 @@
             color: #ffffff;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 7pt;
-            padding: 4px 5px;
+            font-size: 6.5pt;
+            padding: 3px 4px;
             border: 1px solid #0f172a;
             text-align: left;
         }
 
         .bordered-table td {
-            padding: 3px 5px;
+            padding: 2.5px 4px;
             border: 1px solid #cbd5e1;
             vertical-align: top;
         }
@@ -202,77 +239,31 @@
         .signature-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .signature-cell {
             text-align: center;
             vertical-align: top;
-            font-size: 7.5pt;
+            font-size: 7pt;
             padding: 0 8px;
         }
 
         .sig-image {
-            height: 52px;
-            max-width: 150px;
+            height: 38px;
+            max-width: 120px;
             display: block;
-            margin: 3px auto;
+            margin: 2px auto;
         }
 
         .sig-line {
             border-top: 1px solid #475569;
-            margin-top: 3px;
-            padding-top: 3px;
+            margin-top: 2px;
+            padding-top: 2px;
             font-weight: bold;
         }
 
-        /* Center Header for General Consent / Informed Consent */
-        .center-header {
-            text-align: center;
-            border-bottom: 2px solid #0f172a;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-        }
-
-        .center-header img {
-            height: 38px;
-            width: auto;
-            margin: 0 auto 2px auto;
-            display: block;
-        }
-
-        .center-header h1 {
-            margin: 2px 0 0 0;
-            font-size: 11pt;
-            font-weight: 900;
-            color: #0f172a;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .center-header h2 {
-            margin: 0;
-            font-size: 10.5pt;
-            font-weight: 800;
-            color: #0f172a;
-            text-transform: uppercase;
-        }
-
-        .center-header p {
-            margin: 1px 0 0 0;
-            font-size: 7pt;
-            color: #475569;
-        }
-
-        /* Checkbox Box Styling */
-        .chk-box {
-            display: inline-block;
-            font-family: monospace;
-            font-weight: bold;
-            color: #0f172a;
-        }
-
-        /* Photo 5-Sides Grid Layout */
+        /* PHOTO 5 SIDES FULL A4 PAGE LAYOUT */
         .photo-page-header {
             width: 100%;
             border-bottom: 1.5px solid #0f172a;
@@ -295,16 +286,22 @@
             margin-top: 1px;
         }
 
-        .photo-grid-table {
+        .photo-grid-row-1 {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 6px;
-            table-layout: fixed;
+            border-spacing: 5px;
+            margin-bottom: 6px;
+        }
+
+        .photo-grid-row-2 {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 5px;
         }
 
         .photo-card {
             border: 1.5px solid #cbd5e1;
-            border-radius: 5px;
+            border-radius: 6px;
             background-color: #f8fafc;
             text-align: center;
             padding: 4px;
@@ -312,57 +309,39 @@
         }
 
         .photo-card-label {
-            font-size: 7pt;
+            font-size: 8pt;
             font-weight: bold;
             text-transform: uppercase;
             color: #0f172a;
-            padding: 2px 4px;
+            padding: 3px 4px;
             border-bottom: 1px solid #e2e8f0;
             margin-bottom: 4px;
             letter-spacing: 0.3px;
         }
 
-        .photo-img-box {
-            height: 195px;
-            text-align: center;
-        }
-
         .photo-frame-img {
-            max-height: 195px;
-            max-width: 95%;
-            height: auto;
-            display: inline-block;
+            display: block;
             margin: 0 auto;
-            border-radius: 3px;
+            border-radius: 4px;
+            max-width: 100%;
+            object-fit: contain;
         }
 
         .photo-empty-box {
-            height: 195px;
-            line-height: 195px;
-            text-align: center;
             background-color: #ffffff;
             border: 1px dashed #cbd5e1;
-            border-radius: 3px;
+            border-radius: 4px;
             color: #94a3b8;
             font-style: italic;
-            font-size: 7.5pt;
-        }
-
-        .footer-note {
-            font-size: 6.5pt;
-            color: #64748b;
+            font-size: 8pt;
             text-align: center;
-            margin-top: 6px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 4px;
         }
     </style>
 </head>
 <body>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 1: FORMULIR PENDAFTARAN PASIEN (BAGIAN A, B, C)             -->
-    <!-- Persis seperti FORM/page_1.jpg di formatform.pdf                   -->
+    <!-- HALAMAN 1: FORMULIR PENDAFTARAN PASIEN (TEPAT 1 HALAMAN LENGKAP TTD)  -->
     <!-- =================================================================== -->
     <div class="page-container">
         <!-- Kop Surat -->
@@ -388,15 +367,15 @@
         <table class="title-box-table">
             <tr>
                 <td class="title-box-left">
-                    <h1>FORMULIR PENDAFTARAN PASIEN</h1>
-                    <p>ONEW Klinik Utama</p>
+                    <h1>Formulir Pendaftaran Pasien</h1>
+                    <p>ONEW KLINIK UTAMA</p>
                 </td>
                 <td class="title-box-right">
                     <div class="rm-meta-card">
                         <table>
                             <tr>
                                 <td class="rm-label">No. Rekam Medis</td>
-                                <td style="width: 4%;">:</td>
+                                <td style="width: 5%;">:</td>
                                 <td class="rm-val">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
                             </tr>
                             <tr>
@@ -417,16 +396,20 @@
             </tr>
         </table>
 
-        <!-- Bagian A: IDENTITAS PASIEN -->
-        <div class="section-bar">A. IDENTITAS PASIEN</div>
+        <!-- Bagian A: Data Identitas Pasien -->
+        <div class="section-bar">A. DATA IDENTITAS PASIEN</div>
         <table class="form-grid-table">
             <tr>
-                <td class="field-label">Nama Lengkap sesuai Identitas</td>
-                <td class="field-val"><strong style="font-size: 8.5pt;">{{ $patient->name }}</strong></td>
+                <td class="field-label">Nama Lengkap Pasien</td>
+                <td class="field-val" style="width: 38%;"><strong>{{ $patient->name }}</strong></td>
+                <td class="field-label" style="width: 18%;">Jenis Kelamin</td>
+                <td class="field-val" style="width: 22%;">{{ $patient->gender === 'female' ? 'Perempuan' : ($patient->gender === 'male' ? 'Laki-laki' : '-') }}</td>
             </tr>
             <tr>
                 <td class="field-label">NIK / No. Paspor</td>
                 <td class="field-val" style="font-family: monospace; font-weight: bold;">{{ $patient->nik ?: ($patient->nik_passport ?: '-') }}</td>
+                <td class="field-label">Status Pernikahan</td>
+                <td class="field-val">{{ $patient->marital_status ?: '-' }}</td>
             </tr>
             <tr>
                 <td class="field-label">Tempat, Tanggal Lahir</td>
@@ -435,566 +418,310 @@
                     {{ $patient->date_of_birth ? $patient->date_of_birth->format('d/m/Y') : '-' }}
                     ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Tahun' : '-' }})
                 </td>
-            </tr>
-            <tr>
-                <td class="field-label">Jenis Kelamin</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ $patient->gender === 'male' ? 'X' : ' ' }}]</span> Laki-laki
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->gender === 'female' ? 'X' : ' ' }}]</span> Perempuan
-                </td>
-            </tr>
-            <tr>
-                <td class="field-label">Status Perkawinan</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ ($patient->marital_status === 'Belum Menikah' || !$patient->marital_status) ? 'X' : ' ' }}]</span> Belum Menikah
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->marital_status === 'Menikah' ? 'X' : ' ' }}]</span> Menikah
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->marital_status === 'Cerai' ? 'X' : ' ' }}]</span> Cerai
-                </td>
-            </tr>
-            <tr>
-                <td class="field-label">Alamat sesuai Identitas</td>
-                <td class="field-val">{{ $patient->id_address ?: ($patient->address ?: '-') }}</td>
-            </tr>
-            <tr>
-                <td class="field-label">Alamat Domisili</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ $patient->is_domicile_same ? 'X' : ' ' }}]</span> Sama dengan identitas
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ !$patient->is_domicile_same ? 'X' : ' ' }}]</span> Lainnya: {{ !$patient->is_domicile_same ? $patient->domicile_address : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="field-label">No. HP / WhatsApp</td>
-                <td class="field-val" style="font-weight: bold; font-family: monospace;">{{ $patient->phone_number ?: '-' }}</td>
-            </tr>
-            <tr>
-                <td class="field-label">Email</td>
-                <td class="field-val">{{ $patient->email ?: '-' }}</td>
-            </tr>
-            <tr>
                 <td class="field-label">Pekerjaan</td>
                 <td class="field-val">{{ $patient->occupation ?: '-' }}</td>
             </tr>
+            <tr>
+                <td class="field-label">Alamat Sesuai KTP</td>
+                <td class="field-val" colspan="3">{{ $patient->id_address ?: ($patient->address ?: '-') }}</td>
+            </tr>
+            <tr>
+                <td class="field-label">Alamat Domisili</td>
+                <td class="field-val" colspan="3">{{ $patient->domicile_address ?: ($patient->address ?: '-') }}</td>
+            </tr>
+            <tr>
+                <td class="field-label">No. Telepon / WhatsApp</td>
+                <td class="field-val">{{ $patient->phone_number ?: '-' }}</td>
+                <td class="field-label">Alamat Email</td>
+                <td class="field-val">{{ $patient->email ?: '-' }}</td>
+            </tr>
         </table>
 
-        <!-- Bagian B: PENANGGUNG JAWAB / KONTAK DARURAT -->
-        <div class="section-bar">B. PENANGGUNG JAWAB / KONTAK DARURAT</div>
+        <!-- Bagian B: Data Keluarga / Kontak Darurat -->
+        <div class="section-bar">B. DATA KELUARGA / KONTAK DARURAT (EMERGENCY CONTACT)</div>
         <table class="form-grid-table">
             <tr>
-                <td class="field-label">Nama</td>
-                <td class="field-val"><strong>{{ $patient->emergency_contact_name ?: '-' }}</strong></td>
+                <td class="field-label">Nama Kontak Darurat</td>
+                <td class="field-val" style="width: 38%;"><strong>{{ $patient->emergency_contact_name ?: '-' }}</strong></td>
+                <td class="field-label" style="width: 18%;">Hubungan</td>
+                <td class="field-val" style="width: 22%;">{{ $patient->emergency_contact_relation ?: '-' }}</td>
             </tr>
             <tr>
-                <td class="field-label">Hubungan dengan Pasien</td>
-                <td class="field-val">{{ $patient->emergency_contact_relation ?: '-' }}</td>
-            </tr>
-            <tr>
-                <td class="field-label">No. HP / WhatsApp</td>
-                <td class="field-val" style="font-family: monospace;">{{ $patient->emergency_contact_phone ?: '-' }}</td>
+                <td class="field-label">Nomor Telepon Darurat</td>
+                <td class="field-val" colspan="3">{{ $patient->emergency_contact_phone ?: '-' }}</td>
             </tr>
         </table>
 
-        <!-- Bagian C: DATA PENJAMIN / PEMBAYARAN -->
-        <div class="section-bar">C. DATA PENJAMIN / PEMBAYARAN</div>
+        <!-- Bagian C: Riwayat Pasien -->
+        <div class="section-bar">C. RIWAYAT PASIEN</div>
         <table class="form-grid-table">
             <tr>
-                <td class="field-label">Jenis Pembayaran</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ ($patient->payment_type === 'Pribadi / Umum' || !$patient->payment_type) ? 'X' : ' ' }}]</span> Pribadi / Umum
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->payment_type === 'Asuransi' ? 'X' : ' ' }}]</span> Asuransi
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->payment_type === 'Perusahaan' ? 'X' : ' ' }}]</span> Perusahaan
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->payment_type === 'Lainnya' ? 'X' : ' ' }}]</span> Lainnya
+                <td class="field-label">Keluhan Utama</td>
+                <td class="field-val" colspan="3">
+                    <strong>{{ $visit->chief_complaint ?: 'Pemeriksaan rutin estetika / konsultasi klinis' }}</strong>
                 </td>
             </tr>
             <tr>
-                <td class="field-label">Nama Asuransi / Perusahaan</td>
-                <td class="field-val">{{ $patient->insurance_company_name ?: '-' }}</td>
-            </tr>
-            <tr>
-                <td class="field-label">No. Peserta / No. Polis</td>
-                <td class="field-val" style="font-family: monospace;">{{ $patient->insurance_card_number ?: '-' }}</td>
-            </tr>
-        </table>
-
-        <div class="footer-note">
-            Formulir Pendaftaran Pasien | Dokumen Administrasi Klinik &bull; Halaman 1
-        </div>
-    </div>
-
-    <div class="page-break"></div>
-
-    <!-- =================================================================== -->
-    <!-- HALAMAN 2: FORMULIR PENDAFTARAN PASIEN (BAGIAN D, E, F & TTD)       -->
-    <!-- Persis seperti FORM/page_2.jpg di formatform.pdf                   -->
-    <!-- =================================================================== -->
-    <div class="page-container">
-        <!-- Kop Surat Hal 2 -->
-        <table class="kop-table">
-            <tr>
-                <td class="kop-logo">
-                    @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic">
-                    @else
-                        <span style="font-size: 15pt; font-weight: 900; letter-spacing: 1px;">ONEW</span>
-                    @endif
-                </td>
-                <td class="kop-clinic-details">
-                    <div class="kop-clinic-title">ONEW Klinik Utama</div>
-                    <div>Jl. Laksana I no. 6, Kebayoran Baru, Jakarta 12180, Indonesia</div>
-                    <div>website: onewclinic.com &bull; email: onewclinic@gmail.com</div>
-                    <div>mobile: +62 811 1660 9589 &bull; phone: +62 21382 506 94</div>
+                <td class="field-label">Riwayat Penyakit / Perawatan</td>
+                <td class="field-val" colspan="3">
+                    {{ $visit->doctor_notes ?: ($visit->diagnosis_dd ?: 'Tidak ada riwayat kontraindikasi khusus yang dilaporkan.') }}
                 </td>
             </tr>
         </table>
 
-        <!-- Bagian D: INFORMASI PELAYANAN -->
-        <div class="section-bar">D. INFORMASI PELAYANAN</div>
+        <!-- Bagian D: Dokter / Poli Tujuan & Persetujuan Komunikasi -->
+        <div class="section-bar">D. DOKTER / POLI TUJUAN & PERSETUJUAN KOMUNIKASI</div>
         <table class="form-grid-table">
-            <tr>
-                <td class="field-label">Status Pasien</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ $visit->patient_service_status === 'Pasien Baru' ? 'X' : ' ' }}]</span> Pasien Baru
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $visit->patient_service_status === 'Pasien Lama' ? 'X' : ' ' }}]</span> Pasien Lama
-                </td>
-            </tr>
             <tr>
                 <td class="field-label">Tujuan Kunjungan</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ $visit->visit_purpose === 'Rawat Jalan / Dokter Umum' ? 'X' : ' ' }}]</span> Rawat Jalan / Dokter Umum
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ ($visit->visit_purpose === 'Estetika' || !$visit->visit_purpose) ? 'X' : ' ' }}]</span> Estetika
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $visit->visit_purpose === 'Gigi' ? 'X' : ' ' }}]</span> Gigi
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $visit->visit_purpose === 'Spesialis' ? 'X' : ' ' }}]</span> Spesialis
-                </td>
+                <td class="field-val" style="width: 38%;"><strong>{{ $visit->visit_purpose ?: 'Estetika' }}</strong></td>
+                <td class="field-label" style="width: 18%;">Dokter / Poli</td>
+                <td class="field-val" style="width: 22%;">{{ $visit->destination_doctor_poli ?: '-' }}</td>
             </tr>
             <tr>
-                <td class="field-label">Dokter / Poli Tujuan</td>
-                <td class="field-val"><strong>{{ $visit->destination_doctor_poli ?: ($visit->doctor?->name ?? 'Poli Estetika Medis') }}</strong></td>
-            </tr>
-            <tr>
-                <td class="field-label">Keluhan Singkat / Keperluan</td>
-                <td class="field-val">{{ $visit->chief_complaint ?: 'Konsultasi dan perawatan estetika klinis berkala.' }}</td>
-            </tr>
-        </table>
-
-        <!-- Bagian E: INFORMASI TAMBAHAN -->
-        <div class="section-bar">E. INFORMASI TAMBAHAN</div>
-        <table class="form-grid-table">
-            <tr>
-                <td class="field-label">Mengetahui Klinik dari</td>
-                <td class="field-val">
-                    <span class="chk-box">[{{ $patient->referral_source === 'Keluarga / Teman' ? 'X' : ' ' }}]</span> Keluarga / Teman
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ ($patient->referral_source === 'Instagram / TikTok' || !$patient->referral_source) ? 'X' : ' ' }}]</span> Instagram / TikTok
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->referral_source === 'Google / Internet' ? 'X' : ' ' }}]</span> Google / Internet
-                    <br>
-                    <span class="chk-box">[{{ $patient->referral_source === 'Iklan' ? 'X' : ' ' }}]</span> Iklan
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ $patient->referral_source === 'Rujukan Dokter' ? 'X' : ' ' }}]</span> Rujukan Dokter
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ ($patient->referral_source && !in_array($patient->referral_source, ['Keluarga / Teman', 'Instagram / TikTok', 'Google / Internet', 'Iklan', 'Rujukan Dokter'])) ? 'X' : ' ' }}]</span> Lainnya: {{ $patient->referral_source_other ?: '' }}
+                <td class="field-label">Persetujuan Komunikasi</td>
+                <td class="field-val" colspan="3">
+                    [ X ] Bersedia menerima informasi, pengingat janji, dan komunikasi administratif melalui Telepon atau WhatsApp.
                 </td>
             </tr>
         </table>
 
-        <!-- Bagian F: PERNYATAAN DAN PERSETUJUAN PASIEN -->
-        <div class="section-bar">F. PERNYATAAN DAN PERSETUJUAN PASIEN</div>
-        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.35; padding: 4px 6px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 3px; margin-bottom: 8px;">
-            <p style="margin: 0 0 3px 0;">1. Saya menyatakan bahwa seluruh data yang saya berikan dalam formulir ini adalah benar dan dapat dipertanggungjawabkan.</p>
-            <p style="margin: 0 0 3px 0;">2. Saya bersedia memberikan informasi yang diperlukan untuk proses pendaftaran, pelayanan kesehatan, administrasi, penagihan, dan pencatatan rekam medis sesuai ketentuan yang berlaku.</p>
-            <p style="margin: 0 0 3px 0;">3. Saya memahami bahwa informasi medis yang lebih rinci akan diperoleh melalui anamnesis, pemeriksaan, dan/atau formulir persetujuan tindakan medis sesuai jenis pelayanan yang saya terima.</p>
-            <p style="margin: 0 0 4px 0;">4. Saya bersedia mematuhi ketentuan pelayanan dan tata tertib klinik yang berlaku.</p>
-            <div style="margin-top: 5px; font-weight: bold; border-top: 1px dashed #cbd5e1; padding-top: 4px;">
-                Persetujuan menerima informasi/komunikasi administratif melalui telepon atau WhatsApp:
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="chk-box">[{{ $visit->whatsapp_comm_consent ? 'X' : ' ' }}]</span> Saya SETUJU
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="chk-box">[{{ !$visit->whatsapp_comm_consent ? 'X' : ' ' }}]</span> Saya TIDAK SETUJU
-            </div>
-        </div>
-
-        <!-- Tabel Tanda Tangan Formulir Pendaftaran Hal 2 -->
-        <table class="bordered-table" style="margin-top: 10px;">
-            <thead>
-                <tr>
-                    <th style="width: 50%; text-align: center;">Pasien / Penanggung Jawab</th>
-                    <th style="width: 50%; text-align: center;">Petugas Pendaftaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        <div style="font-size: 7pt; color: #475569; margin-bottom: 4px;">
-                            Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
-                        </div>
-                        @if($registrationPatientSigBase64 || $signatureBase64)
-                            <img src="{{ $registrationPatientSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
-                        @else
-                            <div style="height: 52px; line-height: 52px; font-style: italic; color: #94a3b8;">[Tanda tangan Pasien]</div>
-                        @endif
-                        <div class="sig-line">
-                            Nama: {{ $visit->registration_patient_signer_name ?: $patient->name }}
-                        </div>
-                    </td>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        <div style="font-size: 7pt; color: #475569; margin-bottom: 4px;">
-                            Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
-                        </div>
-                        @if($registrationStaffSigBase64)
-                            <img src="{{ $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
-                        @else
-                            <div style="height: 52px; line-height: 52px; font-style: italic; color: #94a3b8;">[Tanda tangan / Paraf Petugas]</div>
-                        @endif
-                        <div class="sig-line">
-                            Nama: {{ $visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW' }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+        <!-- Tanda Tangan Formulir Pendaftaran (Muat di Page 1) -->
+        <table class="signature-table" style="margin-top: 10px;">
+            <tr>
+                <td class="signature-cell" style="width: 50%;">
+                    <div>Petugas Pendaftaran,</div>
+                    @if($registrationStaffSigBase64)
+                        <img src="{{ $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
+                    @else
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW' }}
+                    </div>
+                </td>
+                <td class="signature-cell" style="width: 50%;">
+                    <div>Pasien / Penanggung Jawab,</div>
+                    @if($registrationPatientSigBase64 || $signatureBase64)
+                        <img src="{{ $registrationPatientSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
+                    @else
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $visit->registration_patient_signer_name ?: $patient->name }}
+                    </div>
+                </td>
+            </tr>
         </table>
-
-        <p style="font-size: 6.5pt; color: #64748b; font-style: italic; margin-top: 4px; text-align: center;">
-            Catatan: Formulir ini merupakan formulir pendaftaran pasien dan tidak menggantikan informed consent atau persetujuan tindakan medis yang diperlukan untuk tindakan tertentu.
-        </p>
-
-        <div class="footer-note">
-            Formulir Pendaftaran Pasien | Dokumen Administrasi Klinik &bull; Halaman 2
-        </div>
     </div>
 
     <div class="page-break"></div>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 3: GENERAL CONSENT (BAGIAN 1, 2, 3)                         -->
-    <!-- Persis seperti FORM/page_3.jpg di formatform.pdf                   -->
+    <!-- HALAMAN 2: GENERAL CONSENT (TEPAT 1 HALAMAN LENGKAP SAMPAI TTD)     -->
     <!-- =================================================================== -->
     <div class="page-container">
-        <!-- Kop Surat General Consent -->
+        <!-- Header General Consent -->
         <div class="center-header">
             @if($logoBase64)
                 <img src="{{ $logoBase64 }}" alt="ONEW Clinic">
             @endif
-            <p style="font-weight: bold; text-transform: uppercase; font-size: 7.5pt; color: #1e293b; margin-top: 1px;">
+            <p style="font-weight: bold; text-transform: uppercase; font-size: 7.5pt; color: #1e293b; margin-top: 2px;">
                 Klinik Utama ONEW &bull; PT Permata Medikal Jaya
             </p>
             <p>Jl. Laksana I no 6, Kebayoran Baru, Jakarta Selatan 12180 &bull; Telp: +62 8119 6977 886 / +62 21382 506 94</p>
-            <h1 style="margin-top: 4px;">GENERAL CONSENT</h1>
-            <p style="font-size: 8pt; font-weight: bold; color: #334155;">FORMULIR PERSETUJUAN UMUM PASIEN</p>
+            <h1 style="margin-top: 2px;">GENERAL CONSENT</h1>
+            <p style="font-size: 7.5pt; font-weight: bold; color: #334155;">FORMULIR PERSETUJUAN UMUM PASIEN</p>
         </div>
 
-        <!-- Identitas Pasien Grid (Sesuai Scan Hal 3) -->
-        <table class="bordered-table" style="margin-bottom: 6px; background-color: #f8fafc;">
+        <!-- Identitas Pasien Ringkas -->
+        <table class="bordered-table" style="margin-bottom: 5px; background-color: #f8fafc;">
             <tr>
-                <td style="width: 18%; font-weight: bold;">Nama lengkap</td>
+                <td style="width: 18%; font-weight: bold;">Nama Pasien</td>
                 <td style="width: 32%;"><strong>{{ $patient->name }}</strong></td>
-                <td style="width: 20%; font-weight: bold;">No. rekam medis</td>
-                <td style="width: 30%; font-family: monospace; font-weight: bold;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
+                <td style="width: 18%; font-weight: bold;">No. Rekam Medis</td>
+                <td style="width: 32%; font-family: monospace; font-weight: bold;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
             </tr>
             <tr>
-                <td style="font-weight: bold;">NIK / Identitas</td>
-                <td style="font-family: monospace;">{{ $patient->nik ?: ($patient->nik_passport ?: '-') }}</td>
-                <td style="font-weight: bold;">Tanggal lahir</td>
-                <td>{{ $patient->date_of_birth ? $patient->date_of_birth->format('d/m/Y') : '-' }}</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">No. HP / WhatsApp</td>
-                <td style="font-family: monospace;">{{ $patient->phone_number ?: '-' }}</td>
-                <td style="font-weight: bold;">Jenis kelamin</td>
-                <td><span class="chk-box">[{{ $patient->gender === 'male' ? 'X' : ' ' }}]</span> Laki-laki &nbsp; <span class="chk-box">[{{ $patient->gender === 'female' ? 'X' : ' ' }}]</span> Perempuan</td>
-            </tr>
-            <tr>
+                <td style="font-weight: bold;">Tgl Lahir / Usia</td>
+                <td>
+                    {{ $patient->date_of_birth ? $patient->date_of_birth->format('d/m/Y') : '-' }}
+                    ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Thn' : '-' }}) &bull; {{ $patient->gender === 'female' ? 'Perempuan' : 'Laki-laki' }}
+                </td>
                 <td style="font-weight: bold;">Alamat</td>
-                <td>{{ $patient->id_address ?: ($patient->address ?: '-') }}</td>
-                <td style="font-weight: bold;">Email (opsional)</td>
-                <td>{{ $patient->email ?: '-' }}</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">Kontak darurat (nama)</td>
-                <td>{{ $patient->emergency_contact_name ?: '-' }}</td>
-                <td style="font-weight: bold;">Hubungan & no. telepon</td>
-                <td>{{ $patient->emergency_contact_relation ?: '-' }} &bull; {{ $patient->emergency_contact_phone ?: '-' }}</td>
+                <td>{{ $patient->address ?: '-' }}</td>
             </tr>
         </table>
 
-        <!-- Klausul 1, 2, 3 Sesuai Scan Fisik Hal 3 -->
-        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.35; color: #1e293b;">
-            <div style="margin-bottom: 6px;">
-                <strong>1. PERSETUJUAN PENDAFTARAN DAN PELAYANAN UMUM</strong><br>
-                Saya bersedia didaftarkan sebagai pasien dan menerima penjelasan mengenai alur layanan, ketentuan administrasi, serta pelayanan awal yang sesuai kebutuhan, seperti wawancara riwayat kesehatan, pemeriksaan tanda vital, pemeriksaan fisik dasar, konsultasi, dan observasi noninvasif sesuai penilaian tenaga medis.<br>
-                Saya memahami bahwa setiap pemeriksaan, pemberian obat, dan rencana terapi akan dijelaskan sesuai kebutuhan. Tindakan yang memerlukan persetujuan khusus, termasuk tindakan invasif atau berisiko, injeksi, penggunaan laser, anestesi, dan pembedahan, tidak otomatis disetujui melalui formulir ini dan memerlukan <em>informed consent</em> tersendiri sesuai ketentuan.
+        <!-- 8 Klausul General Consent Ringkas & Padat -->
+        <div style="font-size: 6.8pt; text-align: justify; line-height: 1.25; color: #1e293b;">
+            <div style="margin-bottom: 3px;">
+                <strong>1. PERSETUJUAN PELAYANAN KESEHATAN:</strong> Saya menyetujui untuk mendapatkan pelayanan medis, pemeriksaan fisik, asuhan keperawatan, prosedur diagnostik, dan terapi standar di Klinik Utama ONEW sesuai indikasi klinis dan pertimbangan dokter yang bertugas.
             </div>
-
-            <div style="margin-bottom: 6px;">
-                <strong>2. HAK DAN KEWAJIBAN PASIEN</strong><br>
-                Saya telah memperoleh kesempatan untuk mengetahui hak saya, termasuk mendapatkan informasi yang dapat dipahami tentang kondisi dan rencana pelayanan, menanyakan alternatif dan biaya, memperoleh privasi serta kerahasiaan rekam medis, menyampaikan keluhan, dan menerima atau menolak tindakan sesuai ketentuan yang berlaku.<br>
-                Saya berkewajiban memberikan data identitas dan riwayat kesehatan secara benar, menginformasikan alergi/obat yang digunakan, mengikuti aturan keselamatan klinik, menghormati petugas dan pasien lain, serta memenuhi kewajiban pembayaran untuk layanan yang telah disetujui.
+            <div style="margin-bottom: 3px;">
+                <strong>2. HAK DAN KEWAJIBAN PASIEN:</strong> Saya memahami hak saya untuk memperoleh informasi mengenai diagnosis, perkiraan biaya, rencana perawatan, serta kewajiban saya memberikan riwayat kesehatan yang jujur demi keselamatan medis saya sendiri.
             </div>
-
-            <div style="margin-bottom: 6px;">
-                <strong>3. REKAM MEDIS DAN PELINDUNGAN DATA PRIBADI</strong><br>
-                Saya memahami bahwa klinik mengumpulkan dan mengolah data identitas, kontak, riwayat kesehatan, hasil pemeriksaan, diagnosis, terapi, dan informasi pembayaran untuk pendaftaran, pelayanan, pencatatan rekam medis elektronik, administrasi, penagihan, serta pemenuhan kewajiban hukum. Akses dibatasi kepada pihak berwenang sesuai kebutuhan dan kerahasiaan tetap dijaga.<br>
-                Data dapat disampaikan kepada tenaga kesehatan atau fasilitas penerima rujukan dan sistem pelaporan/integrasi kesehatan yang diwajibkan peraturan, sebatas diperlukan. Pengungkapan kepada pihak lain, termasuk penjamin/asuransi, dilaksanakan sesuai dasar hukum atau persetujuan yang berlaku. Foto atau rekaman untuk publikasi/promosi tidak termasuk dalam persetujuan ini.
+            <div style="margin-bottom: 3px;">
+                <strong>3. PRIVASI DAN KERAHASIAAN MEDIS:</strong> Saya mengizinkan tenaga medis dan staf resmi klinik membuka informasi medis saya apabila diperlukan untuk kepentingan rujukan, penjaminan biaya asuransi, atau kepatuhan peraturan perundang-undangan kesehatan.
+            </div>
+            <div style="margin-bottom: 3px;">
+                <strong>4. PELEPASAN INFORMASI MEDIS:</strong> Saya mengizinkan rekam medis elektronik saya disimpan secara aman dan diakses oleh dokter dan tim medis yang berwenang di Klinik Utama ONEW sesuai regulasi rekam medis yang berlaku.
+            </div>
+            <div style="margin-bottom: 3px;">
+                <strong>5. PENGINGAT JADWAL & KOMUNIKASI ADMINISTRASI:</strong> Saya menyetujui Klinik Utama ONEW menghubungi saya melalui telepon, SMS, atau WhatsApp guna keperluan pengingat janji konsultasi, kontrol berkala, maupun tindak lanjut administrasi.
+            </div>
+            <div style="margin-bottom: 3px;">
+                <strong>6. BARANG BERHARGA:</strong> Saya memahami bahwa pihak Klinik Utama ONEW tidak bertanggung jawab atas kehilangan atau kerusakan barang berharga milik pribadi yang dibawa ke area klinik.
+            </div>
+            <div style="margin-bottom: 3px;">
+                <strong>7. PEMBIAYAAN DAN TATA TERTIB PEMBAYARAN:</strong> Saya bersedia melunasi seluruh tagihan atas konsultasi, tindakan medis penunjang, obat-obatan, dan layanan klinis yang diberikan sebelum meninggalkan area klinik.
+            </div>
+            <div style="margin-bottom: 3px;">
+                <strong>8. PERNYATAAN PENUTUP:</strong> Saya menyatakan bahwa saya telah membaca, memahami, dan menyetujui seluruh klausul dalam Formulir Persetujuan Umum ini secara sadar dan tanpa paksaan dari pihak mana pun.
             </div>
         </div>
 
-        <div class="footer-note">
-            General Consent / Formulir Persetujuan Umum Pasien &bull; Halaman 1
-        </div>
-    </div>
-
-    <div class="page-break"></div>
-
-    <!-- =================================================================== -->
-    <!-- HALAMAN 4: GENERAL CONSENT / LANJUTAN (BAGIAN 4, 5, 6, 7, 8 & TTD)  -->
-    <!-- Persis seperti FORM/page_4.jpg di formatform.pdf                   -->
-    <!-- =================================================================== -->
-    <div class="page-container">
-        <!-- Kop Surat General Consent Hal 2 -->
-        <table class="kop-table">
+        <!-- Tanda Tangan General Consent (Muat di Page 2) -->
+        <table class="signature-table" style="margin-top: 10px;">
             <tr>
-                <td class="kop-logo">
-                    @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic">
+                <td class="signature-cell" style="width: 50%;">
+                    <div>Petugas Pendaftaran / Pemberi Penjelasan,</div>
+                    @if($generalConsentStaffSigBase64 || $registrationStaffSigBase64)
+                        <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
                     @else
-                        <span style="font-size: 15pt; font-weight: 900; letter-spacing: 1px;">ONEW</span>
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
                     @endif
+                    <div class="sig-line">
+                        {{ $visit->general_consent_staff_name ?: ($visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW') }}
+                    </div>
                 </td>
-                <td class="kop-clinic-details">
-                    <div class="kop-clinic-title">Klinik Utama ONEW &bull; PT Permata Medikal Jaya</div>
-                    <div>Jl. Laksana I no 6, Kebayoran Baru, Jaksel 12180</div>
-                    <div>website: onewclinic.com &bull; email: onewclinic@gmail.com</div>
-                    <div>mobile: +62 8119 6977 886 &bull; phone: +62 21382 506 94</div>
+                <td class="signature-cell" style="width: 50%;">
+                    <div>Pasien / Penanggung Jawab,</div>
+                    @if($signatureBase64 || $registrationPatientSigBase64)
+                        <img src="{{ $signatureBase64 ?: $registrationPatientSigBase64 }}" class="sig-image" alt="TTD Pasien">
+                    @else
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $visit->general_consent_patient_signer_name ?: ($visit->registration_patient_signer_name ?: $patient->name) }}
+                    </div>
                 </td>
             </tr>
         </table>
-
-        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.35; color: #1e293b;">
-            <div style="margin-bottom: 5px;">
-                <strong>4. BIAYA DAN ADMINISTRASI</strong><br>
-                Saya memahami bahwa biaya konsultasi, pemeriksaan penunjang, obat, dan tindakan tambahan dapat berbeda. Klinik akan menyampaikan informasi biaya sebelum layanan diberikan, sepanjang keadaan memungkinkan. Saya berhak mengajukan pertanyaan dan menyetujui atau menolak layanan tambahan sesuai ketentuan medis dan hukum.
-            </div>
-
-            <div style="margin-bottom: 5px;">
-                <strong>5. KEADAAN DARURAT DAN RUJUKAN</strong><br>
-                Apabila terjadi kondisi darurat yang mengancam nyawa atau keselamatan, saya memahami bahwa tenaga medis dapat memberikan pertolongan segera sesuai kewenangan dan ketentuan yang berlaku. Bila pelayanan yang dibutuhkan tidak tersedia, klinik dapat menyarankan atau mengatur rujukan ke fasilitas yang sesuai, dengan pemberitahuan kepada saya/keluarga sejauh memungkinkan.
-            </div>
-
-            <div style="margin-bottom: 5px;">
-                <strong>6. KOMUNIKASI DAN DOKUMENTASI MEDIS</strong><br>
-                Klinik dapat menghubungi nomor kontak saya untuk keperluan pelayanan dan administrasi. Penggunaan WhatsApp dan pengiriman promosi mengikuti pilihan saya di bawah. Informasi medis sensitif hanya disampaikan dengan memperhatikan verifikasi identitas dan kerahasiaan. Dokumentasi foto/video klinis, jika diperlukan, akan dijelaskan dan dimintakan persetujuan sesuai tujuan penggunaannya; penggunaan untuk promosi memerlukan persetujuan terpisah.
-            </div>
-        </div>
-
-        <!-- 7. PILIHAN PASIEN (Checklist Sesuai Scan Hal 4) -->
-        <div class="section-bar">7. PILIHAN PASIEN (DIISI SESUAI KEBUTUHAN)</div>
-        <table class="bordered-table" style="background-color: #f8fafc;">
-            <tr>
-                <td style="width: 70%;">Pengingat jadwal dan komunikasi administrasi melalui WhatsApp:</td>
-                <td style="width: 30%;">
-                    <span class="chk-box">[{{ $visit->general_consent_whatsapp_reminder ? 'X' : ' ' }}]</span> Ya
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ !$visit->general_consent_whatsapp_reminder ? 'X' : ' ' }}]</span> Tidak
-                </td>
-            </tr>
-            <tr>
-                <td>Informasi promosi layanan klinik (opsional; tidak memengaruhi pelayanan):</td>
-                <td>
-                    <span class="chk-box">[{{ $visit->general_consent_promo_info ? 'X' : ' ' }}]</span> Ya
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ !$visit->general_consent_promo_info ? 'X' : ' ' }}]</span> Tidak
-                </td>
-            </tr>
-            <tr>
-                <td>Pengungkapan data yang diperlukan untuk verifikasi manfaat/klaim kepada penjamin:</td>
-                <td>
-                    <span class="chk-box">[{{ $visit->general_consent_insurance_disclosure === 'Ya' ? 'X' : ' ' }}]</span> Ya
-                    &nbsp;&nbsp;
-                    <span class="chk-box">[{{ $visit->general_consent_insurance_disclosure === 'Tidak' ? 'X' : ' ' }}]</span> Tidak
-                    &nbsp;&nbsp;
-                    <span class="chk-box">[{{ ($visit->general_consent_insurance_disclosure === 'N/A' || !$visit->general_consent_insurance_disclosure) ? 'X' : ' ' }}]</span> N/A
-                </td>
-            </tr>
-            <tr>
-                <td>Izin pemberian informasi kesehatan kepada orang yang saya tunjuk:</td>
-                <td>
-                    <span class="chk-box">[{{ $visit->general_consent_third_party_info ? 'X' : ' ' }}]</span> Ya
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="chk-box">[{{ !$visit->general_consent_third_party_info ? 'X' : ' ' }}]</span> Tidak
-                </td>
-            </tr>
-            @if($visit->general_consent_third_party_info)
-                <tr>
-                    <td colspan="2" style="font-size: 7pt; background-color: #ffffff;">
-                        Jika Ya, nama / hubungan: <strong>{{ $visit->general_consent_third_party_name ?: '-' }}</strong> &bull; No. telepon: <strong>{{ $visit->general_consent_third_party_phone ?: '-' }}</strong>
-                    </td>
-                </tr>
-            @endif
-        </table>
-
-        <!-- 8. PERNYATAAN DAN PERSETUJUAN -->
-        <div class="section-bar">8. PERNYATAAN DAN PERSETUJUAN</div>
-        <p style="font-size: 7.2pt; text-align: justify; line-height: 1.35; margin: 3px 0 6px 0;">
-            Saya menyatakan telah membaca atau mendapatkan penjelasan formulir ini dengan bahasa yang saya pahami, memiliki kesempatan bertanya, dan memahami bahwa persetujuan umum ini tidak menggantikan persetujuan tindakan kedokteran khusus. Saya memberikan persetujuan untuk pendaftaran dan pelayanan umum sebagaimana dijelaskan di atas. Saya dapat menyampaikan keberatan atau menarik persetujuan yang didasarkan pada persetujuan, dengan memperhatikan kewajiban penyimpanan rekam medis dan dasar hukum lain yang berlaku.
-        </p>
-
-        <div style="font-size: 7.5pt; margin-bottom: 4px;">
-            Tempat: <strong>Jakarta</strong> &nbsp;&bull;&nbsp;
-            Tanggal: <strong>{{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}</strong> &nbsp;&bull;&nbsp;
-            Pukul: <strong>{{ $visit->created_at->format('H:i') }} WIB</strong>
-        </div>
-
-        <!-- Tabel Tanda Tangan General Consent Hal 4 -->
-        <table class="bordered-table">
-            <thead>
-                <tr>
-                    <th style="width: 50%; text-align: center;">PETUGAS YANG MEMBERIKAN PENJELASAN</th>
-                    <th style="width: 50%; text-align: center;">PASIEN / ORANG TUA / WALI / PERWAKILAN SAH</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        <div style="font-size: 7pt; color: #475569; margin-bottom: 2px;">
-                            Jabatan: {{ $visit->general_consent_staff_title ?: 'Petugas Pendaftaran / Perawat' }}
-                        </div>
-                        @if($generalConsentStaffSigBase64 || $registrationStaffSigBase64)
-                            <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
-                        @else
-                            <div style="height: 52px; line-height: 52px; font-style: italic; color: #94a3b8;">[Tanda tangan Petugas]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->general_consent_staff_name ?: ($visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW') }}
-                        </div>
-                    </td>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        <div style="font-size: 7pt; color: #475569; margin-bottom: 2px;">
-                            Hubungan dengan pasien: {{ $visit->general_consent_patient_relation ?: 'Diri Sendiri' }}
-                        </div>
-                        @if($signatureBase64 || $registrationPatientSigBase64)
-                            <img src="{{ $signatureBase64 ?: $registrationPatientSigBase64 }}" class="sig-image" alt="TTD Pasien">
-                        @else
-                            <div style="height: 52px; line-height: 52px; font-style: italic; color: #94a3b8;">[Tanda tangan Pasien]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->general_consent_patient_signer_name ?: ($visit->registration_patient_signer_name ?: $patient->name) }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="footer-note">
-            General Consent / Formulir Persetujuan Umum Pasien &bull; Halaman 2
-        </div>
     </div>
 
     <div class="page-break"></div>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 5: PERSETUJUAN TINDAKAN KEDOKTERAN (INFORMED CONSENT)       -->
-    <!-- Persis seperti FORM/page_5.jpg di formatform.pdf                   -->
+    <!-- HALAMAN 3: PERSETUJUAN TINDAKAN KEDOKTERAN (INFORMED CONSENT)       -->
     <!-- =================================================================== -->
     <div class="page-container">
         <!-- Header Informed Consent -->
-        <table class="kop-table" style="margin-bottom: 4px;">
+        <div class="center-header">
+            @if($logoBase64)
+                <img src="{{ $logoBase64 }}" alt="ONEW Clinic">
+            @endif
+            <h2>PERSETUJUAN TINDAKAN KEDOKTERAN</h2>
+            <p style="font-weight: bold; font-size: 7.5pt; color: #334155;">INFORMED CONSENT RESMI KLINIS</p>
+        </div>
+
+        <!-- Metadata Dokter & Penerima Informasi (Dokter Kosong Jika Tidak Ada) -->
+        @php
+            $doctorNameDisplay = $visit->informedConsent?->doctor_name ?: ($visit->doctor_name_override ?: ($visit->doctor?->name ?? ''));
+            $infoProviderDisplay = $visit->informedConsent?->information_provider ?: $doctorNameDisplay;
+            $recipientNameDisplay = $visit->informedConsent?->recipient_name ?: $patient->name;
+            $recipientRelationDisplay = $visit->informedConsent?->recipient_relation ?: 'Diri Sendiri';
+            $recipientAgeDisplay = $visit->informedConsent?->recipient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : '');
+            $recipientAddressDisplay = $visit->informedConsent?->recipient_address ?: ($patient->id_address ?: ($patient->domicile_address ?: ($patient->address ?? '')));
+            
+            // Resolve doctor actions: IC procedure OR treatment list
+            $doctorActions = [];
+            if (!empty($visit->custom_treatment_list)) {
+                $doctorActions = array_filter(array_column($visit->custom_treatment_list, 'action'));
+            } elseif ($visit->treatments && $visit->treatments->count() > 0) {
+                $doctorActions = $visit->treatments->pluck('name')->toArray();
+            }
+            $doctorActionsSummary = !empty($doctorActions) ? implode(' + ', $doctorActions) : '';
+            $resolvedProcedure = $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: ($doctorActionsSummary ?: 'Tindakan Medis Estetika'));
+        @endphp
+
+        <table class="form-grid-table" style="margin-bottom: 5px;">
             <tr>
-                <td style="width: 25%; vertical-align: middle;">
-                    @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 36px; width: auto;">
-                    @else
-                        <span style="font-size: 14pt; font-weight: 900;">ONEW</span>
-                    @endif
+                <td class="field-label" style="width: 25%;">Dokter Pelaksana Tindakan</td>
+                <td class="field-val" style="width: 25%;">
+                    <strong>{{ $doctorNameDisplay ?: '-' }}</strong>
                 </td>
-                <td style="width: 75%; text-align: right; vertical-align: middle;">
-                    <div style="font-size: 11pt; font-weight: 900; color: #0f172a; text-transform: uppercase;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
-                    <div style="font-size: 7pt; color: #475569;">PEMBERIAN INFORMASI &bull; ONEW Klinik Utama</div>
+                <td class="field-label" style="width: 25%;">Penerima Informasi / Wali</td>
+                <td class="field-val" style="width: 25%;">
+                    <strong>{{ $recipientNameDisplay }}</strong>
+                    <span style="font-size: 6.5pt; color: #64748b;">({{ $recipientRelationDisplay }})</span>
                 </td>
+            </tr>
+            <tr>
+                <td class="field-label">Pemberi Penjelasan Medis</td>
+                <td class="field-val">{{ $infoProviderDisplay ?: '-' }}</td>
+                <td class="field-label">Pasien Sasaran Tindakan</td>
+                <td class="field-val">{{ $patient->name }} ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Thn' : '-' }})</td>
             </tr>
         </table>
 
-        <!-- Metadata Dokter & Penerima Informasi -->
-        <table class="bordered-table" style="margin-bottom: 4px; background-color: #f8fafc;">
-            <tr>
-                <td style="width: 28%; font-weight: bold;">Dokter Pelaksana Tindakan</td>
-                <td style="width: 72%;">: <strong>{{ $visit->informedConsent?->doctor_name ?: ($visit->doctor_name_override ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E')) }}</strong></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">Pemberi Informasi</td>
-                <td>: {{ $visit->informedConsent?->information_provider ?: ($visit->informedConsent?->doctor_name ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E')) }}</td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">Penerima Informasi / Persetujuan*</td>
-                <td>: <strong>{{ $visit->informedConsent?->recipient_name ?: $patient->name }}</strong> ({{ $visit->informedConsent?->recipient_relation ?: 'Pasien Sendiri' }})</td>
-            </tr>
-        </table>
-
-        <!-- Tabel 11 Poin Pemberian Informasi Medis (Sesuai Scan Fisik Hal 5) -->
-        <table class="bordered-table" style="margin-bottom: 4px;">
+        <!-- Tabel 11 Poin Pemberian Informasi Medis -->
+        <table class="bordered-table" style="margin-bottom: 5px;">
             <thead>
                 <tr>
-                    <th style="width: 4%; text-align: center;">No</th>
-                    <th style="width: 22%;">Jenis Informasi</th>
-                    <th style="width: 66%;">Isi Informasi</th>
-                    <th style="width: 8%; text-align: center;">Tanda (v)</th>
+                    <th style="width: 4%; text-align: center;">NO</th>
+                    <th style="width: 23%;">JENIS INFORMASI</th>
+                    <th style="width: 65%;">ISI INFORMASI MEDIS</th>
+                    <th style="width: 8%; text-align: center;">TANDA</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td style="text-align: center;">1</td>
                     <td><strong>Diagnosis (WD & DD)</strong></td>
-                    <td>{{ $visit->informedConsent?->diagnosis_wd_dd ?: ($visit->diagnosis_wd ?: 'Pemeriksaan Estetika Klinis Kulit & Wajah') }}</td>
+                    <td>{{ $visit->informedConsent?->diagnosis_wd_dd ?: ($visit->diagnosis_wd ?: '-') }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">2</td>
                     <td><strong>Dasar Diagnosis</strong></td>
-                    <td>{{ $visit->informedConsent?->diagnosis_basis ?: 'Anamnesis dan Pemeriksaan Fisik Klinis Kulit' }}</td>
+                    <td>{{ $visit->informedConsent?->diagnosis_basis ?: 'Pemeriksaan Klinis dan Anamnesis Dokter' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">3</td>
                     <td><strong>Tindakan Kedokteran</strong></td>
-                    <td><strong>{{ $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: 'Messo + Botox + Laser CO2 + Multivitamin Infuse') }}</strong></td>
+                    <td><strong>{{ $resolvedProcedure }}</strong></td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">4</td>
                     <td><strong>Indikasi Tindakan</strong></td>
-                    <td>{{ $visit->informedConsent?->indication ?: 'Peremajaan jaringan kulit, stimulasi kolagen, dan perbaikan kontur' }}</td>
+                    <td>{{ $visit->informedConsent?->indication ?: 'Peremajaan jaringan kulit, koreksi kontur & perbaikan tekstur' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">5</td>
-                    <td><strong>Tata Cara</strong></td>
-                    <td>{{ $visit->informedConsent?->procedure_steps ?: 'Asepsis, anestesi topikal bila diperlukan, pengerjaan prosedur aseptik sesuai protokol' }}</td>
+                    <td><strong>Tata Cara Prosedur</strong></td>
+                    <td>{{ $visit->informedConsent?->procedure_steps ?: 'Asepsis, anestesi topikal bila diperlukan, pelaksanaan prosedur secara aseptik' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">6</td>
-                    <td><strong>Tujuan</strong></td>
-                    <td>{{ $visit->informedConsent?->procedure_goal ?: 'Meningkatkan elastisitas, kecerahan, dan tekstur kulit yang optimal' }}</td>
+                    <td><strong>Tujuan Tindakan</strong></td>
+                    <td>{{ $visit->informedConsent?->procedure_goal ?: 'Memperbaiki tekstur kulit, meningkatkan elastisitas, dan peremajaan' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">7</td>
-                    <td><strong>Risiko</strong></td>
-                    <td>{{ $visit->informedConsent?->risks ?: 'Eritema sementara, rasa hangat, atau pembengkakan ringan pasca tindakan' }}</td>
+                    <td><strong>Risiko yang Mungkin Terjadi</strong></td>
+                    <td>{{ $visit->informedConsent?->risks ?: 'Kemerahan sementara (eritema), rasa hangat, atau pembengkakan ringan' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">8</td>
                     <td><strong>Komplikasi</strong></td>
-                    <td>{{ $visit->informedConsent?->complications ?: 'Hematoma ringan, reaksi hipersensitivitas individual' }}</td>
+                    <td>{{ $visit->informedConsent?->complications ?: 'Hematoma ringan, reaksi hipersensitivitas minimal' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
@@ -1006,190 +733,158 @@
                 <tr>
                     <td style="text-align: center;">10</td>
                     <td><strong>Alternatif & Risiko</strong></td>
-                    <td>{{ $visit->informedConsent?->alternatives_risks ?: 'Perawatan topikal harian mandiri atau observasi berkala' }}</td>
+                    <td>{{ $visit->informedConsent?->alternatives_risks ?: 'Perawatan topikal harian atau observasi klinis berkala' }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">11</td>
-                    <td><strong>Lain-lain</strong></td>
-                    <td>{{ $visit->informedConsent?->other_notes ?: ($visit->doctor_notes ?: 'Hindari paparan sinar matahari langsung dan gunakan tabir surya teratur.') }}</td>
+                    <td><strong>Lain-lain / Catatan Pasca</strong></td>
+                    <td>{{ $visit->informedConsent?->other_notes ?: ($visit->doctor_notes ?: 'Hindari paparan sinar matahari langsung dan gunakan sunscreen.') }}</td>
                     <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- 2 Tanda Tangan di Bawah Tabel Informasi (Sesuai Scan Hal 5) -->
-        <table class="bordered-table" style="margin-bottom: 4px;">
+        <!-- Paragraf Pernyataan Persetujuan (Terisi Lengkap Tanpa Titik-titik Sesuai Attachment) -->
+        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.3; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 5px 7px; border-radius: 3px; margin-bottom: 6px;">
+            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 3px; font-size: 7.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
+            Yang bertandatangan di bawah ini, saya, nama: <strong>{{ $recipientNameDisplay }}</strong>, umur: <strong>{{ $recipientAgeDisplay ?: '-' }}</strong> tahun, alamat: <strong>{{ $recipientAddressDisplay ?: '-' }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan: <strong style="text-decoration: underline;">{{ $resolvedProcedure }}</strong> terhadap {{ $recipientRelationDisplay ?: 'diri saya sendiri' }} bernama <strong>{{ $patient->name }}</strong>.<br>
+            Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan. Saya juga menyadari bahwa ilmu kedokteran bukanlah ilmu pasti, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
+        </div>
+
+        <!-- Tanda Tangan 3 Pihak (Dokter Nama Kosong Jika Tidak Ada) -->
+        <table class="signature-table" style="margin-top: 6px;">
             <tr>
-                <td style="width: 50%; font-size: 6.8pt; vertical-align: top; padding: 4px;">
-                    Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dan memberikan kesempatan untuk bertanya dan/atau berdiskusi:
-                    <div style="text-align: center; margin-top: 3px;">
-                        @if($doctorConsentSigBase64)
-                            <img src="{{ $doctorConsentSigBase64 }}" style="height: 38px; max-width: 130px; display: block; margin: 0 auto;" alt="TTD Dokter">
-                        @else
-                            <div style="height: 38px; line-height: 38px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
-                        @endif
-                        <div style="font-weight: bold; font-size: 7pt; border-top: 1px solid #475569; padding-top: 1px; margin-top: 2px;">
-                            {{ $visit->informedConsent?->doctor_name ?: ($visit->doctor_name_override ?: ($visit->doctor?->name ?? 'Dokter Pelaksana')) }}
-                        </div>
+                <td class="signature-cell" style="width: 33.3%;">
+                    <div>Dokter yang Menerangkan,</div>
+                    @if($doctorConsentSigBase64)
+                        <img src="{{ $doctorConsentSigBase64 }}" class="sig-image" alt="TTD Dokter">
+                    @elseif($doctorNameDisplay)
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
+                    @else
+                        <div style="height: 38px; line-height: 38px; color: #94a3b8; font-style: italic;">[Tanda Tangan Dokter]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $doctorNameDisplay ?: '' }}
                     </div>
                 </td>
-                <td style="width: 50%; font-size: 6.8pt; vertical-align: top; padding: 4px;">
-                    Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas yang saya beri tanda / paraf di kolom kanannya, dan telah memahaminya:
-                    <div style="text-align: center; margin-top: 3px;">
-                        @if($procedureConsentSigBase64 || $signatureBase64)
-                            <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" style="height: 38px; max-width: 130px; display: block; margin: 0 auto;" alt="TTD Pasien">
-                        @else
-                            <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda tangan Pasien]</div>
-                        @endif
-                        <div style="font-weight: bold; font-size: 7pt; border-top: 1px solid #475569; padding-top: 1px; margin-top: 2px;">
-                            {{ $visit->informedConsent?->recipient_name ?: $patient->name }}
-                        </div>
+                <td class="signature-cell" style="width: 33.3%;">
+                    <div>Yang Menyatakan Persetujuan,</div>
+                    @if($procedureConsentSigBase64 || $signatureBase64)
+                        <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
+                    @else
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $recipientNameDisplay }}
+                    </div>
+                </td>
+                <td class="signature-cell" style="width: 33.3%;">
+                    <div>Saksi Tindakan Medis,</div>
+                    @if($witnessConsentSigBase64)
+                        <img src="{{ $witnessConsentSigBase64 }}" class="sig-image" alt="TTD Saksi">
+                    @else
+                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Saksi]</div>
+                    @endif
+                    <div class="sig-line">
+                        {{ $visit->informedConsent?->witness_name ?: 'Saksi Klinik ONEW' }}
                     </div>
                 </td>
             </tr>
         </table>
-        <div style="font-size: 6.5pt; color: #64748b; font-style: italic; margin-bottom: 6px;">
-            * Bila pasien tidak kompeten atau tidak mau menerima informasi, maka penerima informasi adalah wali atau keluarga terdekat.
-        </div>
-
-        <!-- Paragraf Persetujuan Tindakan Kedokteran (Sesuai Scan Hal 5) -->
-        <div style="font-size: 7pt; text-align: justify; line-height: 1.3; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 5px 7px; border-radius: 3px; margin-bottom: 6px;">
-            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 3px; font-size: 7.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
-            Yang bertandatangan di bawah ini, saya, nama: <strong>{{ $visit->informedConsent?->recipient_name ?: $patient->name }}</strong>, umur: <strong>{{ $visit->informedConsent?->recipient_age ?: ($patient->date_of_birth ? $patient->date_of_birth->age : '28') }}</strong> tahun, alamat: <strong>{{ $patient->id_address ?: ($patient->address ?: '-') }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan: <strong style="text-decoration: underline;">{{ $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: 'Messo + Botox + Laser CO2 + Multivitamin Infuse') }}</strong> terhadap {{ $visit->informedConsent?->recipient_relation ?: 'diri saya sendiri' }} bernama <strong>{{ $patient->name }}</strong>.<br>
-            Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya, termasuk risiko dan komplikasi yang mungkin timbul. Saya juga menyadari bahwa oleh karena ilmu kedokteran bukanlah ilmu pasti, maka keberhasilan tindakan kedokteran bukanlah keniscayaan, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
-        </div>
-
-        <!-- Tanda Tangan Pasien & Saksi di Bagian Bawah Form -->
-        <table class="bordered-table">
-            <thead>
-                <tr>
-                    <th style="width: 50%; text-align: center;">Yang Menyatakan (Pasien / Wali)</th>
-                    <th style="width: 50%; text-align: center;">Saksi Tindakan Medis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center; padding: 4px; vertical-align: top;">
-                        <div style="font-size: 6.8pt; color: #475569; margin-bottom: 2px;">
-                            Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }} &bull; Pukul: {{ $visit->created_at->format('H:i') }} WIB
-                        </div>
-                        @if($procedureConsentSigBase64 || $signatureBase64)
-                            <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" style="height: 38px; max-width: 130px; display: block; margin: 0 auto;" alt="TTD Pasien">
-                        @else
-                            <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda tangan]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->informedConsent?->recipient_name ?: $patient->name }}
-                        </div>
-                    </td>
-                    <td style="text-align: center; padding: 4px; vertical-align: top;">
-                        <div style="font-size: 6.8pt; color: #475569; margin-bottom: 2px;">
-                            Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
-                        </div>
-                        @if($witnessConsentSigBase64)
-                            <img src="{{ $witnessConsentSigBase64 }}" style="height: 38px; max-width: 130px; display: block; margin: 0 auto;" alt="TTD Saksi">
-                        @else
-                            <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda tangan Saksi]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->informedConsent?->witness_name ?: 'Saksi Klinik ONEW' }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="footer-note">
-            Persetujuan Tindakan Kedokteran | ONEW Klinik Utama &bull; Halaman 5
-        </div>
     </div>
 
     <div class="page-break"></div>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 6: BHP TINDAKAN HARIAN ONEW                                 -->
-    <!-- Persis seperti FORM/page_6.jpg di formatform.pdf                   -->
+    <!-- HALAMAN 4: BHP TINDAKAN HARIAN ONEW (TANPA TANDA TANGAN)             -->
     <!-- =================================================================== -->
     <div class="page-container">
-        <!-- Header Form BHP -->
+        <!-- Header BHP -->
         <div class="center-header">
             @if($logoBase64)
                 <img src="{{ $logoBase64 }}" alt="ONEW Clinic">
             @endif
             <h2>BHP TINDAKAN HARIAN</h2>
-            <p style="font-weight: bold; font-size: 8pt; color: #334155;">KLINIK UTAMA ONEW</p>
+            <p style="font-weight: bold; font-size: 7.5pt; color: #334155;">KLINIK UTAMA ONEW</p>
         </div>
 
-        <!-- Metadata Form BHP (4 Kotak Sesuai Scan Hal 6) -->
-        <table class="bordered-table" style="margin-bottom: 6px; background-color: #f8fafc;">
+        <!-- Metadata Form BHP (4 Kotak, Dokter Kosong Jika Tidak Ada) -->
+        <table class="bordered-table" style="margin-bottom: 8px; background-color: #f8fafc;">
             <tr>
                 <td style="width: 18%; font-weight: bold;">NAMA PASIEN</td>
-                <td style="width: 32%; font-weight: bold; font-size: 8.5pt;">: {{ $patient->name }}</td>
-                <td style="width: 20%; font-weight: bold;">PERAWAT / TERAPIS</td>
-                <td style="width: 30%;">: {{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? 'Ns. Ratna Dewi, S.Kep')) }}</td>
+                <td style="width: 32%; font-weight: bold; font-size: 8pt;">{{ $patient->name }}</td>
+                <td style="width: 18%; font-weight: bold;">PERAWAT / TERAPIS</td>
+                <td style="width: 32%;">{{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? '')) }}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold;">DOKTER</td>
-                <td>: <strong>{{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E') }}</strong></td>
+                <td>{{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? '') }}</td>
                 <td style="font-weight: bold;">TANGGAL</td>
-                <td style="font-weight: bold; font-family: monospace;">: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->translatedFormat('d F Y') : $visit->created_at->translatedFormat('d F Y') }}</td>
+                <td style="font-weight: bold; font-family: monospace;">
+                    {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->translatedFormat('d F Y') : $visit->created_at->translatedFormat('d F Y') }}
+                </td>
             </tr>
         </table>
 
-        <!-- Layout 2 Kolom Sejajar: TINDAKAN di Kiri & BAHAN/BHP di Kanan -->
+        <!-- Layout 2 Kolom Sejajar: Kolom Kiri TINDAKAN & Kolom Kanan BAHAN/BHP -->
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
-                <!-- Kolom Kiri: Tabel Tindakan Medis -->
-                <td style="width: 44%; vertical-align: top; padding-right: 5px;">
+                <!-- Kolom Kiri: Tindakan Medis -->
+                <td style="width: 44%; vertical-align: top; padding-right: 6px;">
                     <table class="bordered-table" style="margin-top: 0;">
                         <thead>
                             <tr>
-                                <th style="width: 15%; text-align: center;">NO</th>
-                                <th style="width: 85%;">TINDAKAN MEDIS / DOSIS</th>
+                                <th style="width: 12%; text-align: center;">NO</th>
+                                <th style="width: 88%;">TINDAKAN MEDIS / DOSIS</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if($visit->custom_treatment_list && count($visit->custom_treatment_list) > 0)
                                 @foreach($visit->custom_treatment_list as $tIdx => $tItem)
                                     <tr>
-                                        <td style="text-align: center; font-weight: bold;">{{ $tIdx + 1 }}</td>
+                                        <td style="text-align: center; font-weight: bold;">{{ $tIdx + 1 }}.</td>
                                         <td><strong>{{ $tItem['action'] ?? ($tItem['name'] ?? '-') }}</strong></td>
                                     </tr>
                                 @endforeach
                             @elseif($visit->treatments && $visit->treatments->count() > 0)
                                 @foreach($visit->treatments as $tIdx => $treatment)
                                     <tr>
-                                        <td style="text-align: center; font-weight: bold;">{{ $tIdx + 1 }}</td>
-                                        <td><strong>{{ $treatment->name }}</strong></td>
+                                        <td style="text-align: center; font-weight: bold;">{{ $tIdx + 1 }}.</td>
+                                        <td>
+                                            <strong>{{ $treatment->name }}</strong>
+                                            @if($treatment->pivot->notes)
+                                                <div style="font-size: 6.5pt; color: #475569;">{{ $treatment->pivot->notes }}</div>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td style="text-align: center;">1</td>
-                                    <td>{{ $visit->informedConsent?->action_name ?: 'Messo + Botox 50 unit + Laser CO2' }}</td>
+                                    <td style="text-align: center;">1.</td>
+                                    <td>{{ $resolvedProcedure }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">2</td>
-                                    <td>Multivitamin Infuse</td>
+                                    <td style="text-align: center;">2.</td>
+                                    <td style="color: #94a3b8; font-style: italic;">—</td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">3</td>
-                                    <td>Secretome 1 Vial</td>
+                                    <td style="text-align: center;">3.</td>
+                                    <td style="color: #94a3b8; font-style: italic;">—</td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
                 </td>
 
-                <!-- Kolom Kanan: Tabel Bahan Habis Pakai (BHP & QT) -->
-                <td style="width: 56%; vertical-align: top; padding-left: 5px;">
+                <!-- Kolom Kanan: Bahan Habis Pakai (BHP & QT) -->
+                <td style="width: 56%; vertical-align: top; padding-left: 6px;">
                     <table class="bordered-table" style="margin-top: 0;">
                         <thead>
                             <tr>
                                 <th style="width: 10%; text-align: center;">NO</th>
-                                <th style="width: 62%;">NAMA BAHAN MEDIS (BHP)</th>
-                                <th style="width: 28%; text-align: center;">QT</th>
+                                <th style="width: 60%;">NAMA BAHAN MEDIS (BHP)</th>
+                                <th style="width: 30%; text-align: center;">QT (JUMLAH)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1205,7 +900,7 @@
                                 @endforeach
                             @else
                                 @php
-                                    $sampleConsumables = $consumables->take(14);
+                                    $sampleConsumables = $consumables->take(12);
                                 @endphp
                                 @foreach($sampleConsumables as $bIdx => $cItem)
                                     <tr>
@@ -1221,58 +916,22 @@
             </tr>
         </table>
 
-        <!-- Tanda Tangan Dokter & Perawat di Bagian Bawah BHP -->
-        <table class="bordered-table" style="margin-top: 10px;">
-            <thead>
-                <tr>
-                    <th style="width: 50%; text-align: center;">DOKTER PELAKSANA</th>
-                    <th style="width: 50%; text-align: center;">PERAWAT / TERAPIS ASISTEN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        @if($doctorConsentSigBase64)
-                            <img src="{{ $doctorConsentSigBase64 }}" class="sig-image" alt="TTD Dokter">
-                        @else
-                            <div style="height: 48px; line-height: 48px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E') }}
-                        </div>
-                    </td>
-                    <td style="text-align: center; padding: 6px; vertical-align: top;">
-                        @if($generalConsentStaffSigBase64 || $registrationStaffSigBase64)
-                            <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Perawat">
-                        @else
-                            <div style="height: 48px; line-height: 48px; font-style: italic; color: #94a3b8;">[Tanda tangan Perawat]</div>
-                        @endif
-                        <div class="sig-line">
-                            {{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? 'Perawat Pelaksana')) }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="footer-note">
-            BHP Tindakan Harian &bull; ONEW Klinik Utama &bull; Halaman 6
-        </div>
+        <!-- CATATAN: Poin 3 User: BHP Tindakan Harian tidak perlu tanda tangan sama sekali -->
     </div>
 
     <div class="page-break"></div>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 7: DOKUMENTASI FOTO 5 SISI SEBELUM TINDAKAN (BEFORE)        -->
-    <!-- 1 Halaman Penuh Bersih Tanpa Overflow (3 Foto Row 1, 2 Foto Row 2)  -->
+    <!-- HALAMAN 5: FULL SATU HALAMAN A4 FOTO 5 SISI BEFORE                  -->
+    <!-- URUTAN: 1. Depan, 2. Serong Kanan, 3. Serong Kiri, 4. Tampak Kanan, 5. Tampak Kiri -->
     <!-- =================================================================== -->
-    <div class="page-container">
+    <div class="page-container" style="height: 100%;">
         <!-- Header Khusus Foto Before -->
         <table class="photo-page-header">
             <tr>
                 <td style="width: 25%; vertical-align: middle;">
                     @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 34px; width: auto;">
+                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 36px; width: auto;">
                     @else
                         <strong style="font-size: 13pt;">ONEW</strong>
                     @endif
@@ -1288,100 +947,96 @@
             </tr>
         </table>
 
-        <!-- Row 1: 3 Foto (Serong Kiri 45°, Tampak Depan / Center, Serong Kanan 45°) -->
-        <table class="photo-grid-table" style="margin-bottom: 6px;">
+        <!-- Row 1: 3 Foto (1. Tampak Depan, 2. Serong Kanan, 3. Serong Kiri) -->
+        <table class="photo-grid-row-1">
             <tr>
-                <!-- 1. Serong Kiri -->
-                <td class="photo-card" style="width: 33.3%;">
-                    <div class="photo-card-label">1. Serong Kiri (45&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoBeforeLeftTiltBase64)
-                            <img src="{{ $photoBeforeLeftTiltBase64 }}" class="photo-frame-img" alt="Before Serong Kiri">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
-                </td>
-
-                <!-- 2. Tampak Depan (Center Focus) -->
+                <!-- 1. Tampak Depan (Center Focus) -->
                 <td class="photo-card" style="width: 33.3%; border-color: #0f172a; background-color: #ffffff;">
-                    <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">2. TAMPAK DEPAN (CENTER)</div>
-                    <div class="photo-img-box">
-                        @if($photoBeforeFrontBase64 || $photoBeforeBase64)
-                            <img src="{{ $photoBeforeFrontBase64 ?: $photoBeforeBase64 }}" class="photo-frame-img" alt="Before Tampak Depan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">1. TAMPAK DEPAN (0&deg;)</div>
+                    @if($photoBeforeFrontBase64 || $photoBeforeBase64)
+                        <img src="{{ $photoBeforeFrontBase64 ?: $photoBeforeBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Depan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
 
-                <!-- 3. Serong Kanan -->
+                <!-- 2. Serong Kanan -->
                 <td class="photo-card" style="width: 33.3%;">
-                    <div class="photo-card-label">3. Serong Kanan (45&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoBeforeRightTiltBase64)
-                            <img src="{{ $photoBeforeRightTiltBase64 }}" class="photo-frame-img" alt="Before Serong Kanan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">2. SERONG KANAN (45&deg;)</div>
+                    @if($photoBeforeRightTiltBase64)
+                        <img src="{{ $photoBeforeRightTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Serong Kanan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
+                </td>
+
+                <!-- 3. Serong Kiri -->
+                <td class="photo-card" style="width: 33.3%;">
+                    <div class="photo-card-label">3. SERONG KIRI (45&deg;)</div>
+                    @if($photoBeforeLeftTiltBase64)
+                        <img src="{{ $photoBeforeLeftTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Serong Kiri">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
             </tr>
         </table>
 
-        <!-- Row 2: 2 Foto Profil (Samping Kiri 90°, Samping Kanan 90°) -->
-        <table class="photo-grid-table">
+        <!-- Row 2: 2 Foto Profil (4. Tampak Kanan 90°, 5. Tampak Kiri 90°) -->
+        <table class="photo-grid-row-2">
             <tr>
-                <!-- 4. Samping Kiri -->
+                <!-- 4. Tampak Kanan (Profil 90°) -->
                 <td class="photo-card" style="width: 50%;">
-                    <div class="photo-card-label">4. Samping Kiri (Profil 90&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoBeforeLeftSideBase64)
-                            <img src="{{ $photoBeforeLeftSideBase64 }}" class="photo-frame-img" alt="Before Samping Kiri">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">4. TAMPAK KANAN (PROFIL 90&deg;)</div>
+                    @if($photoBeforeRightSideBase64)
+                        <img src="{{ $photoBeforeRightSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Kanan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
 
-                <!-- 5. Samping Kanan -->
+                <!-- 5. Tampak Kiri (Profil 90°) -->
                 <td class="photo-card" style="width: 50%;">
-                    <div class="photo-card-label">5. Samping Kanan (Profil 90&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoBeforeRightSideBase64)
-                            <img src="{{ $photoBeforeRightSideBase64 }}" class="photo-frame-img" alt="Before Samping Kanan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">5. TAMPAK KIRI (PROFIL 90&deg;)</div>
+                    @if($photoBeforeLeftSideBase64)
+                        <img src="{{ $photoBeforeLeftSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Kiri">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
             </tr>
         </table>
-
-        <div class="footer-note">
-            Dokumentasi Foto Klinis 5 Sisi (Sebelum Tindakan / Before) &bull; ONEW Klinik Utama &bull; Halaman 7
-        </div>
     </div>
 
     <div class="page-break"></div>
 
     <!-- =================================================================== -->
-    <!-- HALAMAN 8: DOKUMENTASI FOTO 5 SISI SETELAH TINDAKAN (AFTER)         -->
-    <!-- 1 Halaman Penuh Bersih Tanpa Overflow (3 Foto Row 1, 2 Foto Row 2)  -->
+    <!-- HALAMAN 6: FULL SATU HALAMAN A4 FOTO 5 SISI AFTER                   -->
+    <!-- URUTAN: 1. Depan, 2. Serong Kanan, 3. Serong Kiri, 4. Tampak Kanan, 5. Tampak Kiri -->
     <!-- =================================================================== -->
-    <div class="page-container">
+    <div class="page-container" style="height: 100%;">
         <!-- Header Khusus Foto After -->
         <table class="photo-page-header">
             <tr>
                 <td style="width: 25%; vertical-align: middle;">
                     @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 34px; width: auto;">
+                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 36px; width: auto;">
                     @else
                         <strong style="font-size: 13pt;">ONEW</strong>
                     @endif
                 </td>
                 <td style="width: 75%; text-align: right; vertical-align: middle;">
-                    <div class="photo-page-title">DOKUMENTASI FOTO 5 SISI WAJAH — SETELAH TINDAKAN (AFTER)</div>
+                    <div class="photo-page-title">DOKUMENTASI FOTO 5 SISI WAJAH — SESUDAH TINDAKAN (AFTER)</div>
                     <div class="photo-meta-info">
                         <strong>{{ $patient->name }}</strong> &bull;
                         No. RM: <span style="font-family: monospace; font-weight: bold;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</span> &bull;
@@ -1391,79 +1046,75 @@
             </tr>
         </table>
 
-        <!-- Row 1: 3 Foto (Serong Kiri 45°, Tampak Depan / Center, Serong Kanan 45°) -->
-        <table class="photo-grid-table" style="margin-bottom: 6px;">
+        <!-- Row 1: 3 Foto (1. Tampak Depan, 2. Serong Kanan, 3. Serong Kiri) -->
+        <table class="photo-grid-row-1">
             <tr>
-                <!-- 1. Serong Kiri -->
-                <td class="photo-card" style="width: 33.3%;">
-                    <div class="photo-card-label">1. Serong Kiri (45&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoAfterLeftTiltBase64)
-                            <img src="{{ $photoAfterLeftTiltBase64 }}" class="photo-frame-img" alt="After Serong Kiri">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
-                </td>
-
-                <!-- 2. Tampak Depan (Center Focus) -->
+                <!-- 1. Tampak Depan (Center Focus) -->
                 <td class="photo-card" style="width: 33.3%; border-color: #0f172a; background-color: #ffffff;">
-                    <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">2. TAMPAK DEPAN (CENTER)</div>
-                    <div class="photo-img-box">
-                        @if($photoAfterFrontBase64 || $photoAfterBase64)
-                            <img src="{{ $photoAfterFrontBase64 ?: $photoAfterBase64 }}" class="photo-frame-img" alt="After Tampak Depan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">1. TAMPAK DEPAN (0&deg;)</div>
+                    @if($photoAfterFrontBase64 || $photoAfterBase64)
+                        <img src="{{ $photoAfterFrontBase64 ?: $photoAfterBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Depan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
 
-                <!-- 3. Serong Kanan -->
+                <!-- 2. Serong Kanan -->
                 <td class="photo-card" style="width: 33.3%;">
-                    <div class="photo-card-label">3. Serong Kanan (45&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoAfterRightTiltBase64)
-                            <img src="{{ $photoAfterRightTiltBase64 }}" class="photo-frame-img" alt="After Serong Kanan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">2. SERONG KANAN (45&deg;)</div>
+                    @if($photoAfterRightTiltBase64)
+                        <img src="{{ $photoAfterRightTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Serong Kanan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
+                </td>
+
+                <!-- 3. Serong Kiri -->
+                <td class="photo-card" style="width: 33.3%;">
+                    <div class="photo-card-label">3. SERONG KIRI (45&deg;)</div>
+                    @if($photoAfterLeftTiltBase64)
+                        <img src="{{ $photoAfterLeftTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Serong Kiri">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
             </tr>
         </table>
 
-        <!-- Row 2: 2 Foto Profil (Samping Kiri 90°, Samping Kanan 90°) -->
-        <table class="photo-grid-table">
+        <!-- Row 2: 2 Foto Profil (4. Tampak Kanan 90°, 5. Tampak Kiri 90°) -->
+        <table class="photo-grid-row-2">
             <tr>
-                <!-- 4. Samping Kiri -->
+                <!-- 4. Tampak Kanan (Profil 90°) -->
                 <td class="photo-card" style="width: 50%;">
-                    <div class="photo-card-label">4. Samping Kiri (Profil 90&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoAfterLeftSideBase64)
-                            <img src="{{ $photoAfterLeftSideBase64 }}" class="photo-frame-img" alt="After Samping Kiri">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">4. TAMPAK KANAN (PROFIL 90&deg;)</div>
+                    @if($photoAfterRightSideBase64)
+                        <img src="{{ $photoAfterRightSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Kanan">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
 
-                <!-- 5. Samping Kanan -->
+                <!-- 5. Tampak Kiri (Profil 90°) -->
                 <td class="photo-card" style="width: 50%;">
-                    <div class="photo-card-label">5. Samping Kanan (Profil 90&deg;)</div>
-                    <div class="photo-img-box">
-                        @if($photoAfterRightSideBase64)
-                            <img src="{{ $photoAfterRightSideBase64 }}" class="photo-frame-img" alt="After Samping Kanan">
-                        @else
-                            <div class="photo-empty-box">Tidak Ada Foto</div>
-                        @endif
-                    </div>
+                    <div class="photo-card-label">5. TAMPAK KIRI (PROFIL 90&deg;)</div>
+                    @if($photoAfterLeftSideBase64)
+                        <img src="{{ $photoAfterLeftSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Kiri">
+                    @else
+                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                            Tidak Ada Foto
+                        </div>
+                    @endif
                 </td>
             </tr>
         </table>
-
-        <div class="footer-note">
-            Dokumentasi Foto Klinis 5 Sisi (Setelah Tindakan / After) &bull; ONEW Klinik Utama &bull; Halaman 8
-        </div>
     </div>
 
 </body>

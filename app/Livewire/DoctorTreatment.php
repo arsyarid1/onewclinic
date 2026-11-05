@@ -30,15 +30,19 @@ class DoctorTreatment extends Component
 
     // Diagnosis Medis (WD & DD)
     public string $diagnosis_wd = ''; // Working Diagnosis
+
     public string $diagnosis_dd = ''; // Differential Diagnosis
+
     public string $doctorNotes = '';
 
     // Selected treatments: array of treatment IDs
     public array $selectedTreatments = [];
+
     public array $treatmentNotes = [];
 
     // Master BHP / Bahan Habis Pakai yang Dipakai [consumable_id => quantity]
     public array $selectedConsumables = [];
+
     public array $consumableNotes = [];
 
     // Foto Akhir (Before/After) - Dapat diunggah oleh Perawat maupun Dokter
@@ -46,56 +50,78 @@ class DoctorTreatment extends Component
 
     // Persetujuan Tindakan Kedokteran (Informed Consent Modal State & Fields)
     public bool $showConsentModal = false;
+
     public string $consent_information_provider = '';
+
     public string $consent_recipient_name = '';
+
     public string $consent_recipient_age = '';
+
     public string $consent_recipient_gender = 'female';
+
     public string $consent_recipient_relation = 'Diri Sendiri';
+
     public string $consent_recipient_address = '';
+
     public string $consent_action_name = '';
 
     // 11 Poin Informasi Medis
     public string $info_diagnosis = '';
+
     public bool $info_diagnosis_checked = true;
 
     public string $info_diagnosis_basis = '';
+
     public bool $info_diagnosis_basis_checked = true;
 
     public string $info_medical_procedure = '';
+
     public bool $info_medical_procedure_checked = true;
 
     public string $info_indication = '';
+
     public bool $info_indication_checked = true;
 
     public string $info_procedure_steps = '';
+
     public bool $info_procedure_steps_checked = true;
 
     public string $info_procedure_goal = '';
+
     public bool $info_procedure_goal_checked = true;
 
     public string $info_risks = '';
+
     public bool $info_risks_checked = true;
 
     public string $info_complications = '';
+
     public bool $info_complications_checked = true;
 
     public string $info_prognosis = '';
+
     public bool $info_prognosis_checked = true;
 
     public string $info_alternatives_risks = '';
+
     public bool $info_alternatives_risks_checked = true;
 
     public string $info_other_notes = '';
+
     public bool $info_other_notes_checked = false;
 
     // Tanda Tangan Informed Consent
     public string $patientConsentSignature = '';
+
     public string $doctorConsentSignature = '';
-    public string $witnessName = 'Ns. Ratna Dewi, S.Kep';
+
+    public string $witnessName = '';
+
     public bool $hasExistingConsent = false;
 
     // Modal state after completion
     public bool $showSuccessModal = false;
+
     public ?int $completedVisitId = null;
 
     public function mount(?int $visit_id = null): void
@@ -137,7 +163,7 @@ class DoctorTreatment extends Component
             $this->doctorNotes = $visit->doctor_notes ?? '';
 
             // Populate existing treatments
-            $this->selectedTreatments = $visit->treatments->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            $this->selectedTreatments = $visit->treatments->pluck('id')->map(fn ($id) => (string) $id)->toArray();
             $this->treatmentNotes = [];
             foreach ($visit->treatments as $tr) {
                 $this->treatmentNotes[$tr->id] = $tr->pivot->notes ?? '';
@@ -191,7 +217,7 @@ class DoctorTreatment extends Component
                 $this->witnessName = $consent->witness_name ?? $this->witnessName;
             } else {
                 $this->hasExistingConsent = false;
-                $this->consent_information_provider = $doctorUser?->name ?? 'dr. Alana Wijaya, Sp.D.V.E';
+                $this->consent_information_provider = $doctorUser?->name ?? '';
                 $this->consent_recipient_name = $patient?->name ?? '';
                 $this->consent_recipient_age = (string) ($patient?->date_of_birth ? $patient->date_of_birth->age : '25');
                 $this->consent_recipient_gender = $patient?->gender ?? 'female';
@@ -233,14 +259,14 @@ class DoctorTreatment extends Component
             unset($this->treatmentNotes[$treatmentId]);
         } else {
             $this->selectedTreatments[] = $strId;
-            if (!isset($this->treatmentNotes[$treatmentId])) {
+            if (! isset($this->treatmentNotes[$treatmentId])) {
                 $this->treatmentNotes[$treatmentId] = '';
             }
         }
 
         // Update action name in informed consent
         $treatmentNames = Treatment::whereIn('id', $this->selectedTreatments)->pluck('name')->toArray();
-        if (!empty($treatmentNames)) {
+        if (! empty($treatmentNames)) {
             $this->consent_action_name = implode(', ', $treatmentNames);
             $this->info_medical_procedure = $this->consent_action_name;
         }
@@ -258,7 +284,7 @@ class DoctorTreatment extends Component
 
     public function incrementConsumable(int $consumableId): void
     {
-        if (!isset($this->selectedConsumables[$consumableId])) {
+        if (! isset($this->selectedConsumables[$consumableId])) {
             $this->selectedConsumables[$consumableId] = 1;
         } else {
             $this->selectedConsumables[$consumableId]++;
@@ -302,11 +328,11 @@ class DoctorTreatment extends Component
 
         // Save patient signature if provided
         $patientSigPath = $visit->informedConsent?->patient_signature_path;
-        if (!empty($this->patientConsentSignature) && str_starts_with($this->patientConsentSignature, 'data:image')) {
+        if (! empty($this->patientConsentSignature) && str_starts_with($this->patientConsentSignature, 'data:image')) {
             $imageParts = explode(';base64,', $this->patientConsentSignature);
             $imageBase64 = base64_decode($imageParts[1] ?? '');
             if ($imageBase64) {
-                $patientSigPath = "signatures/consent_procedure_patient_{$visit->id}_" . time() . ".png";
+                $patientSigPath = "signatures/consent_procedure_patient_{$visit->id}_".time().'.png';
                 Storage::disk('public')->put($patientSigPath, $imageBase64);
             }
         }
@@ -392,7 +418,7 @@ class DoctorTreatment extends Component
 
         // Store Photo After if uploaded
         if ($this->photo_after) {
-            $filename = "photos/after/after_visit_{$visit->id}_" . time() . '.' . $this->photo_after->getClientOriginalExtension();
+            $filename = "photos/after/after_visit_{$visit->id}_".time().'.'.$this->photo_after->getClientOriginalExtension();
             $path = $this->photo_after->storeAs('photos/after', basename($filename), 'public');
             $visit->photo_after_path = $path;
         }

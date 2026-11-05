@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
 class Visit extends Model
@@ -46,6 +47,7 @@ class Visit extends Model
         'therapist_nurse_name',
         'doctor_name_override',
         'custom_treatment_list',
+        'edit_logs',
         'diagnosis_wd',
         'diagnosis_dd',
         'doctor_notes',
@@ -80,6 +82,7 @@ class Visit extends Model
             'general_consent_promo_info' => 'boolean',
             'general_consent_third_party_info' => 'boolean',
             'custom_treatment_list' => 'array',
+            'edit_logs' => 'array',
             'consent_signed' => 'boolean',
             'consent_signed_at' => 'datetime',
             'trustmedis_payload' => 'array',
@@ -119,7 +122,7 @@ class Visit extends Model
         return $this->hasMany(VisitTreatment::class);
     }
 
-    public function informedConsent(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function informedConsent(): HasOne
     {
         return $this->hasOne(InformedConsent::class);
     }
@@ -138,19 +141,19 @@ class Visit extends Model
 
     public static function formatPublicUrl(?string $path): ?string
     {
-        if (!$path) {
+        if (! $path) {
             return null;
         }
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
             return $path;
         }
         $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $path), '/');
-        
+
         // Verify file existence on disk to avoid broken image links
-        if (Storage::disk('public')->exists($cleanPath) || file_exists(public_path('storage/' . $cleanPath))) {
-            return '/storage/' . $cleanPath;
+        if (Storage::disk('public')->exists($cleanPath) || file_exists(public_path('storage/'.$cleanPath))) {
+            return '/storage/'.$cleanPath;
         }
-        
+
         return null;
     }
 
@@ -246,19 +249,42 @@ class Visit extends Model
 
     public function getHasFiveSidesBeforeAttribute(): bool
     {
-        return !empty($this->photo_before_front_url)
-            || !empty($this->photo_before_right_tilt_url)
-            || !empty($this->photo_before_right_side_url)
-            || !empty($this->photo_before_left_tilt_url)
-            || !empty($this->photo_before_left_side_url);
+        return ! empty($this->photo_before_front_url)
+            || ! empty($this->photo_before_right_tilt_url)
+            || ! empty($this->photo_before_right_side_url)
+            || ! empty($this->photo_before_left_tilt_url)
+            || ! empty($this->photo_before_left_side_url);
     }
 
     public function getHasFiveSidesAfterAttribute(): bool
     {
-        return !empty($this->photo_after_front_url)
-            || !empty($this->photo_after_right_tilt_url)
-            || !empty($this->photo_after_right_side_url)
-            || !empty($this->photo_after_left_tilt_url)
-            || !empty($this->photo_after_left_side_url);
+        return ! empty($this->photo_after_front_url)
+            || ! empty($this->photo_after_right_tilt_url)
+            || ! empty($this->photo_after_right_side_url)
+            || ! empty($this->photo_after_left_tilt_url)
+            || ! empty($this->photo_after_left_side_url);
+    }
+
+    /**
+     * Record an edit log entry when nurse or doctor modifies this visit.
+     */
+    public function recordEditLog(string $editorName, string $editorRole, string $action, ?string $notes = null): void
+    {
+        $logs = $this->edit_logs ?? [];
+        $logs[] = [
+            'timestamp' => now()->toIso8601String(),
+            'formatted_time' => now()->translatedFormat('d M Y, H:i').' WIB',
+            'editor_name' => $editorName ?: 'Petugas Medis',
+            'editor_role' => $editorRole ?: 'Staf',
+            'action' => $action,
+            'notes' => $notes,
+        ];
+
+        // Keep last 50 logs to prevent bloat
+        if (count($logs) > 50) {
+            $logs = array_slice($logs, -50);
+        }
+
+        $this->update(['edit_logs' => $logs]);
     }
 }

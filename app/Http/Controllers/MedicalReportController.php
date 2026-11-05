@@ -80,9 +80,12 @@ class MedicalReportController extends Controller
             return null;
         };
 
-        // Use high-quality PNG raster logo for guaranteed stability in DomPDF (avoid large 3.4MB SVG)
+        // Prefer official SVG logo as seen in dashboard
         $logoBase64 = null;
-        if (file_exists(public_path('icon.png'))) {
+        if (file_exists(public_path('logo.svg'))) {
+            $logoContent = file_get_contents(public_path('logo.svg'));
+            $logoBase64 = 'data:image/svg+xml;base64,'.base64_encode($logoContent);
+        } elseif (file_exists(public_path('icon.png'))) {
             $logoContent = file_get_contents(public_path('icon.png'));
             $logoBase64 = 'data:image/png;base64,'.base64_encode($logoContent);
         } elseif (file_exists(public_path('apple-touch-icon.png'))) {

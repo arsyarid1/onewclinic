@@ -608,9 +608,10 @@ class ClinicFlowTest extends TestCase
             'date_of_birth' => '1990-12-25',
         ]);
 
-        Storage::disk('public')->put('photos/before/front.png', 'fake_img');
-        Storage::disk('public')->put('photos/after/front.png', 'fake_img');
-        Storage::disk('public')->put('signatures/sig.png', 'fake_sig');
+        $validPng = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+        Storage::disk('public')->put('photos/before/front.png', $validPng);
+        Storage::disk('public')->put('photos/after/front.png', $validPng);
+        Storage::disk('public')->put('signatures/sig.png', $validPng);
 
         $visit = Visit::create([
             'clinic_id' => $this->clinic->id,

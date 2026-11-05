@@ -37,6 +37,21 @@
     <div class="max-w-4xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex-1">
         <div class="bg-white rounded-2xl shadow-apple border border-slate-300/80 p-5 sm:p-9 paper-form transition-all">
 
+            @if($existingVisit && $existingVisit->status === 'completed')
+                <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-emerald-900 no-print">
+                    <div class="flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span class="font-bold">Mode Pembaruan Data Kunjungan:</span>
+                        <span>Dokter dan perawat dapat melengkapi data formulir dan foto kapan saja.</span>
+                    </div>
+                    @if(!empty($existingVisit->edit_logs))
+                        <span class="text-[10px] font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+                            {{ count($existingVisit->edit_logs) }} Riwayat Edit Tercatat
+                        </span>
+                    @endif
+                </div>
+            @endif
+
             <!-- ==================================================== -->
             <!-- STEP 1: FORMULIR PENDAFTARAN PASIEN (Hal 1 & 2 PDF) -->
             <!-- ==================================================== -->
@@ -685,7 +700,7 @@
                                 <td class="border border-slate-400 text-center font-bold">3</td>
                                 <td class="border border-slate-400 px-3 py-1.5 font-semibold">Tindakan Kedokteran</td>
                                 <td class="border border-slate-400 p-1">
-                                    <input type="text" wire:model="ic_medical_procedure" placeholder="Contoh: Messo + Botox + Laser CO2 + Multivitamin Infuse" class="w-full px-2 py-1 text-xs font-bold text-sky-900 border-0 focus:ring-0">
+                                    <input type="text" wire:model.live="ic_medical_procedure" placeholder="Tindakan medis yang ditentukan dokter..." class="w-full px-2 py-1 text-xs font-bold text-sky-900 border-0 focus:ring-0">
                                 </td>
                                 <td class="border border-slate-400 text-center"><input type="checkbox" wire:model="ic_medical_procedure_checked" class="rounded"></td>
                             </tr>
@@ -781,8 +796,14 @@
                 <!-- Bagian Bawah: Pernyataan Persetujuan Tindakan Medis -->
                 <div class="mt-6 border-t-2 border-slate-900 pt-4 text-xs text-slate-800 space-y-3">
                     <h3 class="font-black text-center uppercase tracking-widest text-slate-900 text-sm">PERSETUJUAN TINDAKAN KEDOKTERAN</h3>
-                    <p class="leading-relaxed">
-                        Yang bertandatangan di bawah ini, saya, nama <strong>{{ $ic_recipient_name ?: ($name ?: '........................................') }}</strong>, umur: <strong>{{ $ic_patient_age ?: '......' }}</strong> tahun, alamat: <strong>{{ $id_address ?: ($domicile_address ?: '........................................') }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan <strong class="text-sky-900 underline">{{ $ic_medical_procedure ?: '........................................' }}</strong> terhadap <strong>{{ $name ?: '........................................' }}</strong>.
+                    @php
+                        $calculatedAge = $ic_patient_age ?: ($date_of_birth ? \Carbon\Carbon::parse($date_of_birth)->age : '');
+                        $resolvedAddress = $id_address ?: ($domicile_address ?: ($address ?? ''));
+                        $resolvedProcedure = $this->getDoctorActionsSummary();
+                        $signerName = $ic_recipient_name ?: $name;
+                    @endphp
+                    <p class="leading-relaxed text-xs sm:text-sm">
+                        Yang bertandatangan di bawah ini, saya, nama <strong class="text-slate-950 font-bold underline">{{ $signerName ?: 'Pasien' }}</strong>, umur: <strong class="text-slate-950 font-bold underline">{{ $calculatedAge ?: '-' }}</strong> tahun, alamat: <strong class="text-slate-950 font-bold underline">{{ $resolvedAddress ?: '-' }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan <strong class="text-sky-950 font-black underline">{{ $resolvedProcedure ?: 'Tindakan Medis Estetika' }}</strong> terhadap <strong class="text-slate-950 font-bold underline">{{ $name ?: 'Pasien' }}</strong>.
                     </p>
                     <p class="text-[11px] text-slate-600 text-justify">
                         Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan. Saya juga menyadari bahwa ilmu kedokteran bukanlah ilmu pasti, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
@@ -890,45 +911,12 @@
                         </label>
                     </div>
 
-                    <!-- 3. Samping Kanan -->
-                    <div x-data="photoUploader('temp_photo_before_right_side', '{{ $temp_photo_before_right_side ? $temp_photo_before_right_side->temporaryUrl() : ($photo_before_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) : '') }}')"
-                         wire:key="uploader-before-right-side"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Samping Kanan (90°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Samping Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Samping Kanan</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 4. Serong Kiri -->
+                    <!-- 3. Serong Kiri -->
                     <div x-data="photoUploader('temp_photo_before_left_tilt', '{{ $temp_photo_before_left_tilt ? $temp_photo_before_left_tilt->temporaryUrl() : ($photo_before_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_tilt_path) : '') }}')"
                          wire:key="uploader-before-left-tilt"
                          class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Serong Kiri (45°)</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Serong Kiri (45°)</span>
                             <div class="relative min-h-[160px] flex items-center justify-center">
                                 <template x-if="previewUrl">
                                     <div class="w-full relative group">
@@ -945,6 +933,39 @@
                                 <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kiri</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 4. Tampak Kanan (Samping Kanan) -->
+                    <div x-data="photoUploader('temp_photo_before_right_side', '{{ $temp_photo_before_right_side ? $temp_photo_before_right_side->temporaryUrl() : ($photo_before_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) : '') }}')"
+                         wire:key="uploader-before-right-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Tampak Kanan (90°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Tampak Kanan</span>
                                 </div>
                             </div>
                             <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
@@ -1157,45 +1178,12 @@
                         </label>
                     </div>
 
-                    <!-- 3. Samping Kanan -->
-                    <div x-data="photoUploader('temp_photo_after_right_side', '{{ $temp_photo_after_right_side ? $temp_photo_after_right_side->temporaryUrl() : ($photo_after_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_after_right_side_path) : '') }}')"
-                         wire:key="uploader-after-right-side"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Samping Kanan (90°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Samping Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Samping Kanan</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 4. Serong Kiri -->
+                    <!-- 3. Serong Kiri -->
                     <div x-data="photoUploader('temp_photo_after_left_tilt', '{{ $temp_photo_after_left_tilt ? $temp_photo_after_left_tilt->temporaryUrl() : ($photo_after_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_after_left_tilt_path) : '') }}')"
                          wire:key="uploader-after-left-tilt"
                          class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
                         <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Serong Kiri (45°)</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Serong Kiri (45°)</span>
                             <div class="relative min-h-[160px] flex items-center justify-center">
                                 <template x-if="previewUrl">
                                     <div class="w-full relative group">
@@ -1212,6 +1200,39 @@
                                 <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
                                     <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                                     <span class="text-[10px]">Serong Kiri</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 4. Tampak Kanan (Samping Kanan) -->
+                    <div x-data="photoUploader('temp_photo_after_right_side', '{{ $temp_photo_after_right_side ? $temp_photo_after_right_side->temporaryUrl() : ($photo_after_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_after_right_side_path) : '') }}')"
+                         wire:key="uploader-after-right-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Tampak Kanan (90°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Tampak Kanan</span>
                                 </div>
                             </div>
                             <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
@@ -1294,6 +1315,12 @@
                     </div>
 
                     <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button type="button" wire:click="goToStep(1)"
+                                class="w-full sm:w-auto px-5 py-2.5 rounded-full border border-sky-300 bg-sky-50 text-sky-800 font-semibold text-xs shadow-2xs hover:bg-sky-100 transition-all flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            <span>Edit / Lengkapi Data Formulir</span>
+                        </button>
+
                         @if($visitId)
                             <a href="{{ route('reports.visit.pdf', $visitId) }}" target="_blank"
                                class="w-full sm:w-auto px-5 py-2.5 rounded-full bg-slate-900 text-white font-semibold text-xs shadow-apple flex items-center justify-center gap-2 hover:bg-slate-800 transition-all">
@@ -1307,6 +1334,26 @@
                             + Pendaftaran Pasien Baru
                         </button>
                     </div>
+
+                    @if($existingVisit && !empty($existingVisit->edit_logs))
+                        <div class="mt-8 border border-slate-200 rounded-xl p-4 bg-white text-left max-w-lg mx-auto text-xs space-y-2">
+                            <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-200 pb-2">
+                                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Riwayat Log Pembaruan Form (Audit Trail)</span>
+                            </h4>
+                            <div class="max-h-48 overflow-y-auto space-y-2 divide-y divide-slate-100 pr-1">
+                                @foreach(array_reverse($existingVisit->edit_logs) as $log)
+                                    <div class="pt-2 text-[11px]">
+                                        <div class="flex items-center justify-between text-slate-500">
+                                            <span class="font-bold text-slate-800">{{ $log['editor_role'] ?? 'Petugas' }}: {{ $log['editor_name'] ?? '-' }}</span>
+                                            <span class="text-[10px] text-slate-400">{{ $log['formatted_time'] ?? '' }}</span>
+                                        </div>
+                                        <div class="text-slate-600 font-medium mt-0.5">{{ $log['action'] ?? 'Pembaruan data' }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @endif
 

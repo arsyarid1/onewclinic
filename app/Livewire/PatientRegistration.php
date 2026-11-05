@@ -24,34 +24,48 @@ class PatientRegistration extends Component
 
     // Search query for existing patients
     public string $searchQuery = '';
+
     public ?int $selectedPatientId = null;
 
     // Patient Identity Fields
     public string $name = '';
+
     public string $nik = '';
+
     public string $birth_place = 'Jakarta';
+
     public string $date_of_birth = '';
+
     public string $gender = 'female';
+
     public string $phone_number = '';
+
     public string $email = '';
+
     public string $address = '';
 
     // Emergency Contact
     public string $emergency_contact_name = '';
+
     public string $emergency_contact_relation = '';
+
     public string $emergency_contact_phone = '';
 
     // Communication Preferences
     public bool $whatsapp_reminder = true;
+
     public bool $promo_consent = false;
 
     // Nurse / Initial Checkup Fields
     public ?int $doctor_id = null;
-    public string $assistant_name = 'Ns. Ratna Dewi, S.Kep';
+
+    public string $assistant_name = '';
+
     public $photo_before;
 
     // General Consent & Digital Signature
     public bool $agreementChecked = true;
+
     public string $signatureData = '';
 
     public function mount(): void
@@ -94,7 +108,7 @@ class PatientRegistration extends Component
         $this->reset([
             'name', 'nik', 'birth_place', 'phone_number', 'email', 'address',
             'emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone',
-            'photo_before', 'signatureData'
+            'photo_before', 'signatureData',
         ]);
         $this->date_of_birth = Carbon::now()->subYears(25)->format('Y-m-d');
     }
@@ -175,11 +189,11 @@ class PatientRegistration extends Component
 
             // Save digital signature if provided via signature pad
             $signaturePath = null;
-            if (!empty($this->signatureData) && str_starts_with($this->signatureData, 'data:image')) {
+            if (! empty($this->signatureData) && str_starts_with($this->signatureData, 'data:image')) {
                 $imageParts = explode(';base64,', $this->signatureData);
                 $imageBase64 = base64_decode($imageParts[1] ?? '');
                 if ($imageBase64) {
-                    $signaturePath = "signatures/consent_patient_{$patient->id}_" . time() . ".png";
+                    $signaturePath = "signatures/consent_patient_{$patient->id}_".time().'.png';
                     Storage::disk('public')->put($signaturePath, $imageBase64);
                 }
             }
@@ -187,7 +201,7 @@ class PatientRegistration extends Component
             // Save photo before if uploaded
             $photoBeforePath = null;
             if ($this->photo_before) {
-                $photoFilename = "photos/before/before_patient_{$patient->id}_" . time() . '.' . $this->photo_before->getClientOriginalExtension();
+                $photoFilename = "photos/before/before_patient_{$patient->id}_".time().'.'.$this->photo_before->getClientOriginalExtension();
                 $photoBeforePath = $this->photo_before->storeAs('photos/before', basename($photoFilename), 'public');
             }
 
@@ -218,13 +232,13 @@ class PatientRegistration extends Component
         $searchResults = collect();
 
         if ($this->mode === 'search' && strlen(trim($this->searchQuery)) >= 2) {
-            $q = '%' . trim($this->searchQuery) . '%';
+            $q = '%'.trim($this->searchQuery).'%';
             $searchResults = Patient::where('clinic_id', $clinic?->id)
                 ->where(function ($query) use ($q) {
                     $query->where('name', 'like', $q)
-                          ->orWhere('phone_number', 'like', $q)
-                          ->orWhere('patient_code', 'like', $q)
-                          ->orWhere('nik', 'like', $q);
+                        ->orWhere('phone_number', 'like', $q)
+                        ->orWhere('patient_code', 'like', $q)
+                        ->orWhere('nik', 'like', $q);
                 })
                 ->limit(6)
                 ->get();

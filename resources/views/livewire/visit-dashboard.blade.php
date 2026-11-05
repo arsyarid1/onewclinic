@@ -155,14 +155,20 @@
                                         Kunjungan Selesai
                                     </span>
                                 @endif
+                                @if(!empty($visit->edit_logs))
+                                    <div class="text-[10px] text-sky-700 font-medium mt-1 flex items-center gap-1">
+                                        <svg class="w-3 h-3 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <span>Diedit {{ count($visit->edit_logs) }}x</span>
+                                    </div>
+                                @endif
                             </td>
 
                             <!-- Dokter & Tim Medis -->
                             <td class="py-4 px-5">
                                 <div class="text-xs">
-                                    <div class="font-medium text-slate-800">{{ $visit->doctor?->name ?? 'dr. Alana Wijaya' }}</div>
-                                    @if($visit->assistant_name)
-                                        <div class="text-slate-400 mt-0.5">Asisten: {{ $visit->assistant_name }}</div>
+                                    <div class="font-medium text-slate-800">{{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? '-') }}</div>
+                                    @if($visit->therapist_nurse_name || $visit->assistant_name)
+                                        <div class="text-slate-400 mt-0.5">Asisten: {{ $visit->therapist_nurse_name ?: $visit->assistant_name }}</div>
                                     @endif
                                 </div>
                             </td>

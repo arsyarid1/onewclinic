@@ -333,6 +333,47 @@ class ClinicalFormFlow extends Component
         $this->saveCurrentState();
     }
 
+    public function updatedDateOfBirth(): void
+    {
+        if ($this->date_of_birth) {
+            try {
+                $this->ic_patient_age = (string) Carbon::parse($this->date_of_birth)->age;
+            } catch (\Throwable $e) {
+            }
+        }
+    }
+
+    public function updatedName(): void
+    {
+        if (empty($this->ic_recipient_name) || $this->ic_action_target_relation === 'saya' || $this->ic_action_target_relation === 'Diri Sendiri') {
+            $this->ic_recipient_name = $this->name;
+        }
+        $this->ic_target_patient_name = $this->name;
+        $this->bhp_patient_name = $this->name;
+    }
+
+    public function updatedTreatmentRows(): void
+    {
+        // Auto-sync tindakan dokter ke IC medical procedure jika belum diisi manual
+        $summary = $this->getDoctorActionsSummary();
+        if (! empty($summary) && empty(trim($this->ic_medical_procedure))) {
+            $this->ic_medical_procedure = $summary;
+        }
+    }
+
+    public function getDoctorActionsSummary(): string
+    {
+        if (trim($this->ic_medical_procedure) !== '') {
+            return trim($this->ic_medical_procedure);
+        }
+        $actions = array_filter(array_map(fn ($row) => trim($row['action'] ?? ''), $this->treatmentRows));
+        if (! empty($actions)) {
+            return implode(' + ', $actions);
+        }
+
+        return '';
+    }
+
     public function mount(?int $visit_id = null): void
     {
         $today = Carbon::today()->format('Y-m-d');
@@ -412,7 +453,7 @@ class ClinicalFormFlow extends Component
         $this->whatsapp_comm_consent = $visit->whatsapp_comm_consent ?? true;
 
         $this->registration_patient_signer_name = $visit->registration_patient_signer_name ?: $this->name;
-        $this->registration_staff_signer_name = $visit->registration_staff_signer_name ?: 'Ns. Ratna Dewi, S.Kep';
+        $this->registration_staff_signer_name = $visit->registration_staff_signer_name ?: '';
 
         // Step 2 General Consent
         $this->gc_whatsapp_reminder = $visit->general_consent_whatsapp_reminder ?? true;
@@ -424,7 +465,7 @@ class ClinicalFormFlow extends Component
         $this->gc_third_party_notes = $visit->general_consent_third_party_notes ?? '';
         $this->gc_patient_relation = $visit->general_consent_patient_relation ?? 'Diri Sendiri';
         $this->gc_patient_signer_name = $visit->general_consent_patient_signer_name ?: $this->name;
-        $this->gc_staff_name = $visit->general_consent_staff_name ?: 'Ns. Ratna Dewi, S.Kep';
+        $this->gc_staff_name = $visit->general_consent_staff_name ?: '';
         $this->gc_staff_title = $visit->general_consent_staff_title ?: 'Petugas Pendaftaran';
 
         // Helper to convert stored signature file to base64 Data URL so SignaturePad can display it
@@ -461,35 +502,35 @@ class ClinicalFormFlow extends Component
         // Step 3 Informed Consent
         if ($visit->informedConsent) {
             $ic = $visit->informedConsent;
-            $this->ic_doctor_name = $ic->doctor_name ?? 'dr. Alana Wijaya, Sp.D.V.E';
+            $this->ic_doctor_name = $ic->doctor_name ?? ($visit->doctor_name_override ?: ($visit->doctor?->name ?? ''));
             $this->ic_info_provider = $ic->information_provider ?? $this->ic_doctor_name;
             $this->ic_recipient_name = $ic->recipient_name ?: $this->name;
-            $this->ic_patient_age = $ic->recipient_age ?: ($p->date_of_birth ? (string) $p->date_of_birth->age : '28');
+            $this->ic_patient_age = $ic->recipient_age ?: ($p->date_of_birth ? (string) $p->date_of_birth->age : '');
             $this->ic_action_target_relation = $ic->recipient_relation ?: 'Diri Sendiri';
             $this->ic_target_patient_name = $ic->target_patient_name ?: $this->name;
 
             $this->ic_diagnosis = $ic->diagnosis_wd_dd ?? '';
-            $this->ic_diagnosis_checked = (bool) ($ic->diagnosis_checked ?? true);
+            $this->ic_diagnosis_checked = (bool) ($ic->diagnosis_checked ?? false);
             $this->ic_diagnosis_basis = $ic->diagnosis_basis ?? '';
-            $this->ic_diagnosis_basis_checked = (bool) ($ic->diagnosis_basis_checked ?? true);
-            $this->ic_medical_procedure = $ic->medical_procedure ?? 'Messo + Botox + Laser CO2 + Multivitamin Infuse';
-            $this->ic_medical_procedure_checked = (bool) ($ic->medical_procedure_checked ?? true);
+            $this->ic_diagnosis_basis_checked = (bool) ($ic->diagnosis_basis_checked ?? false);
+            $this->ic_medical_procedure = $ic->medical_procedure ?? ($ic->action_name ?? '');
+            $this->ic_medical_procedure_checked = (bool) ($ic->medical_procedure_checked ?? false);
             $this->ic_indication = $ic->indication ?? '';
-            $this->ic_indication_checked = (bool) ($ic->indication_checked ?? true);
+            $this->ic_indication_checked = (bool) ($ic->indication_checked ?? false);
             $this->ic_procedure_steps = $ic->procedure_steps ?? '';
-            $this->ic_procedure_steps_checked = (bool) ($ic->procedure_steps_checked ?? true);
+            $this->ic_procedure_steps_checked = (bool) ($ic->procedure_steps_checked ?? false);
             $this->ic_procedure_goal = $ic->procedure_goal ?? '';
-            $this->ic_procedure_goal_checked = (bool) ($ic->procedure_goal_checked ?? true);
+            $this->ic_procedure_goal_checked = (bool) ($ic->procedure_goal_checked ?? false);
             $this->ic_risks = $ic->risks ?? '';
-            $this->ic_risks_checked = (bool) ($ic->risks_checked ?? true);
+            $this->ic_risks_checked = (bool) ($ic->risks_checked ?? false);
             $this->ic_complications = $ic->complications ?? '';
-            $this->ic_complications_checked = (bool) ($ic->complications_checked ?? true);
+            $this->ic_complications_checked = (bool) ($ic->complications_checked ?? false);
             $this->ic_prognosis = $ic->prognosis ?? '';
-            $this->ic_prognosis_checked = (bool) ($ic->prognosis_checked ?? true);
+            $this->ic_prognosis_checked = (bool) ($ic->prognosis_checked ?? false);
             $this->ic_alternatives_risks = $ic->alternatives_risks ?? '';
-            $this->ic_alternatives_risks_checked = (bool) ($ic->alternatives_risks_checked ?? true);
+            $this->ic_alternatives_risks_checked = (bool) ($ic->alternatives_risks_checked ?? false);
             $this->ic_other_notes = $ic->other_notes ?? '';
-            $this->ic_other_notes_checked = (bool) ($ic->other_notes_checked ?? true);
+            $this->ic_other_notes_checked = (bool) ($ic->other_notes_checked ?? false);
             $this->ic_witness_name = $ic->witness_name ?? '';
 
             // Load existing signatures for Step 3
@@ -513,10 +554,15 @@ class ClinicalFormFlow extends Component
 
         // Step 5 BHP
         $this->bhp_patient_name = $this->name;
-        $this->bhp_therapist_nurse = $visit->therapist_nurse_name ?: 'Ns. Ratna Dewi, S.Kep';
-        $this->bhp_doctor_name = $visit->doctor_name_override ?: ($visit->doctor?->name ?? 'dr. Alana Wijaya, Sp.D.V.E');
+        $this->bhp_therapist_nurse = $visit->therapist_nurse_name ?: '';
+        $this->bhp_doctor_name = $visit->doctor_name_override ?: ($visit->doctor?->name ?? '');
         if (! empty($visit->custom_treatment_list)) {
             $this->treatmentRows = $visit->custom_treatment_list;
+        }
+
+        // If medical procedure in IC is empty, sync from doctor treatment rows
+        if (empty(trim($this->ic_medical_procedure))) {
+            $this->ic_medical_procedure = $this->getDoctorActionsSummary();
         }
 
         foreach ($visit->visitConsumables as $vc) {
@@ -821,6 +867,41 @@ class ClinicalFormFlow extends Component
         if ($this->visitId) {
             $visit = Visit::find($this->visitId);
             $visit?->update($visitData);
+
+            // Record Edit Log if updating an existing visit (especially after completion)
+            $stepNames = [
+                1 => 'Formulir Pendaftaran',
+                2 => 'General Consent',
+                3 => 'Persetujuan Tindakan Medis',
+                4 => 'Foto Before (5 Sisi)',
+                5 => 'Tindakan & BHP Harian',
+                6 => 'Foto After (5 Sisi)',
+                7 => 'Ringkasan & Verifikasi',
+            ];
+            $currentStepName = $stepNames[$this->currentStep] ?? 'Formulir Klinis';
+
+            if (auth()->check()) {
+                $editorName = auth()->user()->name;
+                $editorRole = ucfirst(auth()->user()->role ?? 'Petugas');
+            } else {
+                if ($this->currentStep === 3) {
+                    $editorName = trim($this->ic_doctor_name) ?: (trim($this->bhp_doctor_name) ?: 'Dokter Pemeriksa');
+                    $editorRole = 'Dokter';
+                } elseif ($this->currentStep === 5) {
+                    $editorName = trim($this->bhp_doctor_name) ?: (trim($this->bhp_therapist_nurse) ?: 'Dokter / Perawat');
+                    $editorRole = trim($this->bhp_doctor_name) ? 'Dokter' : 'Perawat';
+                } else {
+                    $editorName = trim($this->bhp_therapist_nurse) ?: (trim($this->registration_staff_signer_name) ?: (trim($this->gc_staff_name) ?: 'Perawat / Petugas Pendaftaran'));
+                    $editorRole = 'Perawat';
+                }
+            }
+
+            $visit?->recordEditLog(
+                $editorName,
+                $editorRole,
+                "Pembaruan data pada {$currentStepName}",
+                "Data pasien {$patient->name} diperbarui oleh {$editorRole} ({$editorName})"
+            );
         } else {
             $visit = Visit::create($visitData);
             $this->visitId = $visit->id;
@@ -832,26 +913,28 @@ class ClinicalFormFlow extends Component
         $icRecSig = $saveSig($this->ic_recipient_signature, 'ic_recipient', $existingIc?->patient_signature_path);
         $icWitSig = $saveSig($this->ic_witness_signature, 'ic_witness', $existingIc?->witness_signature_path);
 
+        $resolvedProcedure = trim($this->ic_medical_procedure) ?: ($this->getDoctorActionsSummary() ?: null);
+
         $consentData = [
             'visit_id' => $visit->id,
             'doctor_id' => $doctor?->id,
-            'information_provider' => trim($this->ic_info_provider) ?: null,
+            'information_provider' => trim($this->ic_info_provider) ?: (trim($this->ic_doctor_name) ?: null),
             'recipient_name' => trim($this->ic_recipient_name) ?: $patient->name,
-            'recipient_age' => $this->ic_patient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : '28'),
+            'recipient_age' => $this->ic_patient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : ''),
             'recipient_gender' => $patient->gender,
             'recipient_relation' => $this->ic_action_target_relation,
-            'recipient_address' => trim($this->id_address) ?: null,
+            'recipient_address' => trim($this->id_address) ?: ($this->domicile_address ?: null),
             'target_patient_name' => trim($this->ic_target_patient_name) ?: $patient->name,
-            'target_patient_age' => $this->ic_patient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : '28'),
+            'target_patient_age' => $this->ic_patient_age ?: ($patient->date_of_birth ? (string) $patient->date_of_birth->age : ''),
             'target_patient_gender' => $patient->gender,
-            'target_patient_address' => trim($this->id_address) ?: null,
-            'action_name' => trim($this->ic_medical_procedure),
+            'target_patient_address' => trim($this->id_address) ?: ($this->domicile_address ?: null),
+            'action_name' => $resolvedProcedure,
 
             'diagnosis_wd_dd' => trim($this->ic_diagnosis),
             'diagnosis_checked' => $this->ic_diagnosis_checked,
             'diagnosis_basis' => trim($this->ic_diagnosis_basis),
             'diagnosis_basis_checked' => $this->ic_diagnosis_basis_checked,
-            'medical_procedure' => trim($this->ic_medical_procedure),
+            'medical_procedure' => $resolvedProcedure,
             'medical_procedure_checked' => $this->ic_medical_procedure_checked,
             'indication' => trim($this->ic_indication),
             'indication_checked' => $this->ic_indication_checked,
@@ -915,12 +998,14 @@ class ClinicalFormFlow extends Component
         $doctors = User::where('role', 'doctor')->get();
         $nurses = User::where('role', 'nurse')->get();
         $consumables = Consumable::where('is_active', true)->orderBy('id')->get();
+        $existingVisit = $this->visitId ? Visit::find($this->visitId) : null;
 
         return view('livewire.clinical-form-flow', [
             'clinic' => $clinic,
             'doctors' => $doctors,
             'nurses' => $nurses,
             'consumables' => $consumables,
+            'existingVisit' => $existingVisit,
         ]);
     }
 }
