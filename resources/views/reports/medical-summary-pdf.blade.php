@@ -5,7 +5,7 @@
     <title>Rekap Medis Pasien - {{ $visit->manual_patient_code ?: ($patient->patient_code ?? 'PASIEN') }}</title>
     <style>
         @page {
-            margin: 8mm 12mm 8mm 12mm;
+            margin: 6mm 10mm 6mm 10mm;
             size: a4 portrait;
         }
 
@@ -18,8 +18,8 @@
             margin: 0;
             padding: 0;
             color: #0f172a;
-            line-height: 1.25;
-            font-size: 7.5pt;
+            line-height: 1.2;
+            font-size: 7pt;
             background: #ffffff;
         }
 
@@ -35,9 +35,9 @@
         /* Kop Surat Resmi ONEW */
         .kop-table {
             width: 100%;
-            border-bottom: 2px solid #0f172a;
-            padding-bottom: 4px;
-            margin-bottom: 6px;
+            border-bottom: 1.5px solid #0f172a;
+            padding-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .kop-logo {
@@ -47,7 +47,7 @@
         }
 
         .kop-logo img {
-            height: 40px;
+            height: 32px;
             width: auto;
             display: inline-block;
         }
@@ -56,36 +56,36 @@
             width: 55%;
             text-align: right;
             vertical-align: middle;
-            font-size: 7pt;
+            font-size: 6.2pt;
             color: #475569;
-            line-height: 1.2;
+            line-height: 1.15;
         }
 
         .kop-clinic-title {
-            font-size: 8.5pt;
+            font-size: 7.5pt;
             font-weight: bold;
             color: #0f172a;
             text-transform: uppercase;
         }
 
-        /* Center Header for General Consent / Informed Consent */
+        /* Center Header for General Consent / Informed Consent / BHP */
         .center-header {
             text-align: center;
-            border-bottom: 2px solid #0f172a;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
+            border-bottom: 1.5px solid #0f172a;
+            padding-bottom: 2px;
+            margin-bottom: 5px;
         }
 
         .center-header img {
-            height: 38px;
+            height: 32px;
             width: auto;
-            margin: 0 auto 2px auto;
+            margin: 0 auto 1px auto;
             display: block;
         }
 
         .center-header h1 {
             margin: 1px 0 0 0;
-            font-size: 11pt;
+            font-size: 9.5pt;
             font-weight: 900;
             color: #0f172a;
             letter-spacing: 0.5px;
@@ -94,24 +94,24 @@
 
         .center-header h2 {
             margin: 0;
-            font-size: 10pt;
+            font-size: 9pt;
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
         }
 
         .center-header p {
-            margin: 1px 0 0 0;
-            font-size: 7pt;
+            margin: 0.5px 0 0 0;
+            font-size: 6.2pt;
             color: #475569;
         }
 
         /* Title Box for Registration Form */
         .title-box-table {
             width: 100%;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px solid #cbd5e1;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
 
         .title-box-left {
@@ -121,16 +121,16 @@
 
         .title-box-left h1 {
             margin: 0;
-            font-size: 11pt;
+            font-size: 9pt;
             font-weight: 900;
             text-transform: uppercase;
             color: #0f172a;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .title-box-left p {
-            margin: 1px 0 0 0;
-            font-size: 7.5pt;
+            margin: 0;
+            font-size: 6.5pt;
             font-weight: bold;
             color: #64748b;
         }
@@ -141,10 +141,10 @@
         }
 
         .rm-meta-card {
-            border: 1.5px solid #0f172a;
-            border-radius: 4px;
-            padding: 3px 6px;
-            font-size: 7pt;
+            border: 1px solid #0f172a;
+            border-radius: 3px;
+            padding: 2px 4px;
+            font-size: 6.2pt;
             background-color: #f8fafc;
         }
 
@@ -154,7 +154,7 @@
         }
 
         .rm-meta-card td {
-            padding: 1px 2px;
+            padding: 0.5px 1.5px;
         }
 
         .rm-label {
@@ -167,7 +167,7 @@
             font-weight: 900;
             color: #0f172a;
             font-family: monospace;
-            font-size: 8pt;
+            font-size: 7.2pt;
         }
 
         /* Section Headings */
@@ -175,33 +175,33 @@
             background-color: #0f172a;
             color: #ffffff;
             font-weight: bold;
-            font-size: 7.5pt;
-            padding: 2.5px 6px;
+            font-size: 6.2pt;
+            padding: 1.2px 5px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 5px;
-            margin-bottom: 3px;
-            border-radius: 2px;
+            letter-spacing: 0.3px;
+            margin-top: 2.5px;
+            margin-bottom: 1.5px;
+            border-radius: 1.5px;
         }
 
         /* Form Grid Table */
         .form-grid-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7pt;
-            margin-bottom: 3px;
+            font-size: 6.2pt;
+            margin-bottom: 1.5px;
         }
 
         .form-grid-table td {
-            padding: 2px 4px;
-            vertical-align: top;
-            border-bottom: 1px dotted #e2e8f0;
+            padding: 1px 3px;
+            vertical-align: middle;
+            border-bottom: 0.5px dotted #e2e8f0;
         }
 
         .field-label {
             color: #475569;
             font-weight: 600;
-            width: 22%;
+            width: 20%;
         }
 
         .field-val {
@@ -209,13 +209,19 @@
             font-weight: normal;
         }
 
+        .chk-box {
+            font-family: monospace;
+            font-size: 6.2pt;
+            font-weight: bold;
+        }
+
         /* Bordered Tables */
         .bordered-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7pt;
-            margin-top: 3px;
-            margin-bottom: 4px;
+            font-size: 6.5pt;
+            margin-top: 2px;
+            margin-bottom: 3px;
         }
 
         .bordered-table th {
@@ -223,14 +229,14 @@
             color: #ffffff;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 6.5pt;
-            padding: 3px 4px;
+            font-size: 6pt;
+            padding: 2px 3px;
             border: 1px solid #0f172a;
             text-align: left;
         }
 
         .bordered-table td {
-            padding: 2.5px 4px;
+            padding: 1.5px 3px;
             border: 1px solid #cbd5e1;
             vertical-align: top;
         }
@@ -239,90 +245,91 @@
         .signature-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
+            margin-top: 3px;
         }
 
         .signature-cell {
             text-align: center;
             vertical-align: top;
-            font-size: 7pt;
-            padding: 0 8px;
+            font-size: 6.2pt;
+            padding: 0 6px;
         }
 
         .sig-image {
-            height: 38px;
-            max-width: 120px;
+            height: 30px;
+            max-width: 110px;
             display: block;
-            margin: 2px auto;
+            margin: 1px auto;
         }
 
         .sig-line {
             border-top: 1px solid #475569;
-            margin-top: 2px;
-            padding-top: 2px;
+            margin-top: 1px;
+            padding-top: 1px;
             font-weight: bold;
+            font-size: 6.2pt;
         }
 
-        /* PHOTO 5 SIDES FULL A4 PAGE LAYOUT */
+        /* PHOTO 5 SIDES FULL A4 PAGE LAYOUT (MAXIMIZED FULL PAGE) */
         .photo-page-header {
             width: 100%;
             border-bottom: 1.5px solid #0f172a;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
+            padding-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .photo-page-title {
-            font-size: 10pt;
+            font-size: 8.5pt;
             font-weight: 900;
             color: #0f172a;
             text-transform: uppercase;
             margin: 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .photo-meta-info {
-            font-size: 7pt;
+            font-size: 6.5pt;
             color: #475569;
-            margin-top: 1px;
+            margin-top: 0.5px;
         }
 
         .photo-grid-row-1 {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 5px;
-            margin-bottom: 6px;
+            border-spacing: 3px;
+            margin-bottom: 3px;
         }
 
         .photo-grid-row-2 {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 5px;
+            border-spacing: 3px;
         }
 
         .photo-card {
-            border: 1.5px solid #cbd5e1;
-            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
             background-color: #f8fafc;
             text-align: center;
-            padding: 4px;
+            padding: 2px;
             vertical-align: top;
         }
 
         .photo-card-label {
-            font-size: 8pt;
+            font-size: 7pt;
             font-weight: bold;
             text-transform: uppercase;
             color: #0f172a;
-            padding: 3px 4px;
+            padding: 1.5px 3px;
             border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+            letter-spacing: 0.2px;
         }
 
         .photo-frame-img {
             display: block;
             margin: 0 auto;
-            border-radius: 4px;
+            border-radius: 2px;
             max-width: 100%;
             object-fit: contain;
         }
@@ -330,10 +337,10 @@
         .photo-empty-box {
             background-color: #ffffff;
             border: 1px dashed #cbd5e1;
-            border-radius: 4px;
+            border-radius: 2px;
             color: #94a3b8;
             font-style: italic;
-            font-size: 8pt;
+            font-size: 7pt;
             text-align: center;
         }
     </style>
@@ -416,7 +423,7 @@
                 <td class="field-val">
                     {{ $patient->birth_place ?: '-' }},
                     {{ $patient->date_of_birth ? $patient->date_of_birth->format('d/m/Y') : '-' }}
-                    ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Tahun' : '-' }})
+                    ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Thn' : '-' }})
                 </td>
                 <td class="field-label">Pekerjaan</td>
                 <td class="field-val">{{ $patient->occupation ?: '-' }}</td>
@@ -452,67 +459,131 @@
             </tr>
         </table>
 
-        <!-- Bagian C: Riwayat Pasien -->
-        <div class="section-bar">C. RIWAYAT PASIEN</div>
+        <!-- Bagian C: Data Penjamin / Pembayaran -->
+        <div class="section-bar">C. DATA PENJAMIN / PEMBAYARAN</div>
         <table class="form-grid-table">
             <tr>
-                <td class="field-label">Keluhan Utama</td>
+                <td class="field-label">Jenis Pembayaran</td>
                 <td class="field-val" colspan="3">
-                    <strong>{{ $visit->chief_complaint ?: 'Pemeriksaan rutin estetika / konsultasi klinis' }}</strong>
+                    <span class="chk-box">[{{ ($patient->payment_type === 'Pribadi / Umum' || !$patient->payment_type) ? 'X' : ' ' }}]</span> Pribadi / Umum
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->payment_type === 'Asuransi' ? 'X' : ' ' }}]</span> Asuransi
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->payment_type === 'Perusahaan' ? 'X' : ' ' }}]</span> Perusahaan
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->payment_type === 'Lainnya' ? 'X' : ' ' }}]</span> Lainnya
                 </td>
             </tr>
             <tr>
-                <td class="field-label">Riwayat Penyakit / Perawatan</td>
-                <td class="field-val" colspan="3">
-                    {{ $visit->doctor_notes ?: ($visit->diagnosis_dd ?: 'Tidak ada riwayat kontraindikasi khusus yang dilaporkan.') }}
-                </td>
+                <td class="field-label">Nama Asuransi / Perusahaan</td>
+                <td class="field-val" style="width: 38%;">{{ $patient->insurance_company_name ?: '-' }}</td>
+                <td class="field-label" style="width: 18%;">No. Peserta / Polis</td>
+                <td class="field-val" style="width: 22%;">{{ $patient->insurance_card_number ?: '-' }}</td>
             </tr>
         </table>
 
-        <!-- Bagian D: Dokter / Poli Tujuan & Persetujuan Komunikasi -->
-        <div class="section-bar">D. DOKTER / POLI TUJUAN & PERSETUJUAN KOMUNIKASI</div>
+        <!-- Bagian D: Informasi Pelayanan -->
+        <div class="section-bar">D. INFORMASI PELAYANAN</div>
         <table class="form-grid-table">
+            <tr>
+                <td class="field-label">Status Pasien</td>
+                <td class="field-val" colspan="3">
+                    <span class="chk-box">[{{ ($visit->patient_service_status === 'Pasien Baru' || !$visit->patient_service_status) ? 'X' : ' ' }}]</span> Pasien Baru
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $visit->patient_service_status === 'Pasien Lama' ? 'X' : ' ' }}]</span> Pasien Lama
+                </td>
+            </tr>
             <tr>
                 <td class="field-label">Tujuan Kunjungan</td>
-                <td class="field-val" style="width: 38%;"><strong>{{ $visit->visit_purpose ?: 'Estetika' }}</strong></td>
-                <td class="field-label" style="width: 18%;">Dokter / Poli</td>
-                <td class="field-val" style="width: 22%;">{{ $visit->destination_doctor_poli ?: '-' }}</td>
+                <td class="field-val" colspan="3">
+                    <span class="chk-box">[{{ $visit->visit_purpose === 'Rawat Jalan' ? 'X' : ' ' }}]</span> Rawat Jalan / Dokter Umum
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ ($visit->visit_purpose === 'Estetika' || !$visit->visit_purpose) ? 'X' : ' ' }}]</span> Estetika
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $visit->visit_purpose === 'Gigi' ? 'X' : ' ' }}]</span> Gigi
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $visit->visit_purpose === 'Spesialis' ? 'X' : ' ' }}]</span> Spesialis
+                </td>
             </tr>
             <tr>
-                <td class="field-label">Persetujuan Komunikasi</td>
+                <td class="field-label">Dokter / Poli Tujuan</td>
+                <td class="field-val" style="width: 38%;"><strong>{{ $visit->destination_doctor_poli ?: '-' }}</strong></td>
+                <td class="field-label" style="width: 18%;">Keluhan / Keperluan</td>
+                <td class="field-val" style="width: 22%;">{{ $visit->chief_complaint ?: 'Konsultasi dan perawatan estetika klinis berkala.' }}</td>
+            </tr>
+        </table>
+
+        <!-- Bagian E: Informasi Tambahan -->
+        <div class="section-bar">E. INFORMASI TAMBAHAN</div>
+        <table class="form-grid-table">
+            <tr>
+                <td class="field-label">Mengetahui Klinik dari</td>
                 <td class="field-val" colspan="3">
-                    [ X ] Bersedia menerima informasi, pengingat janji, dan komunikasi administratif melalui Telepon atau WhatsApp.
+                    <span class="chk-box">[{{ $patient->referral_source === 'Keluarga / Teman' ? 'X' : ' ' }}]</span> Keluarga / Teman
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ ($patient->referral_source === 'Instagram / TikTok' || !$patient->referral_source) ? 'X' : ' ' }}]</span> Instagram / TikTok
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->referral_source === 'Google / Internet' ? 'X' : ' ' }}]</span> Google / Internet
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->referral_source === 'Iklan' ? 'X' : ' ' }}]</span> Iklan
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="chk-box">[{{ $patient->referral_source === 'Rujukan Dokter' ? 'X' : ' ' }}]</span> Rujukan
                 </td>
             </tr>
         </table>
 
-        <!-- Tanda Tangan Formulir Pendaftaran (Muat di Page 1) -->
-        <table class="signature-table" style="margin-top: 10px;">
+        <!-- Bagian F: Pernyataan dan Persetujuan Pasien -->
+        <div class="section-bar">F. PERNYATAAN DAN PERSETUJUAN PASIEN</div>
+        <div style="font-size: 5.6pt; text-align: justify; line-height: 1.25; padding: 2px 4px; background-color: #f8fafc; border: 0.8px solid #cbd5e1; border-radius: 2px; margin-bottom: 3px;">
+            <div style="margin-bottom: 1.5px;">1. Saya menyatakan bahwa seluruh data yang saya berikan dalam formulir ini adalah benar dan dapat dipertanggungjawabkan.</div>
+            <div style="margin-bottom: 1.5px;">2. Saya bersedia memberikan informasi yang diperlukan untuk proses pendaftaran, pelayanan kesehatan, administrasi, penagihan, dan pencatatan rekam medis sesuai ketentuan yang berlaku.</div>
+            <div style="margin-bottom: 1.5px;">3. Saya memahami bahwa informasi medis yang lebih rinci akan diperoleh melalui anamnesis, pemeriksaan, dan/atau formulir persetujuan tindakan medis sesuai jenis pelayanan yang saya terima.</div>
+            <div>4. Saya bersedia mematuhi ketentuan pelayanan dan tata tertib klinik yang berlaku.</div>
+            <div style="margin-top: 2px; border-top: 0.5px dashed #cbd5e1; padding-top: 1.5px; font-weight: bold;">
+                Persetujuan menerima informasi/komunikasi administratif melalui telepon atau WhatsApp:
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="chk-box">[{{ ($visit->whatsapp_comm_consent ?? true) ? 'X' : ' ' }}]</span> Saya SETUJU
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="chk-box">[{{ !($visit->whatsapp_comm_consent ?? true) ? 'X' : ' ' }}]</span> Saya TIDAK SETUJU
+            </div>
+        </div>
+
+        <!-- Tanda Tangan Formulir Pendaftaran (Disatukan di Page 1) -->
+        <table class="signature-table" style="margin-top: 3px;">
             <tr>
                 <td class="signature-cell" style="width: 50%;">
-                    <div>Petugas Pendaftaran,</div>
-                    @if($registrationStaffSigBase64)
-                        <img src="{{ $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
-                    @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
-                    @endif
-                    <div class="sig-line">
-                        {{ $visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW' }}
+                    <div style="font-weight: bold; font-size: 6.5pt;">PASIEN / PENANGGUNG JAWAB</div>
+                    <div style="font-size: 5.8pt; color: #475569; margin-top: 0.5px;">
+                        Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
                     </div>
-                </td>
-                <td class="signature-cell" style="width: 50%;">
-                    <div>Pasien / Penanggung Jawab,</div>
                     @if($registrationPatientSigBase64 || $signatureBase64)
                         <img src="{{ $registrationPatientSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
                     @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8; font-size: 6pt;">[Tanda Tangan Pasien]</div>
                     @endif
                     <div class="sig-line">
-                        {{ $visit->registration_patient_signer_name ?: $patient->name }}
+                        Nama: {{ $visit->registration_patient_signer_name ?: $patient->name }}
+                    </div>
+                </td>
+                <td class="signature-cell" style="width: 50%;">
+                    <div style="font-weight: bold; font-size: 6.5pt;">PETUGAS PENDAFTARAN</div>
+                    <div style="font-size: 5.8pt; color: #475569; margin-top: 0.5px;">
+                        Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
+                    </div>
+                    @if($registrationStaffSigBase64)
+                        <img src="{{ $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
+                    @else
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8; font-size: 6pt;">[Tanda Tangan Petugas]</div>
+                    @endif
+                    <div class="sig-line">
+                        Nama: {{ $visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW' }}
                     </div>
                 </td>
             </tr>
         </table>
+        <div style="font-size: 5.2pt; color: #94a3b8; text-align: center; margin-top: 2px;">
+            Catatan: Formulir ini merupakan formulir pendaftaran pasien dan tidak menggantikan informed consent atau persetujuan tindakan medis yang diperlukan untuk tindakan tertentu.
+        </div>
     </div>
 
     <div class="page-break"></div>
@@ -589,7 +660,7 @@
                     @if($generalConsentStaffSigBase64 || $registrationStaffSigBase64)
                         <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
                     @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
                     @endif
                     <div class="sig-line">
                         {{ $visit->general_consent_staff_name ?: ($visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW') }}
@@ -600,7 +671,7 @@
                     @if($signatureBase64 || $registrationPatientSigBase64)
                         <img src="{{ $signatureBase64 ?: $registrationPatientSigBase64 }}" class="sig-image" alt="TTD Pasien">
                     @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
                     @endif
                     <div class="sig-line">
                         {{ $visit->general_consent_patient_signer_name ?: ($visit->registration_patient_signer_name ?: $patient->name) }}
@@ -760,9 +831,9 @@
                     @if($doctorConsentSigBase64)
                         <img src="{{ $doctorConsentSigBase64 }}" class="sig-image" alt="TTD Dokter">
                     @elseif($doctorNameDisplay)
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
                     @else
-                        <div style="height: 38px; line-height: 38px; color: #94a3b8; font-style: italic;">[Tanda Tangan Dokter]</div>
+                        <div style="height: 475px; line-height: 475px; color: #94a3b8; font-style: italic;">[Tanda Tangan Dokter]</div>
                     @endif
                     <div class="sig-line">
                         {{ $doctorNameDisplay ?: '' }}
@@ -773,7 +844,7 @@
                     @if($procedureConsentSigBase64 || $signatureBase64)
                         <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
                     @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
                     @endif
                     <div class="sig-line">
                         {{ $recipientNameDisplay }}
@@ -784,7 +855,7 @@
                     @if($witnessConsentSigBase64)
                         <img src="{{ $witnessConsentSigBase64 }}" class="sig-image" alt="TTD Saksi">
                     @else
-                        <div style="height: 38px; line-height: 38px; font-style: italic; color: #94a3b8;">[Tanda Tangan Saksi]</div>
+                        <div style="height: 475px; line-height: 475px; font-style: italic; color: #94a3b8;">[Tanda Tangan Saksi]</div>
                     @endif
                     <div class="sig-line">
                         {{ $visit->informedConsent?->witness_name ?: 'Saksi Klinik ONEW' }}
@@ -954,9 +1025,9 @@
                 <td class="photo-card" style="width: 33.3%; border-color: #0f172a; background-color: #ffffff;">
                     <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">1. TAMPAK DEPAN (0&deg;)</div>
                     @if($photoBeforeFrontBase64 || $photoBeforeBase64)
-                        <img src="{{ $photoBeforeFrontBase64 ?: $photoBeforeBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Depan">
+                        <img src="{{ $photoBeforeFrontBase64 ?: $photoBeforeBase64 }}" class="photo-frame-img" style="height: 465px;" alt="Before Tampak Depan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -966,9 +1037,9 @@
                 <td class="photo-card" style="width: 33.3%;">
                     <div class="photo-card-label">2. SERONG KANAN (45&deg;)</div>
                     @if($photoBeforeRightTiltBase64)
-                        <img src="{{ $photoBeforeRightTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Serong Kanan">
+                        <img src="{{ $photoBeforeRightTiltBase64 }}" class="photo-frame-img" style="height: 465px;" alt="Before Serong Kanan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -978,9 +1049,9 @@
                 <td class="photo-card" style="width: 33.3%;">
                     <div class="photo-card-label">3. SERONG KIRI (45&deg;)</div>
                     @if($photoBeforeLeftTiltBase64)
-                        <img src="{{ $photoBeforeLeftTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Serong Kiri">
+                        <img src="{{ $photoBeforeLeftTiltBase64 }}" class="photo-frame-img" style="height: 465px;" alt="Before Serong Kiri">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -995,9 +1066,9 @@
                 <td class="photo-card" style="width: 50%;">
                     <div class="photo-card-label">4. TAMPAK KANAN (PROFIL 90&deg;)</div>
                     @if($photoBeforeRightSideBase64)
-                        <img src="{{ $photoBeforeRightSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Kanan">
+                        <img src="{{ $photoBeforeRightSideBase64 }}" class="photo-frame-img" style="height: 465px;" alt="Before Tampak Kanan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1007,9 +1078,9 @@
                 <td class="photo-card" style="width: 50%;">
                     <div class="photo-card-label">5. TAMPAK KIRI (PROFIL 90&deg;)</div>
                     @if($photoBeforeLeftSideBase64)
-                        <img src="{{ $photoBeforeLeftSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="Before Tampak Kiri">
+                        <img src="{{ $photoBeforeLeftSideBase64 }}" class="photo-frame-img" style="height: 465px;" alt="Before Tampak Kiri">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1030,9 +1101,9 @@
             <tr>
                 <td style="width: 25%; vertical-align: middle;">
                     @if($logoBase64)
-                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 36px; width: auto;">
+                        <img src="{{ $logoBase64 }}" alt="ONEW Clinic" style="height: 28px; width: auto;">
                     @else
-                        <strong style="font-size: 13pt;">ONEW</strong>
+                        <strong style="font-size: 11pt;">ONEW</strong>
                     @endif
                 </td>
                 <td style="width: 75%; text-align: right; vertical-align: middle;">
@@ -1053,9 +1124,9 @@
                 <td class="photo-card" style="width: 33.3%; border-color: #0f172a; background-color: #ffffff;">
                     <div class="photo-card-label" style="color: #0f172a; font-weight: 900; background-color: #f1f5f9;">1. TAMPAK DEPAN (0&deg;)</div>
                     @if($photoAfterFrontBase64 || $photoAfterBase64)
-                        <img src="{{ $photoAfterFrontBase64 ?: $photoAfterBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Depan">
+                        <img src="{{ $photoAfterFrontBase64 ?: $photoAfterBase64 }}" class="photo-frame-img" style="height: 465px;" alt="After Tampak Depan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1065,9 +1136,9 @@
                 <td class="photo-card" style="width: 33.3%;">
                     <div class="photo-card-label">2. SERONG KANAN (45&deg;)</div>
                     @if($photoAfterRightTiltBase64)
-                        <img src="{{ $photoAfterRightTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Serong Kanan">
+                        <img src="{{ $photoAfterRightTiltBase64 }}" class="photo-frame-img" style="height: 465px;" alt="After Serong Kanan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1077,9 +1148,9 @@
                 <td class="photo-card" style="width: 33.3%;">
                     <div class="photo-card-label">3. SERONG KIRI (45&deg;)</div>
                     @if($photoAfterLeftTiltBase64)
-                        <img src="{{ $photoAfterLeftTiltBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Serong Kiri">
+                        <img src="{{ $photoAfterLeftTiltBase64 }}" class="photo-frame-img" style="height: 465px;" alt="After Serong Kiri">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1094,9 +1165,9 @@
                 <td class="photo-card" style="width: 50%;">
                     <div class="photo-card-label">4. TAMPAK KANAN (PROFIL 90&deg;)</div>
                     @if($photoAfterRightSideBase64)
-                        <img src="{{ $photoAfterRightSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Kanan">
+                        <img src="{{ $photoAfterRightSideBase64 }}" class="photo-frame-img" style="height: 465px;" alt="After Tampak Kanan">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
@@ -1106,9 +1177,9 @@
                 <td class="photo-card" style="width: 50%;">
                     <div class="photo-card-label">5. TAMPAK KIRI (PROFIL 90&deg;)</div>
                     @if($photoAfterLeftSideBase64)
-                        <img src="{{ $photoAfterLeftSideBase64 }}" class="photo-frame-img" style="height: 425px;" alt="After Tampak Kiri">
+                        <img src="{{ $photoAfterLeftSideBase64 }}" class="photo-frame-img" style="height: 465px;" alt="After Tampak Kiri">
                     @else
-                        <div class="photo-empty-box" style="height: 425px; line-height: 425px;">
+                        <div class="photo-empty-box" style="height: 465px; line-height: 465px;">
                             Tidak Ada Foto
                         </div>
                     @endif
