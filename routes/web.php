@@ -3,15 +3,15 @@
 use App\Http\Controllers\MedicalExportController;
 use App\Http\Controllers\MedicalReportController;
 use App\Livewire\Auth\Login;
-use App\Livewire\ClinicSettings;
 use App\Livewire\ClinicalFormFlow;
-use App\Livewire\DoctorTreatment;
-use App\Livewire\NurseExamination;
+use App\Livewire\ClinicSettings;
 use App\Livewire\PatientKiosk;
 use App\Livewire\PatientRegistration;
 use App\Livewire\VisitDashboard;
+use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +25,7 @@ Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
+
     return redirect()->route('login');
 })->name('logout')->middleware('auth');
 
@@ -40,10 +41,11 @@ Route::get('/registrasi/{visit_id?}', ClinicalFormFlow::class);
 // Direct Storage Asset Route (ensures public photos and signatures always resolve across local/nginx/windows)
 Route::get('/storage/{path}', function (string $path) {
     $cleanPath = ltrim(preg_replace('#^/?storage/#', '', $path), '/');
-    if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+    if (! Storage::disk('public')->exists($cleanPath)) {
         abort(404);
     }
-    $fullPath = \Illuminate\Support\Facades\Storage::disk('public')->path($cleanPath);
+    $fullPath = Storage::disk('public')->path($cleanPath);
+
     return response()->file($fullPath);
 })->where('path', '.*');
 
@@ -56,14 +58,26 @@ Route::middleware('auth')->group(function () {
     // Tahap 2: Registrasi Pasien & General Consent (Bisa diakses Resepsionis, Perawat, Superadmin)
     Route::get('/patients/register', PatientRegistration::class)->name('patients.register');
 
-    // Tahap 3: Pemeriksaan & Tindakan Medis (Dokter & Perawat) - mendukung param visit_id opsional
-    Route::get('/doctor/treatment/{visit_id?}', DoctorTreatment::class)->name('doctor.treatment');
+    // Tahap 3: Pemeriksaan & Tindakan Medis (Dokter & Perawat) - Disamakan dengan Alur Form Flow (Langkah 3)
+    Route::get('/doctor/treatment/{visit_id?}', function (?int $visit_id = null) {
+        if ($visit_id) {
+            return redirect()->route('clinical.form.flow', ['visit_id' => $visit_id, 'step' => 3]);
+        }
+        $activeVisit = Visit::whereIn('status', ['waiting_doctor', 'in_treatment', 'registered'])->latest()->first();
+        if ($activeVisit) {
+            return redirect()->route('clinical.form.flow', ['visit_id' => $activeVisit->id, 'step' => 3]);
+        }
+
+        return redirect()->route('clinical.form.flow', ['step' => 3]);
+    })->name('doctor.treatment');
 
     // Mode Tablet Kiosk Pasien (General Consent)
     Route::get('/kiosk/{visit}', PatientKiosk::class)->name('kiosk.show');
 
-    // Pemeriksaan Perawat (bila dipisahkan)
-    Route::get('/nurse/examination', NurseExamination::class)->name('nurse.examination');
+    // Pemeriksaan Perawat (Disamakan dengan Form Flow)
+    Route::get('/nurse/examination', function () {
+        return redirect()->route('clinical.form.flow');
+    })->name('nurse.examination');
 
     // Laporan Rekap Kunjungan (Medical Summary Report PDF)
     Route::get('/reports/visits/{visit}/pdf', [MedicalReportController::class, 'downloadPdf'])->name('reports.visit.pdf');

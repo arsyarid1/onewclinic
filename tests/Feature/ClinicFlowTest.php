@@ -628,4 +628,38 @@ class ClinicFlowTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals('application/pdf', $response->headers->get('content-type'));
     }
+
+    public function test_doctor_treatment_and_examination_routes_unify_with_clinical_form_flow(): void
+    {
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-UNIFY-TEST',
+            'name' => 'Pasien Unify Flow',
+            'phone_number' => '081234567890',
+            'gender' => 'female',
+            'date_of_birth' => '1996-05-10',
+        ]);
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'manual_patient_code' => 'ONEW26-UNIFY-TEST',
+            'status' => 'waiting_doctor',
+        ]);
+
+        // 1. Route /doctor/treatment/{visit_id} redirects to clinical form flow step 3
+        $response = $this->actingAs($this->doctor)->get(route('doctor.treatment', ['visit_id' => $visit->id]));
+        $response->assertRedirect(route('clinical.form.flow', ['visit_id' => $visit->id, 'step' => 3]));
+
+        // 2. Route /nurse/examination redirects to clinical form flow
+        $nurseResponse = $this->actingAs($this->nurse)->get(route('nurse.examination'));
+        $nurseResponse->assertRedirect(route('clinical.form.flow'));
+
+        // 3. ClinicalFormFlow loaded with visit_id sets step and loads patient
+        Livewire::test(ClinicalFormFlow::class, ['visit_id' => $visit->id])
+            ->set('currentStep', 3)
+            ->assertSet('currentStep', 3)
+            ->assertSet('visitId', $visit->id)
+            ->assertSet('name', 'Pasien Unify Flow');
+    }
 }

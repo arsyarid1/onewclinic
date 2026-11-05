@@ -220,10 +220,10 @@ class PatientRegistration extends Component
             ]);
         });
 
-        session()->flash('success', "Registrasi pasien {$visit->patient->name} berhasil disimpan! Pasien siap masuk ke Ruang Pemeriksaan Dokter.");
+        session()->flash('success', "Registrasi pasien {$visit->patient->name} berhasil disimpan! Pasien siap masuk ke Ruang Pemeriksaan Medis.");
         $this->dispatch('notify', message: "Registrasi pasien {$visit->patient->name} berhasil disimpan!");
 
-        return redirect()->route('doctor.treatment', ['visit_id' => $visit->id]);
+        return redirect()->route('clinical.form.flow', ['visit_id' => $visit->id, 'step' => 3]);
     }
 
     public function render()

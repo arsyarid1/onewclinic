@@ -196,8 +196,9 @@
                                     </a>
 
                                     @if($visit->status !== 'completed')
-                                        <a href="{{ route('doctor.treatment', ['visit_id' => $visit->id]) }}"
-                                           class="h-9 px-4 rounded-full text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all inline-flex items-center gap-1.5 active:scale-[0.97]">
+                                        <a href="{{ route('clinical.form.flow', ['visit_id' => $visit->id, 'step' => 3]) }}"
+                                           class="h-9 px-4 rounded-full text-xs font-semibold text-white bg-slate-900 hover:bg-black transition-all inline-flex items-center gap-1.5 active:scale-[0.97]"
+                                           title="Buka Pemeriksaan & Tindakan Medis Pasien">
                                             <span>Pemeriksaan Medis</span>
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                         </a>

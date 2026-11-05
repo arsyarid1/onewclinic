@@ -383,8 +383,24 @@ class ClinicalFormFlow extends Component
         $this->gc_time = Carbon::now()->format('H:i');
         $this->bhp_date = Carbon::now()->translatedFormat('d F Y');
 
+        if (request()->has('step')) {
+            $reqStep = (int) request('step');
+            if ($reqStep >= 1 && $reqStep <= 7) {
+                $this->currentStep = $reqStep;
+            }
+        }
+
         // Check if loading existing visit
-        $targetVisitId = $visit_id ?: $this->visitId;
+        $targetVisitId = $visit_id ?: $this->visitId ?: request()->query('visit_id');
+
+        // Jika membuka halaman pemeriksaan (Step >= 3) tanpa visit_id spesifik, otomatis muat antrian pasien aktif
+        if (! $targetVisitId && $this->currentStep >= 3) {
+            $activeVisit = Visit::whereIn('status', ['waiting_doctor', 'in_treatment', 'registered'])->latest()->first();
+            if ($activeVisit) {
+                $targetVisitId = $activeVisit->id;
+            }
+        }
+
         if ($targetVisitId) {
             $this->loadExistingVisit((int) $targetVisitId);
         } else {
@@ -987,6 +1003,12 @@ class ClinicalFormFlow extends Component
         }
     }
 
+    public function selectVisit(int $visitId): void
+    {
+        $this->loadExistingVisit($visitId);
+        $this->dispatch('notify', message: 'Data rekam medis pasien '.($this->name ?: '').' berhasil dimuat.');
+    }
+
     public function resetNewPatient()
     {
         return redirect()->route('clinical.form.flow');
@@ -999,6 +1021,7 @@ class ClinicalFormFlow extends Component
         $nurses = User::where('role', 'nurse')->get();
         $consumables = Consumable::where('is_active', true)->orderBy('id')->get();
         $existingVisit = $this->visitId ? Visit::find($this->visitId) : null;
+        $todayVisits = Visit::with('patient')->latest()->take(30)->get();
 
         return view('livewire.clinical-form-flow', [
             'clinic' => $clinic,
@@ -1006,6 +1029,7 @@ class ClinicalFormFlow extends Component
             'nurses' => $nurses,
             'consumables' => $consumables,
             'existingVisit' => $existingVisit,
+            'todayVisits' => $todayVisits,
         ]);
     }
 }
