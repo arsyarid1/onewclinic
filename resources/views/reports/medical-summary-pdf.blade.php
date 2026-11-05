@@ -219,6 +219,13 @@
             font-weight: bold;
         }
 
+        .chk-mark {
+            font-family: 'DejaVu Sans', sans-serif;
+            font-weight: bold;
+            color: #0f172a;
+            font-size: 8.5pt;
+        }
+
         /* Bordered Tables for General Consent & Informed Consent */
         .bordered-table {
             width: 100%;
@@ -781,67 +788,67 @@
                     <td style="text-align: center;">1</td>
                     <td><strong>Diagnosis (WD & DD)</strong></td>
                     <td>{{ $visit->informedConsent?->diagnosis_wd_dd ?: ($visit->diagnosis_wd ?: '-') }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">2</td>
                     <td><strong>Dasar Diagnosis</strong></td>
                     <td>{{ $visit->informedConsent?->diagnosis_basis ?: 'Pemeriksaan Klinis dan Anamnesis Dokter' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">3</td>
                     <td><strong>Tindakan Kedokteran</strong></td>
                     <td><strong>{{ $resolvedProcedure }}</strong></td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">4</td>
                     <td><strong>Indikasi Tindakan</strong></td>
                     <td>{{ $visit->informedConsent?->indication ?: 'Peremajaan jaringan kulit, koreksi kontur & perbaikan tekstur' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">5</td>
                     <td><strong>Tata Cara Prosedur</strong></td>
                     <td>{{ $visit->informedConsent?->procedure_steps ?: 'Asepsis, anestesi topikal bila diperlukan, pelaksanaan prosedur secara aseptik' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">6</td>
                     <td><strong>Tujuan Tindakan</strong></td>
                     <td>{{ $visit->informedConsent?->procedure_goal ?: 'Memperbaiki tekstur kulit, meningkatkan elastisitas, dan peremajaan' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">7</td>
                     <td><strong>Risiko yang Mungkin Terjadi</strong></td>
                     <td>{{ $visit->informedConsent?->risks ?: 'Kemerahan sementara (eritema), rasa hangat, atau pembengkakan ringan' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">8</td>
                     <td><strong>Komplikasi</strong></td>
                     <td>{{ $visit->informedConsent?->complications ?: 'Hematoma ringan, reaksi hipersensitivitas minimal' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">9</td>
                     <td><strong>Prognosis</strong></td>
                     <td>{{ $visit->informedConsent?->prognosis ?: 'Dubia ad Bonam' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">10</td>
                     <td><strong>Alternatif & Risiko</strong></td>
                     <td>{{ $visit->informedConsent?->alternatives_risks ?: 'Perawatan topikal harian atau observasi klinis berkala' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">11</td>
                     <td><strong>Lain-lain / Catatan Pasca</strong></td>
                     <td>{{ $visit->informedConsent?->other_notes ?: ($visit->doctor_notes ?: 'Hindari paparan sinar matahari langsung dan gunakan sunscreen.') }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ &radic; ]</td>
+                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
                 </tr>
             </tbody>
         </table>
