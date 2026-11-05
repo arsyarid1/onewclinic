@@ -36,8 +36,8 @@
         .kop-table {
             width: 100%;
             border-bottom: 1.5px solid #0f172a;
-            padding-bottom: 3px;
-            margin-bottom: 5px;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .kop-logo {
@@ -47,7 +47,7 @@
         }
 
         .kop-logo img {
-            height: 36px;
+            height: 40px;
             width: auto;
             display: inline-block;
         }
@@ -56,13 +56,13 @@
             width: 60%;
             text-align: right;
             vertical-align: middle;
-            font-size: 6.5pt;
+            font-size: 7pt;
             color: #475569;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .kop-clinic-title {
-            font-size: 8pt;
+            font-size: 9pt;
             font-weight: bold;
             color: #0f172a;
             text-transform: uppercase;
@@ -73,20 +73,20 @@
         .center-header {
             text-align: center;
             border-bottom: 1.5px solid #0f172a;
-            padding-bottom: 3px;
-            margin-bottom: 6px;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .center-header img {
-            height: 34px;
+            height: 40px;
             width: auto;
-            margin: 0 auto 2px auto;
+            margin: 0 auto 3px auto;
             display: block;
         }
 
         .center-header h1 {
-            margin: 1px 0 0 0;
-            font-size: 10pt;
+            margin: 2px 0 0 0;
+            font-size: 11pt;
             font-weight: 900;
             color: #0f172a;
             letter-spacing: 0.5px;
@@ -95,24 +95,24 @@
 
         .center-header h2 {
             margin: 0;
-            font-size: 9.5pt;
+            font-size: 10.5pt;
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
         }
 
         .center-header p {
-            margin: 1px 0 0 0;
-            font-size: 6.8pt;
+            margin: 1.5px 0 0 0;
+            font-size: 7.2pt;
             color: #475569;
         }
 
         /* Title Box for Registration Form */
         .title-box-table {
             width: 100%;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             border-bottom: 1px solid #cbd5e1;
-            padding-bottom: 3px;
+            padding-bottom: 5px;
         }
 
         .title-box-left {
@@ -122,7 +122,7 @@
 
         .title-box-left h1 {
             margin: 0;
-            font-size: 9.5pt;
+            font-size: 10.5pt;
             font-weight: 900;
             text-transform: uppercase;
             color: #0f172a;
@@ -131,7 +131,7 @@
 
         .title-box-left p {
             margin: 1px 0 0 0;
-            font-size: 7pt;
+            font-size: 7.4pt;
             font-weight: bold;
             color: #64748b;
         }
@@ -144,8 +144,8 @@
         .rm-meta-card {
             border: 1px solid #0f172a;
             border-radius: 3px;
-            padding: 3px 5px;
-            font-size: 6.8pt;
+            padding: 4px 6px;
+            font-size: 7.2pt;
             background-color: #f8fafc;
         }
 
@@ -155,7 +155,7 @@
         }
 
         .rm-meta-card td {
-            padding: 1px 2px;
+            padding: 2px 3px;
         }
 
         .rm-label {
@@ -168,7 +168,7 @@
             font-weight: 900;
             color: #0f172a;
             font-family: monospace;
-            font-size: 7.5pt;
+            font-size: 8pt;
         }
 
         /* Section Headings */
@@ -176,12 +176,12 @@
             background-color: #0f172a;
             color: #ffffff;
             font-weight: bold;
-            font-size: 6.8pt;
-            padding: 2px 6px;
+            font-size: 7.8pt;
+            padding: 4px 6.5px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            margin-top: 4px;
-            margin-bottom: 2px;
+            margin-top: 6.5px;
+            margin-bottom: 3.5px;
             border-radius: 2px;
         }
 
@@ -189,15 +189,16 @@
         .form-box-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 6.8pt;
-            margin-bottom: 3px;
+            font-size: 7.8pt;
+            margin-bottom: 5px;
             border: 1px solid #cbd5e1;
         }
 
         .form-box-table td {
             border: 1px solid #cbd5e1;
-            padding: 2.2px 5px;
+            padding: 5.8px 6.5px;
             vertical-align: middle;
+            line-height: 1.38;
         }
 
         .form-box-table .lbl {
@@ -214,7 +215,7 @@
 
         .chk-box {
             font-family: monospace;
-            font-size: 6.8pt;
+            font-size: 7.5pt;
             font-weight: bold;
         }
 
@@ -222,9 +223,9 @@
         .bordered-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 6.8pt;
-            margin-top: 3px;
-            margin-bottom: 4px;
+            font-size: 7.6pt;
+            margin-top: 4px;
+            margin-bottom: 7px;
         }
 
         .bordered-table th {
@@ -232,45 +233,64 @@
             color: #ffffff;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 6.5pt;
-            padding: 2.5px 4px;
+            font-size: 7.4pt;
+            padding: 4.5px 6px;
             border: 1px solid #0f172a;
             text-align: left;
         }
 
         .bordered-table td {
-            padding: 2px 4px;
+            padding: 5px 6.5px;
             border: 1px solid #cbd5e1;
             vertical-align: top;
+            line-height: 1.38;
+        }
+
+        /* Informed Consent & BHP Dedicated Table Spacing */
+        .ic-table th, .bhp-table th {
+            padding: 5px 6px;
+            font-size: 7.6pt;
+        }
+
+        .ic-table td {
+            padding: 8px 7px;
+            font-size: 8pt;
+            line-height: 1.48;
+        }
+
+        .bhp-table td {
+            padding: 6.8px 7.5px;
+            font-size: 8.2pt;
+            line-height: 1.45;
         }
 
         /* Signatures */
         .signature-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 4px;
+            margin-top: 12px;
         }
 
         .signature-cell {
             text-align: center;
             vertical-align: top;
-            font-size: 6.8pt;
+            font-size: 7.6pt;
             padding: 0 8px;
         }
 
         .sig-image {
-            height: 32px;
-            max-width: 110px;
+            height: 50px;
+            max-width: 130px;
             display: block;
             margin: 1px auto;
         }
 
         .sig-line {
             border-top: 1px solid #475569;
-            margin-top: 2px;
-            padding-top: 1.5px;
+            margin-top: 4px;
+            padding-top: 3px;
             font-weight: bold;
-            font-size: 6.8pt;
+            font-size: 7.8pt;
         }
 
         /* PHOTO 5 SIDES FULL A4 PAGE LAYOUT (UN-STRETCHED, ASPECT-RATIO PRESERVED) */
@@ -544,12 +564,12 @@
 
         <!-- Bagian F: Pernyataan dan Persetujuan Pasien -->
         <div class="section-bar">F. PERNYATAAN DAN PERSETUJUAN PASIEN</div>
-        <div style="font-size: 6.2pt; text-align: justify; line-height: 1.25; padding: 3px 6px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 2px; margin-bottom: 3px;">
-            <div style="margin-bottom: 1px;">1. Saya menyatakan bahwa seluruh data yang saya berikan dalam formulir ini adalah benar dan dapat dipertanggungjawabkan.</div>
-            <div style="margin-bottom: 1px;">2. Saya bersedia memberikan informasi yang diperlukan untuk proses pendaftaran, pelayanan kesehatan, administrasi, penagihan, dan pencatatan rekam medis sesuai ketentuan yang berlaku.</div>
-            <div style="margin-bottom: 1px;">3. Saya memahami bahwa informasi medis yang lebih rinci akan diperoleh melalui anamnesis, pemeriksaan, dan/atau formulir persetujuan tindakan medis sesuai jenis pelayanan yang saya terima.</div>
+        <div style="font-size: 6.8pt; text-align: justify; line-height: 1.35; padding: 4px 7px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 2px; margin-bottom: 4px;">
+            <div style="margin-bottom: 2px;">1. Saya menyatakan bahwa seluruh data yang saya berikan dalam formulir ini adalah benar dan dapat dipertanggungjawabkan.</div>
+            <div style="margin-bottom: 2px;">2. Saya bersedia memberikan informasi yang diperlukan untuk proses pendaftaran, pelayanan kesehatan, administrasi, penagihan, dan pencatatan rekam medis sesuai ketentuan yang berlaku.</div>
+            <div style="margin-bottom: 2px;">3. Saya memahami bahwa informasi medis yang lebih rinci akan diperoleh melalui anamnesis, pemeriksaan, dan/atau formulir persetujuan tindakan medis sesuai jenis pelayanan yang saya terima.</div>
             <div>4. Saya bersedia mematuhi ketentuan pelayanan dan tata tertib klinik yang berlaku.</div>
-            <div style="margin-top: 2px; border-top: 0.5px dashed #cbd5e1; padding-top: 1.5px; font-weight: bold;">
+            <div style="margin-top: 3px; border-top: 0.5px dashed #cbd5e1; padding-top: 2px; font-weight: bold;">
                 Persetujuan menerima informasi/komunikasi administratif melalui telepon atau WhatsApp:
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="chk-box">[{{ ($visit->whatsapp_comm_consent ?? true) ? 'X' : ' ' }}]</span> Saya SETUJU
@@ -559,31 +579,31 @@
         </div>
 
         <!-- Tanda Tangan Formulir Pendaftaran -->
-        <table class="signature-table" style="margin-top: 4px;">
+        <table class="signature-table" style="margin-top: 6px;">
             <tr>
                 <td class="signature-cell" style="width: 50%;">
-                    <div style="font-weight: bold; font-size: 6.8pt;">PASIEN / PENANGGUNG JAWAB</div>
-                    <div style="font-size: 6pt; color: #475569; margin-top: 0.5px;">
+                    <div style="font-weight: bold; font-size: 7.2pt;">PASIEN / PENANGGUNG JAWAB</div>
+                    <div style="font-size: 6.2pt; color: #475569; margin-top: 1px;">
                         Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
                     </div>
                     @if($registrationPatientSigBase64 || $signatureBase64)
                         <img src="{{ $registrationPatientSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
                     @else
-                        <div style="height: 32px; line-height: 32px; font-style: italic; color: #94a3b8; font-size: 6.5pt;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 42px; line-height: 42px; font-style: italic; color: #94a3b8; font-size: 7pt;">[Tanda Tangan Pasien]</div>
                     @endif
                     <div class="sig-line">
                         Nama: {{ $visit->registration_patient_signer_name ?: $patient->name }}
                     </div>
                 </td>
                 <td class="signature-cell" style="width: 50%;">
-                    <div style="font-weight: bold; font-size: 6.8pt;">PETUGAS PENDAFTARAN</div>
-                    <div style="font-size: 6pt; color: #475569; margin-top: 0.5px;">
+                    <div style="font-weight: bold; font-size: 7.2pt;">PETUGAS PENDAFTARAN</div>
+                    <div style="font-size: 6.2pt; color: #475569; margin-top: 1px;">
                         Tanggal: {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->format('d/m/Y') : $visit->created_at->format('d/m/Y') }}
                     </div>
                     @if($registrationStaffSigBase64)
                         <img src="{{ $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
                     @else
-                        <div style="height: 32px; line-height: 32px; font-style: italic; color: #94a3b8; font-size: 6.5pt;">[Tanda Tangan Petugas]</div>
+                        <div style="height: 42px; line-height: 42px; font-style: italic; color: #94a3b8; font-size: 7pt;">[Tanda Tangan Petugas]</div>
                     @endif
                     <div class="sig-line">
                         Nama: {{ $visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW' }}
@@ -616,74 +636,74 @@
         </div>
 
         <!-- Identitas Pasien Ringkas -->
-        <table class="bordered-table" style="margin-bottom: 5px; background-color: #f8fafc;">
+        <table class="bordered-table" style="margin-bottom: 8px; background-color: #f8fafc; font-size: 7.6pt;">
             <tr>
-                <td style="width: 18%; font-weight: bold;">Nama Pasien</td>
-                <td style="width: 32%;"><strong>{{ $patient->name }}</strong></td>
-                <td style="width: 18%; font-weight: bold;">No. Rekam Medis</td>
-                <td style="width: 32%; font-family: monospace; font-weight: bold;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
+                <td style="width: 18%; font-weight: bold; padding: 4px 6px;">Nama Pasien</td>
+                <td style="width: 32%; padding: 4px 6px;"><strong>{{ $patient->name }}</strong></td>
+                <td style="width: 18%; font-weight: bold; padding: 4px 6px;">No. Rekam Medis</td>
+                <td style="width: 32%; font-family: monospace; font-weight: bold; padding: 4px 6px;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
             </tr>
             <tr>
-                <td style="font-weight: bold;">Tgl Lahir / Usia</td>
-                <td>
+                <td style="font-weight: bold; padding: 4px 6px;">Tgl Lahir / Usia</td>
+                <td style="padding: 4px 6px;">
                     {{ $patient->date_of_birth ? $patient->date_of_birth->format('d/m/Y') : '-' }}
                     ({{ $patient->date_of_birth ? $patient->date_of_birth->age . ' Thn' : '-' }}) &bull; {{ $patient->gender === 'female' ? 'Perempuan' : 'Laki-laki' }}
                 </td>
-                <td style="font-weight: bold;">Alamat</td>
-                <td>{{ $patient->address ?: '-' }}</td>
+                <td style="font-weight: bold; padding: 4px 6px;">Alamat</td>
+                <td style="padding: 4px 6px;">{{ $patient->address ?: '-' }}</td>
             </tr>
         </table>
 
         <!-- 8 Klausul General Consent Ringkas & Padat -->
-        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.35; color: #1e293b;">
-            <div style="margin-bottom: 4px;">
+        <div style="font-size: 9.2pt; text-align: justify; line-height: 1.85; color: #1e293b;">
+            <div style="margin-bottom: 14px;">
                 <strong>1. PERSETUJUAN PELAYANAN KESEHATAN:</strong> Saya menyetujui untuk mendapatkan pelayanan medis, pemeriksaan fisik, asuhan keperawatan, prosedur diagnostik, dan terapi standar di Klinik Utama ONEW sesuai indikasi klinis dan pertimbangan dokter yang bertugas.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>2. HAK DAN KEWAJIBAN PASIEN:</strong> Saya memahami hak saya untuk memperoleh informasi mengenai diagnosis, perkiraan biaya, rencana perawatan, serta kewajiban saya memberikan riwayat kesehatan yang jujur demi keselamatan medis saya sendiri.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>3. PRIVASI DAN KERAHASIAAN MEDIS:</strong> Saya mengizinkan tenaga medis dan staf resmi klinik membuka informasi medis saya apabila diperlukan untuk kepentingan rujukan, penjaminan biaya asuransi, atau kepatuhan peraturan perundang-undangan kesehatan.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>4. PELEPASAN INFORMASI MEDIS:</strong> Saya mengizinkan rekam medis elektronik saya disimpan secara aman dan diakses oleh dokter dan tim medis yang berwenang di Klinik Utama ONEW sesuai regulasi rekam medis yang berlaku.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>5. PENGINGAT JADWAL & KOMUNIKASI ADMINISTRASI:</strong> Saya menyetujui Klinik Utama ONEW menghubungi saya melalui telepon, SMS, atau WhatsApp guna keperluan pengingat janji konsultasi, kontrol berkala, maupun tindak lanjut administrasi.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>6. BARANG BERHARGA:</strong> Saya memahami bahwa pihak Klinik Utama ONEW tidak bertanggung jawab atas kehilangan atau kerusakan barang berharga milik pribadi yang dibawa ke area klinik.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>7. PEMBIAYAAN DAN TATA TERTIB PEMBAYARAN:</strong> Saya bersedia melunasi seluruh tagihan atas konsultasi, tindakan medis penunjang, obat-obatan, dan layanan klinis yang diberikan sebelum meninggalkan area klinik.
             </div>
-            <div style="margin-bottom: 4px;">
+            <div style="margin-bottom: 14px;">
                 <strong>8. PERNYATAAN PENUTUP:</strong> Saya menyatakan bahwa saya telah membaca, memahami, dan menyetujui seluruh klausul dalam Formulir Persetujuan Umum ini secara sadar dan tanpa paksaan dari pihak mana pun.
             </div>
         </div>
 
         <!-- Tanda Tangan General Consent (Muat di Page 2) -->
-        <table class="signature-table" style="margin-top: 10px;">
+        <table class="signature-table" style="margin-top: 60px;">
             <tr>
                 <td class="signature-cell" style="width: 50%;">
-                    <div>Petugas Pendaftaran / Pemberi Penjelasan,</div>
+                    <div style="font-weight: bold; font-size: 8.5pt;">Petugas Pendaftaran / Pemberi Penjelasan,</div>
                     @if($generalConsentStaffSigBase64 || $registrationStaffSigBase64)
-                        <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" alt="TTD Petugas">
+                        <img src="{{ $generalConsentStaffSigBase64 ?: $registrationStaffSigBase64 }}" class="sig-image" style="height: 56px;" alt="TTD Petugas">
                     @else
-                        <div style="height: 34px; line-height: 34px; font-style: italic; color: #94a3b8;">[Tanda Tangan Petugas]</div>
+                        <div style="height: 56px; line-height: 56px; font-style: italic; color: #94a3b8; font-size: 8pt;">[Tanda Tangan Petugas]</div>
                     @endif
-                    <div class="sig-line">
+                    <div class="sig-line" style="font-size: 8.5pt;">
                         {{ $visit->general_consent_staff_name ?: ($visit->registration_staff_signer_name ?: 'Petugas Pendaftaran ONEW') }}
                     </div>
                 </td>
                 <td class="signature-cell" style="width: 50%;">
-                    <div>Pasien / Penanggung Jawab,</div>
+                    <div style="font-weight: bold; font-size: 8.5pt;">Pasien / Penanggung Jawab,</div>
                     @if($signatureBase64 || $registrationPatientSigBase64)
-                        <img src="{{ $signatureBase64 ?: $registrationPatientSigBase64 }}" class="sig-image" alt="TTD Pasien">
+                        <img src="{{ $signatureBase64 ?: $registrationPatientSigBase64 }}" class="sig-image" style="height: 56px;" alt="TTD Pasien">
                     @else
-                        <div style="height: 34px; line-height: 34px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 56px; line-height: 56px; font-style: italic; color: #94a3b8; font-size: 8pt;">[Tanda Tangan Pasien]</div>
                     @endif
-                    <div class="sig-line">
+                    <div class="sig-line" style="font-size: 8.5pt;">
                         {{ $visit->general_consent_patient_signer_name ?: ($visit->registration_patient_signer_name ?: $patient->name) }}
                     </div>
                 </td>
@@ -726,7 +746,7 @@
             $resolvedProcedure = $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: ($doctorActionsSummary ?: 'Tindakan Medis Estetika'));
         @endphp
 
-        <table class="form-box-table" style="margin-bottom: 4px;">
+        <table class="form-box-table" style="margin-bottom: 8px;">
             <tr>
                 <td class="lbl" style="width: 25%;">Dokter Pelaksana Tindakan</td>
                 <td class="val" style="width: 25%;">
@@ -747,7 +767,7 @@
         </table>
 
         <!-- Tabel 11 Poin Pemberian Informasi Medis -->
-        <table class="bordered-table" style="margin-bottom: 4px;">
+        <table class="bordered-table ic-table" style="margin-bottom: 8px;">
             <thead>
                 <tr>
                     <th style="width: 4%; text-align: center;">NO</th>
@@ -827,47 +847,47 @@
         </table>
 
         <!-- Paragraf Pernyataan Persetujuan -->
-        <div style="font-size: 7.2pt; text-align: justify; line-height: 1.35; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 4px 6px; border-radius: 3px; margin-bottom: 5px;">
-            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 2px; font-size: 7.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
+        <div style="font-size: 8.2pt; text-align: justify; line-height: 1.6; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 10px 12px; border-radius: 3px; margin-top: 12px; margin-bottom: 14px;">
+            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; font-size: 8.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
             Yang bertandatangan di bawah ini, saya, nama: <strong>{{ $recipientNameDisplay }}</strong>, umur: <strong>{{ $recipientAgeDisplay ?: '-' }}</strong> tahun, alamat: <strong>{{ $recipientAddressDisplay ?: '-' }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan: <strong style="text-decoration: underline;">{{ $resolvedProcedure }}</strong> terhadap {{ $recipientRelationDisplay ?: 'diri saya sendiri' }} bernama <strong>{{ $patient->name }}</strong>.<br>
             Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan. Saya juga menyadari bahwa ilmu kedokteran bukanlah ilmu pasti, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
         </div>
 
         <!-- Tanda Tangan 3 Pihak -->
-        <table class="signature-table" style="margin-top: 5px;">
+        <table class="signature-table" style="margin-top: 36px;">
             <tr>
                 <td class="signature-cell" style="width: 33.3%;">
-                    <div>Dokter yang Menerangkan,</div>
+                    <div style="font-weight: bold; font-size: 7.8pt;">Dokter yang Menerangkan,</div>
                     @if($doctorConsentSigBase64)
-                        <img src="{{ $doctorConsentSigBase64 }}" class="sig-image" alt="TTD Dokter">
+                        <img src="{{ $doctorConsentSigBase64 }}" class="sig-image" style="height: 54px;" alt="TTD Dokter">
                     @elseif($doctorNameDisplay)
-                        <div style="height: 32px; line-height: 32px; font-style: italic; color: #0284c7; font-weight: bold;">[Signed Electronically]</div>
+                        <div style="height: 54px; line-height: 54px; font-style: italic; color: #0284c7; font-weight: bold; font-size: 7.8pt;">[Signed Electronically]</div>
                     @else
-                        <div style="height: 32px; line-height: 32px; color: #94a3b8; font-style: italic;">[Tanda Tangan Dokter]</div>
+                        <div style="height: 54px; line-height: 54px; color: #94a3b8; font-style: italic; font-size: 7.4pt;">[Tanda Tangan Dokter]</div>
                     @endif
-                    <div class="sig-line">
+                    <div class="sig-line" style="font-size: 8.2pt;">
                         {{ $doctorNameDisplay ?: '' }}
                     </div>
                 </td>
                 <td class="signature-cell" style="width: 33.3%;">
-                    <div>Yang Menyatakan Persetujuan,</div>
+                    <div style="font-weight: bold; font-size: 7.8pt;">Yang Menyatakan Persetujuan,</div>
                     @if($procedureConsentSigBase64 || $signatureBase64)
-                        <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" class="sig-image" alt="TTD Pasien">
+                        <img src="{{ $procedureConsentSigBase64 ?: $signatureBase64 }}" class="sig-image" style="height: 54px;" alt="TTD Pasien">
                     @else
-                        <div style="height: 32px; line-height: 32px; font-style: italic; color: #94a3b8;">[Tanda Tangan Pasien]</div>
+                        <div style="height: 54px; line-height: 54px; font-style: italic; color: #94a3b8; font-size: 7.4pt;">[Tanda Tangan Pasien]</div>
                     @endif
-                    <div class="sig-line">
+                    <div class="sig-line" style="font-size: 8.2pt;">
                         {{ $recipientNameDisplay }}
                     </div>
                 </td>
                 <td class="signature-cell" style="width: 33.3%;">
-                    <div>Saksi Tindakan Medis,</div>
+                    <div style="font-weight: bold; font-size: 7.8pt;">Saksi Tindakan Medis,</div>
                     @if($witnessConsentSigBase64)
-                        <img src="{{ $witnessConsentSigBase64 }}" class="sig-image" alt="TTD Saksi">
+                        <img src="{{ $witnessConsentSigBase64 }}" class="sig-image" style="height: 54px;" alt="TTD Saksi">
                     @else
-                        <div style="height: 32px; line-height: 32px; font-style: italic; color: #94a3b8;">[Tanda Tangan Saksi]</div>
+                        <div style="height: 54px; line-height: 54px; font-style: italic; color: #94a3b8; font-size: 7.4pt;">[Tanda Tangan Saksi]</div>
                     @endif
-                    <div class="sig-line">
+                    <div class="sig-line" style="font-size: 8.2pt;">
                         {{ $visit->informedConsent?->witness_name ?: 'Saksi Klinik ONEW' }}
                     </div>
                 </td>
@@ -891,18 +911,18 @@
         </div>
 
         <!-- Metadata Form BHP -->
-        <table class="bordered-table" style="margin-bottom: 6px; background-color: #f8fafc;">
+        <table class="bordered-table" style="margin-bottom: 8px; background-color: #f8fafc; font-size: 8pt;">
             <tr>
-                <td style="width: 18%; font-weight: bold;">NAMA PASIEN</td>
-                <td style="width: 32%; font-weight: bold; font-size: 7.8pt;">{{ $patient->name }}</td>
-                <td style="width: 18%; font-weight: bold;">PERAWAT / TERAPIS</td>
-                <td style="width: 32%;">{{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? '')) }}</td>
+                <td style="width: 18%; font-weight: bold; padding: 5px 8px;">NAMA PASIEN</td>
+                <td style="width: 32%; font-weight: bold; font-size: 8.5pt; padding: 5px 8px;">{{ $patient->name }}</td>
+                <td style="width: 18%; font-weight: bold; padding: 5px 8px;">PERAWAT / TERAPIS</td>
+                <td style="width: 32%; padding: 5px 8px;">{{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? '')) }}</td>
             </tr>
             <tr>
-                <td style="font-weight: bold;">DOKTER</td>
-                <td>{{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? '') }}</td>
-                <td style="font-weight: bold;">TANGGAL</td>
-                <td style="font-weight: bold; font-family: monospace;">
+                <td style="font-weight: bold; padding: 5px 8px;">DOKTER</td>
+                <td style="padding: 5px 8px;">{{ $visit->doctor_name_override ?: ($visit->doctor?->name ?? '') }}</td>
+                <td style="font-weight: bold; padding: 5px 8px;">TANGGAL</td>
+                <td style="font-weight: bold; font-family: monospace; padding: 5px 8px;">
                     {{ $visit->registration_date ? \Carbon\Carbon::parse($visit->registration_date)->translatedFormat('d F Y') : $visit->created_at->translatedFormat('d F Y') }}
                 </td>
             </tr>
@@ -914,7 +934,7 @@
                 <!-- Kolom Kiri: Tabel TINDAKAN MEDIS -->
                 <td style="width: 48%; vertical-align: top; padding-right: 6px;">
                     <div class="section-bar" style="margin-top: 0;">TINDAKAN DOKTER</div>
-                    <table class="bordered-table">
+                    <table class="bordered-table bhp-table">
                         <thead>
                             <tr>
                                 <th style="width: 12%; text-align: center;">NO</th>
@@ -957,7 +977,7 @@
                 <!-- Kolom Kanan: Tabel BAHAN / BHP MEDIS -->
                 <td style="width: 52%; vertical-align: top; padding-left: 6px;">
                     <div class="section-bar" style="margin-top: 0;">BAHAN HABIS PAKAI (BHP)</div>
-                    <table class="bordered-table">
+                    <table class="bordered-table bhp-table">
                         <thead>
                             <tr>
                                 <th style="width: 10%; text-align: center;">NO</th>
