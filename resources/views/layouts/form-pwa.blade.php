@@ -41,6 +41,26 @@
                 padding: 0 !important;
             }
         }
+
+        /* Tambah 2px ukuran font di form namun menjaga kerapian dan ukuran per halaman */
+        .paper-form {
+            font-size: 14px;
+        }
+        .paper-form .text-\[9px\] { font-size: 11px !important; }
+        .paper-form .text-\[10px\] { font-size: 12px !important; }
+        .paper-form .text-\[11px\] { font-size: 13px !important; }
+        .paper-form .text-xs { font-size: 14px !important; line-height: 1.35 !important; }
+        .paper-form .text-sm { font-size: 16px !important; }
+        .paper-form .text-base { font-size: 18px !important; }
+        .paper-form input:not([type="checkbox"]):not([type="radio"]),
+        .paper-form select,
+        .paper-form textarea {
+            font-size: 13.5px !important;
+        }
+        .paper-form table th,
+        .paper-form table td {
+            font-size: 13.5px !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

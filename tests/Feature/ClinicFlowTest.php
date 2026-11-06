@@ -481,10 +481,10 @@ class ClinicFlowTest extends TestCase
         Storage::disk('public')->delete('test_asset.txt');
     }
 
-    public function test_clinical_form_flow_renders_photo_uploader_with_instant_preview_on_step_4_and_6(): void
+    public function test_clinical_form_flow_renders_photo_uploader_with_instant_preview_on_step_3_and_6(): void
     {
         Livewire::test(ClinicalFormFlow::class)
-            ->set('currentStep', 4)
+            ->set('currentStep', 3)
             ->assertSeeHtml('photoUploader(\'temp_photo_before_front\'')
             ->assertSeeHtml('photoUploader(\'temp_photo_before_right_tilt\'')
             ->assertSeeHtml('photoUploader(\'temp_photo_before_right_side\'')
@@ -498,6 +498,17 @@ class ClinicFlowTest extends TestCase
             ->assertSeeHtml('photoUploader(\'temp_photo_after_right_side\'')
             ->assertSeeHtml('photoUploader(\'temp_photo_after_left_tilt\'')
             ->assertSeeHtml('photoUploader(\'temp_photo_after_left_side\'');
+    }
+
+    public function test_clinical_form_flow_defaults_to_10_treatment_rows(): void
+    {
+        $component = Livewire::test(ClinicalFormFlow::class);
+        $rows = $component->get('treatmentRows');
+        $this->assertCount(10, $rows);
+        foreach ($rows as $row) {
+            $this->assertArrayHasKey('action', $row);
+            $this->assertSame('', $row['action']);
+        }
     }
 
     public function test_clinical_form_flow_stores_uploaded_photos(): void
@@ -517,7 +528,7 @@ class ClinicFlowTest extends TestCase
             ->set('manual_patient_code', 'ONEW26-PHOTO')
             ->set('name', 'Photo Patient')
             ->set('phone_number', '081234567800')
-            ->set('currentStep', 4)
+            ->set('currentStep', 3)
             ->set('temp_photo_before_front', $photoFront)
             ->call('continue')
             ->assertHasNoErrors();

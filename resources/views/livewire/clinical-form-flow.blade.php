@@ -12,8 +12,8 @@
                 <span class="text-xs font-semibold text-slate-800 hidden md:inline">
                     @if($currentStep === 1) 1. Formulir Pendaftaran
                     @elseif($currentStep === 2) 2. General Consent
-                    @elseif($currentStep === 3) 3. Persetujuan Tindakan Medis
-                    @elseif($currentStep === 4) 4. Foto Before (5 Sisi)
+                    @elseif($currentStep === 3) 3. Foto Before (5 Sisi)
+                    @elseif($currentStep === 4) 4. Persetujuan Tindakan Medis
                     @elseif($currentStep === 5) 5. Tindakan & BHP Harian
                     @elseif($currentStep === 6) 6. Foto After (5 Sisi)
                     @elseif($currentStep === 7) 7. Ringkasan Kunjungan
@@ -677,9 +677,188 @@
                 </div>
 
             <!-- ==================================================== -->
-            <!-- STEP 3: PERSETUJUAN TINDAKAN KEDOKTERAN (Hal 5 PDF) -->
+            <!-- STEP 3: FOTO BEFORE 5 SISI WAJAH                   -->
             <!-- ==================================================== -->
             @elseif($currentStep === 3)
+                <div class="text-center pb-4 border-b-2 border-slate-900">
+                    <span class="text-xs font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">Tugas Perawat</span>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 mt-2">
+                        Dokumentasi Foto Sebelum Tindakan (Foto Before)
+                    </h1>
+                    <p class="text-xs text-slate-500 mt-1">Pengambilan foto klinis 5 sisi wajah pasien menggunakan kamera tablet atau unggah file foto.</p>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                    <!-- 1. Depan -->
+                    <div x-data="photoUploader('temp_photo_before_front', '{{ $temp_photo_before_front ? $temp_photo_before_front->temporaryUrl() : ($photo_before_front_path ? \App\Models\Visit::formatPublicUrl($photo_before_front_path) : '') }}')"
+                         wire:key="uploader-before-front"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">1. Tampak Depan (0°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Depan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Wajah Depan</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 2. Serong Kanan -->
+                    <div x-data="photoUploader('temp_photo_before_right_tilt', '{{ $temp_photo_before_right_tilt ? $temp_photo_before_right_tilt->temporaryUrl() : ($photo_before_right_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_tilt_path) : '') }}')"
+                         wire:key="uploader-before-right-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">2. Serong Kanan (45°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Serong Kanan</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 3. Serong Kiri -->
+                    <div x-data="photoUploader('temp_photo_before_left_tilt', '{{ $temp_photo_before_left_tilt ? $temp_photo_before_left_tilt->temporaryUrl() : ($photo_before_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_tilt_path) : '') }}')"
+                         wire:key="uploader-before-left-tilt"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Serong Kiri (45°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Serong Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Serong Kiri</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 4. Tampak Kanan (Samping Kanan) -->
+                    <div x-data="photoUploader('temp_photo_before_right_side', '{{ $temp_photo_before_right_side ? $temp_photo_before_right_side->temporaryUrl() : ($photo_before_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) : '') }}')"
+                         wire:key="uploader-before-right-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Tampak Kanan (90°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Tampak Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Tampak Kanan</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- 5. Samping Kiri -->
+                    <div x-data="photoUploader('temp_photo_before_left_side', '{{ $temp_photo_before_left_side ? $temp_photo_before_left_side->temporaryUrl() : ($photo_before_left_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_side_path) : '') }}')"
+                         wire:key="uploader-before-left-side"
+                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">5. Samping Kiri (90°)</span>
+                            <div class="relative min-h-[160px] flex items-center justify-center">
+                                <template x-if="previewUrl">
+                                    <div class="w-full relative group">
+                                        <img :src="previewUrl" alt="Samping Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
+                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
+                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            <span>Mengunggah...</span>
+                                        </div>
+                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                                            ✓ Terpasang
+                                        </div>
+                                    </div>
+                                </template>
+                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
+                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                    <span class="text-[10px]">Samping Kiri</span>
+                                </div>
+                            </div>
+                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
+                        </div>
+                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
+                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+            <!-- ==================================================== -->
+            <!-- STEP 4: PERSETUJUAN TINDAKAN KEDOKTERAN           -->
+            <!-- ==================================================== -->
+            @elseif($currentStep === 4)
                 <div class="text-center pb-4 border-b-2 border-slate-900">
                     <img src="{{ asset('logo.svg') }}" alt="ONEW Clinic" class="h-12 w-auto mx-auto mb-2 object-contain">
                     <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">
@@ -875,185 +1054,6 @@
                             </div>
                             <input type="text" wire:model="ic_witness_name" placeholder="Nama saksi / perawat" class="w-full px-2 py-1 text-center text-xs font-semibold text-slate-900 border border-slate-300 rounded">
                         </div>
-                    </div>
-                </div>
-
-            <!-- ==================================================== -->
-            <!-- STEP 4: FOTO BEFORE 5 SISI WAJAH                   -->
-            <!-- ==================================================== -->
-            @elseif($currentStep === 4)
-                <div class="text-center pb-4 border-b-2 border-slate-900">
-                    <span class="text-xs font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">Tugas Perawat</span>
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 mt-2">
-                        Dokumentasi Foto Sebelum Tindakan (Foto Before)
-                    </h1>
-                    <p class="text-xs text-slate-500 mt-1">Pengambilan foto klinis 5 sisi wajah pasien menggunakan kamera tablet atau unggah file foto.</p>
-                </div>
-
-                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-                    <!-- 1. Depan -->
-                    <div x-data="photoUploader('temp_photo_before_front', '{{ $temp_photo_before_front ? $temp_photo_before_front->temporaryUrl() : ($photo_before_front_path ? \App\Models\Visit::formatPublicUrl($photo_before_front_path) : '') }}')"
-                         wire:key="uploader-before-front"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">1. Tampak Depan (0°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Tampak Depan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Wajah Depan</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 2. Serong Kanan -->
-                    <div x-data="photoUploader('temp_photo_before_right_tilt', '{{ $temp_photo_before_right_tilt ? $temp_photo_before_right_tilt->temporaryUrl() : ($photo_before_right_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_tilt_path) : '') }}')"
-                         wire:key="uploader-before-right-tilt"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">2. Serong Kanan (45°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Serong Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Serong Kanan</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 3. Serong Kiri -->
-                    <div x-data="photoUploader('temp_photo_before_left_tilt', '{{ $temp_photo_before_left_tilt ? $temp_photo_before_left_tilt->temporaryUrl() : ($photo_before_left_tilt_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_tilt_path) : '') }}')"
-                         wire:key="uploader-before-left-tilt"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">3. Serong Kiri (45°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Serong Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Serong Kiri</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 4. Tampak Kanan (Samping Kanan) -->
-                    <div x-data="photoUploader('temp_photo_before_right_side', '{{ $temp_photo_before_right_side ? $temp_photo_before_right_side->temporaryUrl() : ($photo_before_right_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_right_side_path) : '') }}')"
-                         wire:key="uploader-before-right-side"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">4. Tampak Kanan (90°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Tampak Kanan" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Tampak Kanan</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- 5. Samping Kiri -->
-                    <div x-data="photoUploader('temp_photo_before_left_side', '{{ $temp_photo_before_left_side ? $temp_photo_before_left_side->temporaryUrl() : ($photo_before_left_side_path ? \App\Models\Visit::formatPublicUrl($photo_before_left_side_path) : '') }}')"
-                         wire:key="uploader-before-left-side"
-                         class="border-2 border-slate-200 rounded-xl p-3 bg-slate-50 text-center flex flex-col justify-between transition-all">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">5. Samping Kiri (90°)</span>
-                            <div class="relative min-h-[160px] flex items-center justify-center">
-                                <template x-if="previewUrl">
-                                    <div class="w-full relative group">
-                                        <img :src="previewUrl" alt="Samping Kiri" class="h-40 w-full object-cover rounded-lg shadow-xs mb-2 transition-transform duration-200">
-                                        <div x-show="isUploading" class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] rounded-lg flex flex-col items-center justify-center text-white text-[11px] font-medium gap-1.5 p-2">
-                                            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                            <span>Mengunggah...</span>
-                                        </div>
-                                        <div x-show="!isUploading && (isSuccess || previewUrl)" class="absolute bottom-3 right-1.5 bg-emerald-500/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-                                            ✓ Terpasang
-                                        </div>
-                                    </div>
-                                </template>
-                                <div x-show="!previewUrl" class="h-40 w-full flex flex-col items-center justify-center border border-dashed border-slate-300 rounded-lg bg-white mb-2 text-slate-400">
-                                    <svg class="w-8 h-8 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                                    <span class="text-[10px]">Samping Kiri</span>
-                                </div>
-                            </div>
-                            <div x-show="errorMessage" x-text="errorMessage" class="text-[10px] text-rose-500 font-medium mb-1"></div>
-                        </div>
-                        <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span x-text="previewUrl ? 'Ambil Ulang' : 'Ambil / Buka Kamera'"></span>
-                            <input type="file" accept="image/*" capture="environment" @change="handleFileSelect($event)" class="hidden">
-                        </label>
                     </div>
                 </div>
 
@@ -1427,8 +1427,8 @@
                 <span class="text-xs font-semibold text-slate-800">
                     @if($currentStep === 1) Formulir Pendaftaran Pasien
                     @elseif($currentStep === 2) General Consent (Persetujuan Umum)
-                    @elseif($currentStep === 3) Persetujuan Tindakan Kedokteran
-                    @elseif($currentStep === 4) Foto Before (5 Sisi Wajah)
+                    @elseif($currentStep === 3) Foto Before (5 Sisi Wajah)
+                    @elseif($currentStep === 4) Persetujuan Tindakan Kedokteran
                     @elseif($currentStep === 5) Tindakan & BHP Harian
                     @elseif($currentStep === 6) Foto After (5 Sisi Wajah)
                     @else Kunjungan Selesai

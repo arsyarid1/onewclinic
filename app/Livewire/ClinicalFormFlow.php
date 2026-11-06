@@ -247,8 +247,17 @@ class ClinicalFormFlow extends Component
 
     public string $bhp_date = '';
 
-    // List Tindakan (Custom dynamic rows - Default Kosong)
+    // List Tindakan (Custom dynamic rows - Default 10 Baris Kosong)
     public array $treatmentRows = [
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
+        ['action' => ''],
         ['action' => ''],
     ];
 
@@ -410,6 +419,11 @@ class ClinicalFormFlow extends Component
 
         // Initialize default consumables quantity from database
         $this->initBhpQuantities();
+
+        // Ensure at least 10 empty treatment rows are available by default
+        while (count($this->treatmentRows) < 10) {
+            $this->treatmentRows[] = ['action' => ''];
+        }
     }
 
     public function initBhpQuantities(): void
@@ -574,6 +588,9 @@ class ClinicalFormFlow extends Component
         $this->bhp_doctor_name = $visit->doctor_name_override ?: ($visit->doctor?->name ?? '');
         if (! empty($visit->custom_treatment_list)) {
             $this->treatmentRows = $visit->custom_treatment_list;
+        }
+        while (count($this->treatmentRows) < 10) {
+            $this->treatmentRows[] = ['action' => ''];
         }
 
         // If medical procedure in IC is empty, sync from doctor treatment rows
@@ -888,8 +905,8 @@ class ClinicalFormFlow extends Component
             $stepNames = [
                 1 => 'Formulir Pendaftaran',
                 2 => 'General Consent',
-                3 => 'Persetujuan Tindakan Medis',
-                4 => 'Foto Before (5 Sisi)',
+                3 => 'Foto Before (5 Sisi)',
+                4 => 'Persetujuan Tindakan Medis',
                 5 => 'Tindakan & BHP Harian',
                 6 => 'Foto After (5 Sisi)',
                 7 => 'Ringkasan & Verifikasi',
@@ -900,7 +917,7 @@ class ClinicalFormFlow extends Component
                 $editorName = auth()->user()->name;
                 $editorRole = ucfirst(auth()->user()->role ?? 'Petugas');
             } else {
-                if ($this->currentStep === 3) {
+                if ($this->currentStep === 4) {
                     $editorName = trim($this->ic_doctor_name) ?: (trim($this->bhp_doctor_name) ?: 'Dokter Pemeriksa');
                     $editorRole = 'Dokter';
                 } elseif ($this->currentStep === 5) {
