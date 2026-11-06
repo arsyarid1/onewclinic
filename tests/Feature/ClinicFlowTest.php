@@ -11,6 +11,7 @@ use App\Livewire\PatientKiosk;
 use App\Livewire\PatientRegistration;
 use App\Models\Clinic;
 use App\Models\Consumable;
+use App\Models\InformedConsent;
 use App\Models\Patient;
 use App\Models\Treatment;
 use App\Models\User;
@@ -661,5 +662,79 @@ class ClinicFlowTest extends TestCase
             ->assertSet('currentStep', 3)
             ->assertSet('visitId', $visit->id)
             ->assertSet('name', 'Pasien Unify Flow');
+    }
+
+    public function test_informed_consent_pdf_reflects_actual_checkboxes_and_values(): void
+    {
+        $patient = Patient::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_code' => 'ONEW26-IC-CHECK',
+            'name' => 'Pasien Checklist Test',
+            'phone_number' => '081234567891',
+            'gender' => 'female',
+            'date_of_birth' => '1990-01-01',
+        ]);
+
+        $visit = Visit::create([
+            'clinic_id' => $this->clinic->id,
+            'patient_id' => $patient->id,
+            'manual_patient_code' => 'ONEW26-IC-CHECK',
+            'status' => 'completed',
+        ]);
+
+        InformedConsent::create([
+            'visit_id' => $visit->id,
+            'medical_procedure' => 'Botox 10 Unit',
+            'medical_procedure_checked' => true,
+            'diagnosis_checked' => false,
+            'diagnosis_basis_checked' => false,
+            'indication_checked' => false,
+            'procedure_steps_checked' => false,
+            'procedure_goal_checked' => false,
+            'risks_checked' => false,
+            'complications_checked' => false,
+            'prognosis_checked' => false,
+            'alternatives_risks_checked' => false,
+            'other_notes_checked' => false,
+        ]);
+
+        $viewHtml = view('reports.medical-summary-pdf', [
+            'clinic' => $this->clinic,
+            'visit' => $visit,
+            'patient' => $patient,
+            'consumables' => collect(),
+            'logoBase64' => null,
+            'signatureBase64' => null,
+            'procedureConsentSigBase64' => null,
+            'doctorConsentSigBase64' => null,
+            'witnessConsentSigBase64' => null,
+            'registrationPatientSigBase64' => null,
+            'registrationStaffSigBase64' => null,
+            'generalConsentStaffSigBase64' => null,
+            'photoBeforeBase64' => null,
+            'photoAfterBase64' => null,
+            'photoBeforeFrontBase64' => null,
+            'photoBeforeRightTiltBase64' => null,
+            'photoBeforeRightSideBase64' => null,
+            'photoBeforeLeftTiltBase64' => null,
+            'photoBeforeLeftSideBase64' => null,
+            'photoAfterFrontBase64' => null,
+            'photoAfterRightTiltBase64' => null,
+            'photoAfterRightSideBase64' => null,
+            'photoAfterLeftTiltBase64' => null,
+            'photoAfterLeftSideBase64' => null,
+            'generatedAt' => now(),
+        ])->render();
+
+        // Must contain Botox 10 Unit
+        $this->assertStringContainsString('Botox 10 Unit', $viewHtml);
+
+        // Must not contain hardcoded default text when empty
+        $this->assertStringNotContainsString('Dubia ad Bonam', $viewHtml);
+        $this->assertStringNotContainsString('Pemeriksaan Klinis dan Anamnesis Dokter', $viewHtml);
+
+        // Count of checkmarks in the 11-point table should be exactly 1
+        $chkCount = substr_count($viewHtml, '&#10003;');
+        $this->assertEquals(1, $chkCount);
     }
 }

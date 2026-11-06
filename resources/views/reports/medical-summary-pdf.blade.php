@@ -750,7 +750,7 @@
                 $doctorActions = $visit->treatments->pluck('name')->toArray();
             }
             $doctorActionsSummary = !empty($doctorActions) ? implode(' + ', $doctorActions) : '';
-            $resolvedProcedure = $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: ($doctorActionsSummary ?: 'Tindakan Medis Estetika'));
+            $resolvedProcedure = $visit->informedConsent?->medical_procedure ?: ($visit->informedConsent?->action_name ?: ($doctorActionsSummary ?: '-'));
         @endphp
 
         <table class="form-box-table" style="margin-bottom: 8px;">
@@ -788,67 +788,133 @@
                     <td style="text-align: center;">1</td>
                     <td><strong>Diagnosis (WD & DD)</strong></td>
                     <td>{{ $visit->informedConsent?->diagnosis_wd_dd ?: ($visit->diagnosis_wd ?: '-') }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->diagnosis_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">2</td>
                     <td><strong>Dasar Diagnosis</strong></td>
-                    <td>{{ $visit->informedConsent?->diagnosis_basis ?: 'Pemeriksaan Klinis dan Anamnesis Dokter' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->diagnosis_basis ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->diagnosis_basis_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">3</td>
                     <td><strong>Tindakan Kedokteran</strong></td>
                     <td><strong>{{ $resolvedProcedure }}</strong></td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent ? (bool)$visit->informedConsent->medical_procedure_checked : (!empty($doctorActionsSummary) && $doctorActionsSummary !== '-'))
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">4</td>
                     <td><strong>Indikasi Tindakan</strong></td>
-                    <td>{{ $visit->informedConsent?->indication ?: 'Peremajaan jaringan kulit, koreksi kontur & perbaikan tekstur' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->indication ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->indication_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">5</td>
                     <td><strong>Tata Cara Prosedur</strong></td>
-                    <td>{{ $visit->informedConsent?->procedure_steps ?: 'Asepsis, anestesi topikal bila diperlukan, pelaksanaan prosedur secara aseptik' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->procedure_steps ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->procedure_steps_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">6</td>
                     <td><strong>Tujuan Tindakan</strong></td>
-                    <td>{{ $visit->informedConsent?->procedure_goal ?: 'Memperbaiki tekstur kulit, meningkatkan elastisitas, dan peremajaan' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->procedure_goal ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->procedure_goal_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">7</td>
                     <td><strong>Risiko yang Mungkin Terjadi</strong></td>
-                    <td>{{ $visit->informedConsent?->risks ?: 'Kemerahan sementara (eritema), rasa hangat, atau pembengkakan ringan' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->risks ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->risks_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">8</td>
                     <td><strong>Komplikasi</strong></td>
-                    <td>{{ $visit->informedConsent?->complications ?: 'Hematoma ringan, reaksi hipersensitivitas minimal' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->complications ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->complications_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">9</td>
                     <td><strong>Prognosis</strong></td>
-                    <td>{{ $visit->informedConsent?->prognosis ?: 'Dubia ad Bonam' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->prognosis ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->prognosis_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">10</td>
                     <td><strong>Alternatif & Risiko</strong></td>
-                    <td>{{ $visit->informedConsent?->alternatives_risks ?: 'Perawatan topikal harian atau observasi klinis berkala' }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->alternatives_risks ?: '-' }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->alternatives_risks_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">11</td>
                     <td><strong>Lain-lain / Catatan Pasca</strong></td>
-                    <td>{{ $visit->informedConsent?->other_notes ?: ($visit->doctor_notes ?: 'Hindari paparan sinar matahari langsung dan gunakan sunscreen.') }}</td>
-                    <td style="text-align: center; font-weight: bold;">[ <span class="chk-mark">&#10003;</span> ]</td>
+                    <td>{{ $visit->informedConsent?->other_notes ?: ($visit->doctor_notes ?: '-') }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        @if($visit->informedConsent?->other_notes_checked)
+                            [ <span class="chk-mark">&#10003;</span> ]
+                        @else
+                            [ &nbsp;&nbsp; ]
+                        @endif
+                    </td>
                 </tr>
             </tbody>
         </table>
