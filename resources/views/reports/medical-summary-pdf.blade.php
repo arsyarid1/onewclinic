@@ -260,13 +260,13 @@
         }
 
         .ic-table td {
-            padding: 8px 7px;
+            padding: 6.8px 7px;
             font-size: 8pt;
-            line-height: 1.48;
+            line-height: 1.42;
         }
 
         .bhp-table td {
-            padding: 6.8px 7.5px;
+            padding: 6.5px 7.5px;
             font-size: 8.2pt;
             line-height: 1.45;
         }
@@ -755,12 +755,22 @@
 
         <table class="form-box-table" style="margin-bottom: 8px;">
             <tr>
-                <td class="lbl" style="width: 25%;">Dokter Pelaksana Tindakan</td>
-                <td class="val" style="width: 25%;">
+                <td class="lbl" style="width: 25%;">No. Rekam Medis</td>
+                <td class="val" style="width: 25%; font-family: monospace; font-weight: bold;">
+                    {{ $visit->manual_patient_code ?: $patient->patient_code }}
+                </td>
+                <td class="lbl" style="width: 25%;">NO. ID</td>
+                <td class="val" style="width: 25%; font-family: monospace; font-weight: bold;">
+                    {{ $visit->inbody_id ?: ($patient->inbody_id ?: '-') }}
+                </td>
+            </tr>
+            <tr>
+                <td class="lbl">Dokter Pelaksana Tindakan</td>
+                <td class="val">
                     <strong>{{ $doctorNameDisplay ?: '-' }}</strong>
                 </td>
-                <td class="lbl" style="width: 25%;">Penerima Informasi / Wali</td>
-                <td class="val" style="width: 25%;">
+                <td class="lbl">Penerima Informasi / Wali</td>
+                <td class="val">
                     <strong>{{ $recipientNameDisplay }}</strong>
                     <span style="font-size: 6.5pt; color: #64748b;">({{ $recipientRelationDisplay }})</span>
                 </td>
@@ -920,14 +930,14 @@
         </table>
 
         <!-- Paragraf Pernyataan Persetujuan -->
-        <div style="font-size: 8.2pt; text-align: justify; line-height: 1.6; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 10px 12px; border-radius: 3px; margin-top: 12px; margin-bottom: 14px;">
-            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; font-size: 8.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
+        <div style="font-size: 8.2pt; text-align: justify; line-height: 1.55; background-color: #f8fafc; border: 1.5px solid #0f172a; padding: 8px 12px; border-radius: 3px; margin-top: 8px; margin-bottom: 8px;">
+            <div style="font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 3px; font-size: 8.5pt;">PERSETUJUAN TINDAKAN KEDOKTERAN</div>
             Yang bertandatangan di bawah ini, saya, nama: <strong>{{ $recipientNameDisplay }}</strong>, umur: <strong>{{ $recipientAgeDisplay ?: '-' }}</strong> tahun, alamat: <strong>{{ $recipientAddressDisplay ?: '-' }}</strong>, dengan ini menyatakan persetujuan untuk dilakukannya tindakan: <strong style="text-decoration: underline;">{{ $resolvedProcedure }}</strong> terhadap {{ $recipientRelationDisplay ?: 'diri saya sendiri' }} bernama <strong>{{ $patient->name }}</strong>.<br>
             Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan. Saya juga menyadari bahwa ilmu kedokteran bukanlah ilmu pasti, melainkan sangat bergantung kepada izin Tuhan Yang Maha Esa.
         </div>
 
         <!-- Tanda Tangan 3 Pihak -->
-        <table class="signature-table" style="margin-top: 36px;">
+        <table class="signature-table" style="margin-top: 18px;">
             <tr>
                 <td class="signature-cell" style="width: 33.3%;">
                     <div style="font-weight: bold; font-size: 7.8pt;">Dokter yang Menerangkan,</div>
@@ -990,6 +1000,12 @@
                 <td style="width: 32%; font-weight: bold; font-size: 8.5pt; padding: 5px 8px;">{{ $patient->name }}</td>
                 <td style="width: 18%; font-weight: bold; padding: 5px 8px;">PERAWAT / TERAPIS</td>
                 <td style="width: 32%; padding: 5px 8px;">{{ $visit->therapist_nurse_name ?: ($visit->assistant_name ?? ($visit->nurse?->name ?? '')) }}</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold; padding: 5px 8px;">NO. REKAM MEDIS</td>
+                <td style="font-weight: bold; font-family: monospace; padding: 5px 8px;">{{ $visit->manual_patient_code ?: $patient->patient_code }}</td>
+                <td style="font-weight: bold; padding: 5px 8px;">NO. ID</td>
+                <td style="font-weight: bold; font-family: monospace; padding: 5px 8px;">{{ $visit->inbody_id ?: ($patient->inbody_id ?: '-') }}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold; padding: 5px 8px;">DOKTER</td>

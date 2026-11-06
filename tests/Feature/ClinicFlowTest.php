@@ -729,6 +729,10 @@ class ClinicFlowTest extends TestCase
         // Must contain Botox 10 Unit
         $this->assertStringContainsString('Botox 10 Unit', $viewHtml);
 
+        // Must contain No. Rekam Medis and NO. ID on IC and BHP pages
+        $this->assertStringContainsString('ONEW26-IC-CHECK', $viewHtml);
+        $this->assertStringContainsString('NO. ID', $viewHtml);
+
         // Must not contain hardcoded default text when empty
         $this->assertStringNotContainsString('Dubia ad Bonam', $viewHtml);
         $this->assertStringNotContainsString('Pemeriksaan Klinis dan Anamnesis Dokter', $viewHtml);
