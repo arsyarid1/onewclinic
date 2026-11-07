@@ -1,13 +1,17 @@
 {
-  "name": "ONEW Clinic - Form Flow",
-  "short_name": "Form Flow",
+  "id": "/form-flow",
+  "name": "ONEW Clinic - Registrasi",
+  "short_name": "ONEW Registrasi",
   "description": "Formulir Pendaftaran, General Consent, Informed Consent & BHP Medis ONEW Clinic",
   "start_url": "/form-flow",
-  "scope": "/",
+  "scope": "/form-flow",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#0f172a",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "icons": [
     {
       "src": "/icons/icon-192.png",
