@@ -15,10 +15,10 @@
     <!-- PWA / Web App Capabilities - Standalone without address bar -->
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Form Flow">
+    <meta name="application-name" content="ONEW Registrasi">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Form Flow">
+    <meta name="apple-mobile-web-app-title" content="ONEW Registrasi">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
@@ -173,8 +173,8 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => {
-                    console.error('ServiceWorker registration failed: ', err);
+                navigator.serviceWorker.register('/sw.js', { scope: '/form-flow' }).catch((err) => {
+                    console.error('SW registration failed:', err);
                 });
             });
         }
